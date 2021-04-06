@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Service.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,12 @@ namespace KitchenWeb.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        // private readonly ILogger<WeatherForecastController> _logger;
+        private readonly TestLogic _logic;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(TestLogic _logic)
         {
-            _logger = logger;
+            this._logic = _logic;
         }
 
         [HttpGet]
@@ -34,6 +36,12 @@ namespace KitchenWeb.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("test")]
+        public ActionResult<bool> GetTest()
+        {
+            return _logic.TestDBContext();
         }
     }
 }

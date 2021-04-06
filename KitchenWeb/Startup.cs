@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Repository.Models;
+using Service.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace KitchenWeb
         {
             string connectionString = Configuration.GetConnectionString("KitchenDB");
             services.AddDbContext<InTheKitchenDBContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<TestLogic>();
 
 
             services.AddControllers();
