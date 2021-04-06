@@ -23,17 +23,18 @@ namespace KitchenWeb.Controllers
             _logger = logger;
         }
 
-        // [HttpGet]
-        // public IEnumerable<User> Get()
-        // {
-        //     var rng = new Random();
-        //     return Enumerable.Range(1, 5).Select(index => new User
-        //     {
-        //         Date = DateTime.Now.AddDays(index),
-        //         TemperatureC = rng.Next(-20, 55),
-        //         Summary = Summaries[rng.Next(Summaries.Length)]
-        //     })
-        //     .ToArray();
-        // }
+        //[httpget]
+        //public ienumerable<user> get()
+        //{
+        //    var rng = new random();
+        //    return enumerable.range(1, 5).select(index => new user
+        //    {
+        //        date = datetime.now.adddays(index),
+        //        temperaturec = rng.next(-20, 55),
+        //        summary = summaries[rng.next(summaries.length)]
+        //    })
+        //    .toarray();
+        //}
+
     }
 }
