@@ -33,10 +33,10 @@ steps:
 
 ## Uncomment -Run Code Analysis and -Publish Quality Gate Result once there is code to be analyzed
 # SonarCloud Run Code Analysis
-#- task: SonarCloudAnalyze@1
+- task: SonarCloudAnalyze@1
   
 # SonarCloud Publish Quality Gate Result
-#- task: SonarCloudPublish@1
-#  inputs:
-#    pollingTimeoutSec: '300'
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
 
