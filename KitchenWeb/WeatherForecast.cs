@@ -1,6 +1,6 @@
 using System;
 
-namespace KitcheWeb
+namespace KitchenWeb
 {
     public class WeatherForecast
     {
