@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Repository.Models;
 using Service.Logic;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace KitchenWeb.Controllers
         }
 
         [HttpGet("test")]
-        public ActionResult<bool> GetTest()
+        public ActionResult<User> GetTest()
         {
             return _logic.TestDBContext();
         }
