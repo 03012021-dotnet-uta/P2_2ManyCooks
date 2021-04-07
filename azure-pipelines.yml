@@ -110,4 +110,12 @@ steps:
 # - task: SonarCloudPublish@1
 #   inputs:
 #     pollingTimeoutSec: '300'
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: '2ManyCooks(3d35571d-7565-4530-9f4a-cf99bed3ad7a)'
+    appType: 'webApp'
+    WebAppName: 'inthekitchen'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+
 
