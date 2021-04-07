@@ -4,13 +4,13 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- main
+#- main
 - master
 
 pool:
   #name: 'azure pipelines'
-  #vmImage: 'windows-latest'
-  name: 'default'
+  vmImage: 'windows-latest'
+  #name: 'default'
 
 variables:
   solution: 'P2_2ManyCooks.sln'
