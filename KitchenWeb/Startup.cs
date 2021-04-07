@@ -19,6 +19,7 @@ namespace KitchenWeb
 {
     public class Startup
     {
+        private readonly string _corsPolicy = "CorsPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,9 +34,29 @@ namespace KitchenWeb
             string connectionString = Configuration.GetConnectionString("KitchenDB");
             services.AddDbContext<InTheKitchenDBContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddScoped<ILogicKitchen,KitchenLogic>();
-            services.AddScoped<IReviewStepTagLogic,ReviewStepTagLogic>();
-            services.AddScoped<IUserLogic,UserLogic>();
+            services.AddScoped<ILogicKitchen, KitchenLogic>();
+            services.AddScoped<IReviewStepTagLogic, ReviewStepTagLogic>();
+            services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<TestLogic>();
+            // services.AddCors(options =>
+            // {
+            //     options.AddPolicy("CorsPolicy",
+            //         builder => builder.AllowAnyOrigin()
+            //         .AllowAnyMethod()
+            //         .AllowAnyHeader()
+            //         .AllowCredentials());
+            // });
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _corsPolicy,
+                    builder => builder
+                    .WithOrigins("http://localhost:4200/")
+                    // .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    // .AllowCredentials()
+                    );
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KitchenWeb", Version = "v1" });
@@ -55,6 +76,8 @@ namespace KitchenWeb
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(_corsPolicy);
 
             app.UseAuthorization();
 
