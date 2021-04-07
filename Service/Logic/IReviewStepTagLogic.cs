@@ -9,7 +9,7 @@ namespace Service.Logic
 {
     public interface IReviewStepTagLogic
     {
-        List<Tag> geTags();
-        List<Ingredient> getIngredients();
+        Task<List<Tag>> geTags();
+        Task<List<Ingredient>> getIngredients();
     }
 }

@@ -8,6 +8,6 @@ using Repository.Models;
 namespace Service.Logic
 {
     public interface IUserLogic {
-        List<User> getAUsers();
+        Task<List<User>> getAUsers();
     }
 }

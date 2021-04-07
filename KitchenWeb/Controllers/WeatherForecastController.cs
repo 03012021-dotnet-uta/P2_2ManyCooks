@@ -26,6 +26,11 @@ namespace KitchenWeb.Controllers
             this._logic = _logic;
         }
 
+        public WeatherForecastController()
+        {
+            
+        }
+
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
