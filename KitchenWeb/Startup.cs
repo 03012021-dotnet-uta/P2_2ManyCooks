@@ -29,12 +29,13 @@ namespace KitchenWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             string connectionString = Configuration.GetConnectionString("KitchenDB");
             services.AddDbContext<InTheKitchenDBContext>(options => options.UseSqlServer(connectionString));
-            services.AddScoped<TestLogic>();
 
-
-            services.AddControllers();
+            services.AddScoped<ILogicKitchen,KitchenLogic>();
+            services.AddScoped<IReviewStepTagLogic,ReviewStepTagLogic>();
+            services.AddScoped<IUserLogic,UserLogic>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KitchenWeb", Version = "v1" });
