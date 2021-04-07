@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Repository.Models;
 using Service.Logic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KitchenWeb.Controllers
 {
@@ -14,8 +15,8 @@ namespace KitchenWeb.Controllers
     public class UserController : ControllerBase
     {
         public readonly IUserLogic iUserLogic;
-        private readonly  ILogger<UserController> _logger;
-        public UserController(ILogger<UserController> logger ,IUserLogic iUserLogic)
+        private readonly ILogger<UserController> _logger;
+        public UserController(ILogger<UserController> logger, IUserLogic iUserLogic)
         {
             _logger = logger;
             this.iUserLogic = iUserLogic;
@@ -23,8 +24,10 @@ namespace KitchenWeb.Controllers
 
 
         [HttpGet]
-        public List<User> getList() {
-            return iUserLogic.getAUsers() ;
+        // [Authorize]
+        public List<User> getList()
+        {
+            return iUserLogic.getAUsers();
         }
     }
 }
