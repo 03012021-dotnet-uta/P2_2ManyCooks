@@ -23,8 +23,8 @@ namespace KitchenWeb.Controllers
 
 
         [HttpGet]
-        public List<User> getList() {
-            return iUserLogic.getAUsers() ;
+        public async Task<List<User>> getList() {
+            return await iUserLogic.getAUsers();
         }
     }
 }

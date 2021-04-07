@@ -16,14 +16,14 @@ namespace Service.Logic
             this._context = _context;
         }
 
-        public List<Tag> geTags()
+        public async Task<List<Tag>> geTags()
         {
-            return _context.Tags.FromSqlRaw("Select * from Tags").ToList();
+            return await _context.Tags.FromSqlRaw("Select * from Tags").ToListAsync();
         }
 
-        public List<Ingredient> getIngredients()
+        public async Task<List<Ingredient>> getIngredients()
         {
-            return _context.Ingredients.FromSqlRaw("Select * from Ingredients").ToList();
+            return await _context.Ingredients.FromSqlRaw("Select * from Ingredients").ToListAsync();
         }
     }
 }

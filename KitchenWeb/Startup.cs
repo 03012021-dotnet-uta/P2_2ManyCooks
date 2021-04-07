@@ -36,6 +36,12 @@ namespace KitchenWeb
             services.AddScoped<ILogicKitchen,KitchenLogic>();
             services.AddScoped<IReviewStepTagLogic,ReviewStepTagLogic>();
             services.AddScoped<IUserLogic,UserLogic>();
+
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KitchenWeb", Version = "v1" });
