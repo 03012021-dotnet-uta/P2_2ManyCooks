@@ -9,6 +9,7 @@ using Service.Logic;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Service.Interfaces;
+using Models.LogicModels;
 
 namespace KitchenWeb.Controllers
 {
@@ -40,6 +41,23 @@ namespace KitchenWeb.Controllers
             _authenticator.CheckIfNewUser(tok.Value);
             return iUserLogic.getAUsers();
             // return true;
+        }
+
+        // [HttpGet("{id}")]
+        // [Authorize]
+        // public ActionResult<User> GetUser(int id)
+        // {
+        //     return iUserLogic.GetUserData(id);
+        // }
+
+
+
+        [HttpGet("myinfo")]
+        [Authorize]
+        public ActionResult<AuthModel> GetCurrentUser()
+        {
+            string sub = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _authenticator.GetCurrentUserData(sub);
         }
     }
 }

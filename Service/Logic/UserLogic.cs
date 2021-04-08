@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Repository.Models;
 using RestSharp;
 using Microsoft.Extensions.Configuration;
+using Repository.Repositories;
 
 namespace Service.Logic
 {
@@ -17,15 +18,22 @@ namespace Service.Logic
     {
 
         private InTheKitchenDBContext _context;
-        public UserLogic(InTheKitchenDBContext _context)
+        private readonly KitchenRepository _repo;
+        public UserLogic(InTheKitchenDBContext _context, KitchenRepository _repo)
         {
             this._context = _context;
+            this._repo = _repo;
         }
 
         public List<User> getAUsers()
         {
             // System.Web.HttpUtility..GetTokenAsync("Bearer", "access_token");
             return _context.Users.FromSqlRaw("Select * From Users").ToList();
+        }
+
+        public User GetUserData(string sub)
+        {
+            return _repo.GetUserDataBySub(sub);
         }
 
         // public async Task<string> testTokenAsync(string token)

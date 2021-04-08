@@ -5,6 +5,8 @@ using RestSharp;
 using Service.Interfaces;
 using System.Collections.Generic;
 using Repository.Repositories;
+using Repository.Models;
+using Models.LogicModels;
 
 namespace Service.Authenticators
 {
@@ -63,16 +65,15 @@ namespace Service.Authenticators
             System.Console.WriteLine(userDataDictionary["sub"]);
 
             //* Check if this entry exists in our DB
-            if (!_repo.DoesUserExist(userDataDictionary["email"]))
+            if (!_repo.DoesUserExist(userDataDictionary["sub"]))
             {
                 //* If exists update user data
                 success = UpdateUserData(userDataDictionary);
                 if (!success)
                 {
                     System.Console.WriteLine("error updating user info");
-                    return false;
-                }
 
+                }
                 return success;
             }
             else
@@ -93,6 +94,12 @@ namespace Service.Authenticators
         {
             _repo.UpdateUserAuth0Data(userData);
             return true;
+        }
+
+
+        public AuthModel GetCurrentUserData(string sub)
+        {
+            return AuthModel.GetFromUser(_repo.GetUserDataBySub(sub));
         }
     }
 }

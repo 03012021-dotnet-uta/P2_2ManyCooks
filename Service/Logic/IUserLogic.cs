@@ -10,5 +10,6 @@ namespace Service.Logic
     public interface IUserLogic
     {
         List<User> getAUsers();
+        User GetUserData(string sub);
     }
 }
