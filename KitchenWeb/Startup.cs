@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,18 +8,24 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Repository.Models;
+using Repository.Repositories;
+using Service.Authenticators;
+using Service.Interfaces;
 using Service.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace KitchenWeb
 {
     public class Startup
     {
+        private readonly string _corsPolicy = "CorsPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,14 +40,46 @@ namespace KitchenWeb
             string connectionString = Configuration.GetConnectionString("KitchenDB");
             services.AddDbContext<InTheKitchenDBContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddScoped<ILogicKitchen,KitchenLogic>();
-            services.AddScoped<IReviewStepTagLogic,ReviewStepTagLogic>();
-            services.AddScoped<IUserLogic,UserLogic>();
+            services.AddScoped<ILogicKitchen, KitchenLogic>();
+            services.AddScoped<IReviewStepTagLogic, ReviewStepTagLogic>();
+            services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<IAuthenticator, Authenticator>();
+            services.AddScoped<KitchenRepository>();
+            services.AddScoped<TestLogic>();
+            // services.AddCors(options =>
+            // {
+            //     options.AddPolicy("CorsPolicy",
+            //         builder => builder.AllowAnyOrigin()
+            //         .AllowAnyMethod()
+            //         .AllowAnyHeader()
+            //         .AllowCredentials());
+            // });
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _corsPolicy,
+                    builder => builder
+                    // .WithOrigins("http://localhost:4200/")
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    // .AllowCredentials()
+                    );
+            });
 
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                );
+            string domain = $"https://{Configuration["Auth0:Domain"]}/";
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = domain;
+                options.Audience = Configuration["Auth0:Audience"];
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = ClaimTypes.NameIdentifier
+                };
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -62,6 +101,9 @@ namespace KitchenWeb
 
             app.UseRouting();
 
+            app.UseCors(_corsPolicy);
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

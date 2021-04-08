@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Repository.Models;
 
-namespace Service.Logic
+namespace Service.Interfaces
 {
-    public interface IUserLogic
+    public interface IAuthenticator
     {
-        List<User> getAUsers();
+        bool CheckIfNewUser(string token);
     }
 }

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Repository.Models;
 using Service.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace KitchenWeb.Controllers
@@ -26,12 +28,8 @@ namespace KitchenWeb.Controllers
             this._logic = _logic;
         }
 
-        public WeatherForecastController()
-        {
-            
-        }
-
         [HttpGet]
+        [Authorize]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
@@ -45,6 +43,7 @@ namespace KitchenWeb.Controllers
         }
 
         [HttpGet("test")]
+        [Authorize]
         public ActionResult<User> GetTest()
         {
             return _logic.TestDBContext();
