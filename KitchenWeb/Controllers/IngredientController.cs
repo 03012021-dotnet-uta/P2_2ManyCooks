@@ -20,9 +20,9 @@ namespace KitchenWeb.Controllers
 
 
         [HttpGet]
-        public async Task GetIngredients()
+        public async Task<List<Ingredient>> GetIngredients()
         {
-             await iReviewStepTagLogic.getIngredients();
+            return await iReviewStepTagLogic.getIngredients();
         }
     }
 }

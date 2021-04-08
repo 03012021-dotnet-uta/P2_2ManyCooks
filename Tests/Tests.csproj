@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KitchenWeb\KitchenWeb.csproj" />
+    <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
 
 </Project>
