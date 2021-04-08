@@ -11,6 +11,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Repository.Models;
+using Repository.Repositories;
+using Service.Authenticators;
+using Service.Interfaces;
 using Service.Logic;
 using System;
 using System.Collections.Generic;
@@ -40,6 +43,8 @@ namespace KitchenWeb
             services.AddScoped<ILogicKitchen, KitchenLogic>();
             services.AddScoped<IReviewStepTagLogic, ReviewStepTagLogic>();
             services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<IAuthenticator, Authenticator>();
+            services.AddScoped<KitchenRepository>();
             services.AddScoped<TestLogic>();
             // services.AddCors(options =>
             // {
@@ -53,8 +58,8 @@ namespace KitchenWeb
             {
                 options.AddPolicy(name: _corsPolicy,
                     builder => builder
-                    .WithOrigins("http://localhost:4200/")
-                    // .AllowAnyOrigin()
+                    // .WithOrigins("http://localhost:4200/")
+                    .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     // .AllowCredentials()
@@ -98,6 +103,7 @@ namespace KitchenWeb
 
             app.UseCors(_corsPolicy);
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

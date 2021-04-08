@@ -15,9 +15,17 @@ export class AppComponent implements OnInit {
 
   constructor(public auth: AuthService, private http: HttpClient){}
 
+  httpOptions = {
+    headers: {"Access-Control-Allow-Origin":"http://localhost:4200/"} 
+  };
   ngOnInit(): void {
-    this.http.get('https://localhost:5001/User').subscribe((reply)=> {
+    
+  }
+
+  getUsers() {
+    this.http.get('https://localhost:5001/User', this.httpOptions).subscribe((reply)=> {
       this.userList = reply;
-    })
+      console.log(this.userList);
+    });
   }
 }

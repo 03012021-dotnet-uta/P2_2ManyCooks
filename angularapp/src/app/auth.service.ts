@@ -16,7 +16,7 @@ export class AuthService {
       domain: 'dev-yktazjo3.us.auth0.com',
       client_id: 'DEJH5xmVrKbgDEwq5XmgjZqyftJLGrs5',
       redirect_uri: `http://localhost:4200/`,
-      audience: 'https://inthekitchen/'
+      audience: 'https://dev-yktazjo3.us.auth0.com/api/v2/'
       // audience: 'https://localhost:5001'
     })
   ) as Observable<Auth0Client>).pipe(
@@ -77,7 +77,7 @@ export class AuthService {
         return of(loggedIn);
       })
     );
-    checkAuth$.subscribe();
+    checkAuth$.subscribe((reply)=>{console.log(reply)});
   }
 
   login(redirectPath: string = '/') {
@@ -85,6 +85,7 @@ export class AuthService {
     // (e.g., from a route guard)
     // Ensure Auth0 client instance exists
     this.auth0Client$.subscribe((client: Auth0Client) => {
+      console.log(client);
       // Call method to log in
       client.loginWithRedirect({
         redirect_uri: `${window.location.origin}`,

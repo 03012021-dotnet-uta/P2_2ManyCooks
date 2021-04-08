@@ -1,8 +1,8 @@
 using System;
 
-namespace Models.LogicModels
+namespace Repository.Helpers
 {
-    class TimeManager
+    public class TimeManager
     {
         public static DateTime GetTimeNow()
         {

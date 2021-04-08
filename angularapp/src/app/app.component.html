@@ -1,13 +1,15 @@
 <!-- from: https://medium.com/swlh/using-auth0-to-secure-your-angular-application-and-access-your-asp-net-core-api-1947b9389f4f -->
 <button (click)="auth.login()" *ngIf="!auth.loggedIn">Log In</button>
 <button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</button>
+<br />
+<button (click)="getUsers()">Get Users</button>
 
 <ul>
-  <li *ngFor="let user of userList">{{ weatherItem.FirstName }}</li>
+  <li *ngFor="let user of userList">{{ user.firstname }}</li>
 </ul>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
+<!--` * * * * * * * * * * * The content below * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
 <!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
