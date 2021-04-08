@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Repository.Models;
 using Service.Logic;
 
 namespace KitchenWeb.Controllers
@@ -16,6 +18,34 @@ namespace KitchenWeb.Controllers
         public RecipeController(ILogicKitchen iLogicKitchen)
         {
             this.iLogicKitchen = iLogicKitchen;
+        }
+
+        [HttpPost]
+        public async Task<Recipe> addNewRec([FromBody] Recipe recipe)
+        {
+            await iLogicKitchen.addNewRecipe(recipe);
+
+            return recipe;
+
+        }
+
+        [HttpGet]
+        public async Task<List<Recipe>> getThemAll()
+        {
+            return await iLogicKitchen.getAllRecipe();
+        }
+
+        [HttpGet("/recipeName/{recipeName}")]
+        public  List<Recipe> getThemByRecipeName(string recipeName)
+        {
+            return iLogicKitchen.getAllRecipeByRecipeName(recipeName);
+        }
+
+        // not working properly 
+        [HttpGet("/tag/{tag}")]
+        public async Task<List<Recipe>> getThemByTag(string tag)
+        {
+            return await iLogicKitchen.getAllRecipeByTags(tag);
         }
     }
 }
