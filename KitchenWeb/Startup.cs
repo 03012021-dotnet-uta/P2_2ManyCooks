@@ -29,8 +29,15 @@ namespace KitchenWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name:"dev", builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                });
+            });
             services.AddControllers();
-            string connectionString = Configuration.GetConnectionString("KitchenDB");
+            var connectionString = Configuration.GetConnectionString("KitchenDB");
             services.AddDbContext<InTheKitchenDBContext>(options => options.UseSqlServer(connectionString));
 
             services.AddScoped<ILogicKitchen,KitchenLogic>();
@@ -61,6 +68,8 @@ namespace KitchenWeb
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("dev");
 
             app.UseAuthorization();
 
