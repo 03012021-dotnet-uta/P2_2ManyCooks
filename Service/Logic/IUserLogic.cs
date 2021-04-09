@@ -8,7 +8,7 @@ using Repository.Models;
 namespace Service.Logic
 {
     public interface IUserLogic {
-        Task<List<User>> getAUsers();
+        List<User> getAUsers();
         User getUserById(int id);
     }
 }

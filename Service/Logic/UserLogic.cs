@@ -28,6 +28,11 @@ namespace Service.Logic
             return _context.Users.FromSqlRaw("Select * From Users").ToList();
         }
 
+        public User getUserById(int id)
+        {
+           return _context.Users.Find(id);
+        }
+
         // public async Task<string> testTokenAsync(string token)
         // {
         //     // POST https://dev-yktazjo3.us.auth0.com/tokeninfo

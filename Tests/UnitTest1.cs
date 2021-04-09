@@ -20,9 +20,7 @@ namespace Tests
         [Fact]
         public void Test1()
         {
-            var weather = new WeatherForecastController();
-            var weat =  weather.Get();
-            Assert.True(weat.Count() > 0);
+           
 
         }
     }

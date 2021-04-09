@@ -29,7 +29,7 @@ namespace KitchenWeb.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult<List<User>> getList()
+        public List<User> getList()
         {
             System.Console.WriteLine("the request headers:");
             var tok = this.Request.Headers.Where(h => h.Key == "Authorization").FirstOrDefault();
@@ -38,7 +38,9 @@ namespace KitchenWeb.Controllers
             System.Console.WriteLine("whwat is this?");
             System.Console.WriteLine(x);
             _authenticator.CheckIfNewUser(tok.Value);
+
             return iUserLogic.getAUsers();
+
             // return true;
         }
     }
