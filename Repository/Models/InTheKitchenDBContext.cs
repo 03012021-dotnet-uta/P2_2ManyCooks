@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -191,6 +191,10 @@ namespace Repository.Models
 
             modelBuilder.Entity<User>(entity =>
             {
+                entity.Property(e => e.Auth0)
+                    .HasMaxLength(64)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
                 entity.Property(e => e.DateLastAccessed).HasColumnType("datetime");
@@ -203,6 +207,10 @@ namespace Repository.Models
                 entity.Property(e => e.Firstname)
                     .IsRequired()
                     .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ImageUrl)
+                    .HasMaxLength(300)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Lastname)

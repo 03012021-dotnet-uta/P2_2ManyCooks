@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using Models.LogicModels;
@@ -9,6 +10,7 @@ namespace Service.Helpers
     {
         public User GetUser(AuthModel authModel)
         {
+            throw new NotImplementedException();
             using (HMACSHA512 hmac = new HMACSHA512())
             {
                 User u1 = new User()

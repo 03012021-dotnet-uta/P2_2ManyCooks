@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,6 +26,8 @@ namespace Repository.Models
         public DateTime DateCreated { get; set; }
         public DateTime DateLastAccessed { get; set; }
         public int? PermissionId { get; set; }
+        public string Auth0 { get; set; }
+        public string ImageUrl { get; set; }
 
         public virtual UserPermission Permission { get; set; }
         public virtual ICollection<RecipeAuthor> RecipeAuthors { get; set; }

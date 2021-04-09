@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using Repository.Helpers;
 using Repository.Models;
 
 namespace Models.LogicModels
