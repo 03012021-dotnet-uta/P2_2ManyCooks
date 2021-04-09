@@ -9,5 +9,6 @@ namespace Service.Logic
 {
     public interface IUserLogic {
         Task<List<User>> getAUsers();
+        User getUserById(int id);
     }
 }

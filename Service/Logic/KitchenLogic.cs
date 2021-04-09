@@ -20,7 +20,7 @@ namespace Service.Logic
         {
             if (!existRecipeName(recipeName))
             {
-                return  _context.Recipes.ToList();
+                return new List<Recipe>() { };
             }
 
             return  _context.Recipes
@@ -33,7 +33,7 @@ namespace Service.Logic
             {
                 if (recipe == rec)
                 {
-                    throw new Exception("recipe already exist ");
+                    throw new Exception("recipe already exists ");
                 }
             }
             recipe.RecipeId = getAllRecipe().Result.Count() + 1;
@@ -54,8 +54,7 @@ namespace Service.Logic
             }
 
             // NOT SURE IF IT WORKS 
-            return await _context.Recipes.FromSqlRaw($"SELECT * FROM Recipes WHERE RecipeId IN " +
-                                                     "(SELECT RecipeId FROM RecipeTags WHERE TagId = {tagId})").ToListAsync();
+            return await _context.Recipes.FromSqlRaw("$SELECT * FROM Recipes WHERE RecipeId IN (SELECT RecipeId FROM RecipeTags WHERE TagId = {tagId})").ToListAsync();
         }
 
         public async Task<bool> existTag(string name)

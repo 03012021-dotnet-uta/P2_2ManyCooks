@@ -20,5 +20,10 @@ namespace Service.Logic
             return await _context.Users.FromSqlRaw("Select * From Users").ToListAsync();
             
         }
+
+        public User getUserById(int id)
+        {
+            return  _context.Users.FirstOrDefault(u =>u.UserId == id);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 #nullable disable
 
@@ -31,5 +32,10 @@ namespace Repository.Models
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<UserSearchHistory> UserSearchHistories { get; set; }
         public virtual ICollection<UserViewHistory> UserViewHistories { get; set; }
+
+        public static implicit operator Task<object>(User v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

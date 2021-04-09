@@ -11,5 +11,7 @@ namespace Service.Logic
     {
         Task<List<Tag>> geTags();
         Task<List<Ingredient>> getIngredients();
+        Task<List<Review>> getReviewsByRecipeName(string recipeName);
+        Task<List<Review>> getReviewByUser(string user);
     }
 }
