@@ -38,7 +38,13 @@ namespace KitchenWeb
             });
             services.AddControllers();
             var connectionString = Configuration.GetConnectionString("KitchenDB");
-            services.AddDbContext<InTheKitchenDBContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<InTheKitchenDBContext>(options =>
+            {
+                if (!options.IsConfigured)
+                {
+                    options.UseSqlServer(connectionString);
+                }
+            });
 
             services.AddScoped<ILogicKitchen,KitchenLogic>();
             services.AddScoped<IReviewStepTagLogic,ReviewStepTagLogic>();
