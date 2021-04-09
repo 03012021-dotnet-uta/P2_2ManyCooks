@@ -13,5 +13,7 @@ namespace Service.Logic
         Task<List<Ingredient>> getIngredients();
         Task<List<Review>> getReviewsByRecipeName(string recipeName);
         Task<List<Review>> getReviewByUser(string user);
+        Task<Ingredient> getOneIngredientById(int id);
+        Task<Ingredient> getOneIngredientByName(string name);
     }
 }
