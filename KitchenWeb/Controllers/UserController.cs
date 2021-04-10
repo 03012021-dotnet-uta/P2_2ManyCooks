@@ -8,6 +8,7 @@ using Repository.Models;
 using Service.Logic;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using Service.Interfaces;
 
 namespace KitchenWeb.Controllers
@@ -42,6 +43,13 @@ namespace KitchenWeb.Controllers
             return iUserLogic.getAUsers();
 
             // return true;
+           
+        }
+
+        [HttpPost]
+        public async Task<User> addUserr(User user)
+        {
+            return await iUserLogic.addUser(user);
         }
     }
 }

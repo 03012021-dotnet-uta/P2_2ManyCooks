@@ -33,6 +33,19 @@ namespace Service.Logic
            return _context.Users.Find(id);
         }
 
+        public async Task<User> addUser(User user)
+        {
+            if (user == getUserById(user.UserId))
+            {
+                throw new Exception("User Already exists with that name " + user.Firstname + " " + user.Lastname);
+            }
+            user.UserId = getAUsers().Count() + 2;
+            user.DateCreated = DateTime.Now;
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
         // public async Task<string> testTokenAsync(string token)
         // {
         //     // POST https://dev-yktazjo3.us.auth0.com/tokeninfo

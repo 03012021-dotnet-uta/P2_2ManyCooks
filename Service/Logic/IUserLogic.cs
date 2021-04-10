@@ -10,5 +10,7 @@ namespace Service.Logic
     public interface IUserLogic {
         List<User> getAUsers();
         User getUserById(int id);
+
+        Task<User> addUser(User user);
     }
 }
