@@ -1,0 +1,28 @@
+.recipe-grid {
+  display: grid;
+  grid: auto / 28vw 28vw 28vw;
+  width: 90vw;
+  gap: 2vw;
+}
+
+.main-recipe {
+  grid-row: 1 / span 2;
+  grid-column: 1 / span 2;
+}
+
+.normal-recipe {
+  grid-row: auto/ span 1;
+  grid-column: auto/ span 1;
+}
+
+.search-recipe {
+  grid-row: auto/ span 1;
+  grid-column: auto/span 4;
+}
+
+.search-recipe,
+.normal-recipe,
+.main-recipe {
+  overflow-wrap: break-word;
+  border-radius: 8pt;
+}

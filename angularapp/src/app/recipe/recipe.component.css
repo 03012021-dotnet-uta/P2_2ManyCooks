@@ -1,0 +1,15 @@
+.img {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* position: absolute; */
+  height: 50%;
+  width: 100%;
+}
+
+.recipe-card {
+  position: relative;
+  height: 100%;
+  border-radius: 7pt;
+  overflow: hidden;
+}

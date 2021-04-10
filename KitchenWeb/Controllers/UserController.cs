@@ -49,6 +49,7 @@ namespace KitchenWeb.Controllers
         // }
 
         [HttpPut]
+        [Authorize]
         public ActionResult<AuthModel> UpdateUser(AuthModel model)
         {
             System.Console.WriteLine("authmodel recieved in controller:");

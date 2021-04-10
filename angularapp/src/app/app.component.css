@@ -64,6 +64,7 @@
   width: 2pt; */
 }
 .page-loading {
+  float: right;
   padding: 8pt 5pt;
   margin-top: 4pt;
 }

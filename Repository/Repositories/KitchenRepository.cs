@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Repository.Helpers;
 using Repository.Models;
 
@@ -84,6 +85,17 @@ namespace Repository.Repositories
 
             newUser = _context.Users.Where(u => u.Auth0 == user.Auth0).FirstOrDefault();
             return success;
+        }
+
+        public ICollection<Recipe> GetAllRecipes()
+        {
+            return _context.Recipes
+            .Include(r => r.RecipeIngredients)
+            .ThenInclude(ri => ri.Ingredient)
+            .Include(r => r.RecipeTags)
+            .ThenInclude(rt => rt.Tag)
+            .Include(r => r.Steps)
+            .ToList();
         }
     }
 }
