@@ -1,5 +1,56 @@
 <!-- from: https://medium.com/swlh/using-auth0-to-secure-your-angular-application-and-access-your-asp-net-core-api-1947b9389f4f -->
-<section class="section">
+<nav class="nav-bar">
+  <ul class="nav-list">
+    <!-- <button><a routerLink="/listpersons">See a list of People</a></button
+    >&nbsp; -->
+    <div class="logo-container">
+      <div class="logo"></div>
+    </div>
+    <li class="nav-title">
+      <a class="website-name" routerLink="/">{{ title }}</a>
+    </li>
+    <li class="nav-right" routerLink="/register" *ngIf="auth.loggedIn">
+      <span>{{ auth.authModel.lastName }}, {{ auth.authModel.firstName }}</span>
+      <div
+        class="nav-right profile-img"
+        [ngStyle]="{
+          'background-image': 'url(' + auth.authModel.profileImage + ')'
+        }"
+      ></div>
+    </li>
+    <li
+      class="nav-right"
+      (click)="auth.login()"
+      *ngIf="!auth.loggedIn && auth.notLoading"
+    >
+      Get Started
+    </li>
+    <div *ngIf="!auth.notLoading" class="page-loading">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <!-- <li class="nav-right" *ngIf="!auth.notLoading">Loading...</li> -->
+  </ul>
+</nav>
+<router-outlet></router-outlet>
+<div></div>
+
+<!-- <input
+  type="button"
+  (click)="auth.login()"
+  *ngIf="!auth.loggedIn"
+  value="Login"
+/>
+<input
+  type="button"
+  (click)="auth.logout()"
+  *ngIf="auth.loggedIn"
+  value="Logout"
+/> -->
+<!-- <section class="section">
   <div>
     <input
       type="button"
@@ -20,7 +71,7 @@
       <li *ngFor="let user of userList">{{ user.firstname }}</li>
     </ul>
   </div>
-</section>
+</section> -->
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!--` * * * * * * * * * * * The content below * * * * * * * * * * * -->

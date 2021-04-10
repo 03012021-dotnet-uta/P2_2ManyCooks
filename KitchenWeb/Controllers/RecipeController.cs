@@ -36,7 +36,7 @@ namespace KitchenWeb.Controllers
         }
 
         [HttpGet("/recipeName/{recipeName}")]
-        public  List<Recipe> getThemByRecipeName(string recipeName)
+        public List<Recipe> getThemByRecipeName(string recipeName)
         {
             return iLogicKitchen.getAllRecipeByRecipeName(recipeName);
         }
