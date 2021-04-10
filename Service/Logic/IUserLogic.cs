@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,3 +67,4 @@ namespace Service.Logic
         bool CreateNewUser(AuthModel authModel, Dictionary<string, string> userDictionary, out AuthModel newModel);
     }
 }
+

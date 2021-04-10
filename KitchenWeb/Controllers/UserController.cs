@@ -8,6 +8,7 @@ using Repository.Models;
 using Service.Logic;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using Service.Interfaces;
 using Models.LogicModels;
 
@@ -61,6 +62,16 @@ namespace KitchenWeb.Controllers
 
 
 
+            // return true;
+           
+        }
+
+        [HttpPost]
+        public async Task<User> addUserr(User user)
+        {
+            return await iUserLogic.addUser(user);
+
+
         [HttpGet("myinfo")]
         [Authorize]
         public ActionResult<AuthModel> GetCurrentUser()
@@ -71,6 +82,7 @@ namespace KitchenWeb.Controllers
             var model = new AuthModel();
             iUserLogic.CheckIfNewUser(dictionary, out model);
             return model;
+
         }
     }
 }

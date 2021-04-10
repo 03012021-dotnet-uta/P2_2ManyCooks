@@ -64,7 +64,6 @@ namespace Service.Logic
             return tags.Contains(await getOneTag(name));
         }
 
-        
         public async Task<Tag> getOneTag(string tagName)
         {
             var tag = await  _context.Tags.FirstOrDefaultAsync(t => t.TagName == tagName);

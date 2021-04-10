@@ -49,5 +49,22 @@ namespace Service.Logic
 
             return new List<Review>(){};
         }
+
+        public async Task<Ingredient> getOneIngredientById(int id)
+        {
+            if (await _context.Ingredients.FindAsync(id) == null)
+            {
+                throw new Exception("No Ingredient Matching this ID: " + id);
+            }
+
+            return await _context.Ingredients.FindAsync(id);
+        }
+
+        public async Task<Ingredient> getOneIngredientByName(string name)
+        {
+
+            return await _context.Ingredients.FirstOrDefaultAsync(i => i.IngredientName == name);
+        }
+
     }
 }
