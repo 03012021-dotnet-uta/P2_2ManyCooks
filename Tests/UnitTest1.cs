@@ -13,14 +13,16 @@ namespace Tests
     {
         DbContextOptions<InTheKitchenDBContext> testOptions = new DbContextOptionsBuilder<InTheKitchenDBContext>()
             .UseInMemoryDatabase(databaseName: "TestDb")
-            .Options; 
+            .Options;
 
- 
+
 
         [Fact]
         public void Test1()
         {
-           
+            // var weather = new WeatherForecastController();
+            // var weat =  weather.Get();
+            // Assert.True(weat.Count() > 0);
 
         }
     }
