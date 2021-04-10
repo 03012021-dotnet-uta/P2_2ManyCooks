@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Repository.Models;
 using RestSharp;
 using Microsoft.Extensions.Configuration;
+using Repository.Repositories;
+using Models.LogicModels;
 
 namespace Service.Logic
 {
@@ -17,34 +19,37 @@ namespace Service.Logic
     {
 
         private InTheKitchenDBContext _context;
-        public UserLogic(InTheKitchenDBContext _context)
+        private readonly KitchenRepository _repo;
+        public UserLogic(InTheKitchenDBContext _context, KitchenRepository _repo)
         {
             this._context = _context;
+            this._repo = _repo;
         }
 
-        public List<User> getAUsers()
+        public List<User> getAllUsers()
         {
             // System.Web.HttpUtility..GetTokenAsync("Bearer", "access_token");
             return _context.Users.FromSqlRaw("Select * From Users").ToList();
         }
 
-        public User getUserById(int id)
+        public AuthModel UpdateUser(AuthModel authModel, Dictionary<string, string> userDictionary)
         {
-           return _context.Users.Find(id);
+            System.Console.WriteLine("update logic: dictionary:");
+            System.Console.WriteLine(userDictionary);
+            User user = authModel.GetMappedUser();
+            AuthModel model;
+            if (_repo.DoesUserExist(userDictionary["sub"]))
+            {
+                model = AuthModel.GetFromUser(_repo.UpdateUserData(user));
+            }
+            else
+            {
+                CreateNewUser(authModel, userDictionary, out model);
+            }
+            return model;
         }
 
-        public async Task<User> addUser(User user)
-        {
-            if (user == getUserById(user.UserId))
-            {
-                throw new Exception("User Already exists with that name " + user.Firstname + " " + user.Lastname);
-            }
-            user.UserId = getAUsers().Count() + 2;
-            user.DateCreated = DateTime.Now;
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            return user;
-        }
+
 
         // public async Task<string> testTokenAsync(string token)
         // {
@@ -161,20 +166,88 @@ namespace Service.Logic
         //     System.Console.WriteLine(response.ErrorMessage);
         //     System.Console.WriteLine(response.IsSuccessful);
 
-        //     var client2 = new RestClient("https://dev-yktazjo3.us.auth0.com/oauth/token");
-        //     var request2 = new RestRequest(Method.POST);
-        //     request.AddHeader("content-type", "application/json");
-        //     request.AddParameter("application/json", "{\"client_id\":\"B7WJeAtwcYChReVTSo6Y8Ke93uTTzIKQ\",\"client_secret\":\"q2fdxgFehPAO4FaFzg2F4XeZ1Dzwabd7YxpsSbOqmq1Bfvx1NDBR6GmoOcWh2hWr\",\"audience\":\"https://dev-yktazjo3.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
-        //     IRestResponse respons2e = client2.Execute(request2);
-        //     System.Console.WriteLine();
-        //     System.Console.WriteLine("status: " + respons2e.ResponseStatus);
-        //     Console.WriteLine(respons2e.Content);
-        //     System.Console.WriteLine(respons2e.ErrorMessage);
-        //     System.Console.WriteLine(respons2e.IsSuccessful);
+        public bool CheckIfNewUser(Dictionary<string, string> userDataDictionary, out AuthModel authModel)
+        {
+            var success = false;
 
-        //     return response.Content;
+            //* Extract the data dictionary
 
-        // }
+            // * {"sub":"auth0|606e2aeaa32e9700697566ba",
+            // * "nickname":"noureldinashraf6",
+            // * "name":"noureldinashraf6@gmail.com",
+            // * "picture":"https://s.gravatar.com/avatar/162c31c37ca4c96d5bf9e43b9e2bd5a0?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fno.png",
+            // * "updated_at":"2021-04-08T13:21:23.390Z",
+            // * "email":"noureldinashraf6@gmail.com",
+            // * "email_verified":false}
 
+            System.Console.WriteLine(userDataDictionary["sub"]);
+
+            //* Check if this entry exists in our DB
+            if (_repo.DoesUserExist(userDataDictionary["sub"]))
+            {
+                System.Console.WriteLine("user exists");
+                //* If exists update user data
+                success = UpdateUserDataDictionary(userDataDictionary);
+                if (!success)
+                {
+                    System.Console.WriteLine("error updating user info");
+                }
+                authModel = GetCurrentUserData(userDataDictionary["sub"]);
+                return success;
+            }
+            else
+            {
+                System.Console.WriteLine("user does not exist, returning false");
+                //* If not return false to redirect to registration form
+                authModel = new AuthModel();
+                return false;
+            }
+        }
+
+        public bool CreateNewUser(AuthModel authModel, Dictionary<string, string> userDictionary, out AuthModel newModel)
+        {
+            System.Console.WriteLine("update logic: dictionary:");
+            System.Console.WriteLine(userDictionary);
+            System.Console.WriteLine("userDictionary[\"email\"]");
+            System.Console.WriteLine(userDictionary["email"]);
+            // todo: if we give user more data, assign here
+            User user = authModel.GetMappedUser();
+            User authUser = _getUpdatedUserFromDictionary(userDictionary);
+            authUser.Firstname = user.Firstname;
+            authUser.Lastname = user.Lastname;
+            authUser.DateCreated = DateTime.Now;
+            authUser.PasswordHash = "";
+            authUser.PasswordSalt = "";
+            authUser.Username = authUser.Email;
+            bool success = _repo.SaveNewUser(authUser, out user);
+            if (success)
+                newModel = AuthModel.GetFromUser(user);
+            else
+                newModel = null;
+            return success;
+        }
+
+        private User _getUpdatedUserFromDictionary(Dictionary<string, string> userDictionary)
+        {
+            User user = new User();
+            user.Email = userDictionary["email"];
+            user.ImageUrl = userDictionary["picture"];
+            user.Auth0 = userDictionary["sub"];
+            // user.DateLastAccessed = TimeManager.GetTimeNow();
+            user.DateLastAccessed = DateTime.Now;
+            return user;
+        }
+
+        public bool UpdateUserDataDictionary(Dictionary<string, string> userData)
+        {
+            User user = _getUpdatedUserFromDictionary(userData);
+            _repo.UpdateUserAuth0Data(user);
+            return true;
+        }
+
+        public AuthModel GetCurrentUserData(string sub)
+        {
+            return AuthModel.GetFromUser(_repo.GetUserDataBySub(sub));
+        }
     }
 }

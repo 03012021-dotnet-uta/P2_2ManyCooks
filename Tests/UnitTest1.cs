@@ -21,6 +21,7 @@ namespace Tests
         [Fact]
         public void Test1()
         {
+
             User user = new User()
             {
                 UserId =1,
@@ -87,7 +88,6 @@ namespace Tests
                 var msr = new ReviewStepTagLogic(context);
                 result1 = await msr.geTags();
             }
-
             await using(var context = new InTheKitchenDBContext(testOptions))
             {
                 await context.Database.EnsureCreatedAsync();
