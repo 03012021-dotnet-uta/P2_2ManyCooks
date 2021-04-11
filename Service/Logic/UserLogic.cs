@@ -26,6 +26,14 @@ namespace Service.Logic
             this._repo = _repo;
         }
 
+        // for test purpose
+        public UserLogic(InTheKitchenDBContext _context)
+        {
+            this._context = _context;
+        }
+
+
+
         public List<User> getAllUsers()
         {
             // System.Web.HttpUtility..GetTokenAsync("Bearer", "access_token");

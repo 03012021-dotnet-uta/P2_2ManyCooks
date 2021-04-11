@@ -63,16 +63,9 @@ namespace KitchenWeb.Controllers
 
 
             // return true;
-           
-        }
-
-        [HttpPost]
-        public async Task<User> addUserr(User user)
-        {
-            return await iUserLogic.addUser(user);
 
 
-        [HttpGet("myinfo")]
+            [HttpGet("myinfo")]
         [Authorize]
         public ActionResult<AuthModel> GetCurrentUser()
         {
