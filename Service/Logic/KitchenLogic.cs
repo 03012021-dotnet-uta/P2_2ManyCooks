@@ -4,26 +4,30 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Models.LogicModels;
 using Repository.Models;
+using Repository.Repositories;
 
 namespace Service.Logic
 {
     public class KitchenLogic : ILogicKitchen
     {
         private InTheKitchenDBContext _context;
-        public KitchenLogic(InTheKitchenDBContext _context)
+        private KitchenRepository _repo;
+        public KitchenLogic(InTheKitchenDBContext _context, KitchenRepository _repo)
         {
             this._context = _context;
+            this._repo = _repo;
         }
 
-        public  List<Recipe> getAllRecipeByRecipeName(string recipeName)
+        public List<Recipe> getAllRecipeByRecipeName(string recipeName)
         {
             if (!existRecipeName(recipeName))
             {
                 return new List<Recipe>() { };
             }
 
-            return  _context.Recipes
+            return _context.Recipes
                 .Where(r => r.RecipeName == recipeName).ToList();
         }
 
@@ -66,15 +70,15 @@ namespace Service.Logic
 
         public async Task<Tag> getOneTag(string tagName)
         {
-            var tag = await  _context.Tags.FirstOrDefaultAsync(t => t.TagName == tagName);
+            var tag = await _context.Tags.FirstOrDefaultAsync(t => t.TagName == tagName);
             if (tag == null)
             {
                 return null;
             }
             return tag;
-                
+
         }
-        public  bool existRecipeName(string recipeName)
+        public bool existRecipeName(string recipeName)
         {
             var recipe = _context.Recipes.FirstOrDefault(r => r.RecipeName == recipeName);
 
@@ -88,6 +92,18 @@ namespace Service.Logic
         public async Task<List<Recipe>> getAllRecipe()
         {
             return await _context.Recipes.ToListAsync();
+        }
+
+        public async Task<ICollection<SentRecipe>> getAllSentRecipe()
+        {
+            ICollection<Recipe> rs = _repo.GetAllRecipes();
+            return SentRecipe.MapMany(rs);
+        }
+
+        public SentRecipe GetRecipeById(int id)
+        {
+            var recipe = _repo.GetRecipeById(id);
+            return SentRecipe.GetFromRecipe(recipe);
         }
     }
 }

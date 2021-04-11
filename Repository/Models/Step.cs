@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 #nullable disable
 
@@ -13,6 +14,7 @@ namespace Repository.Models
         public string StepImage { get; set; }
         public int? RecipeId { get; set; }
 
+        [JsonIgnore]
         public virtual Recipe Recipe { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
 using Service.Logic;
+using Models.LogicModels;
 
 namespace KitchenWeb.Controllers
 {
@@ -33,6 +34,20 @@ namespace KitchenWeb.Controllers
         public async Task<List<Recipe>> getThemAll()
         {
             return await iLogicKitchen.getAllRecipe();
+        }
+
+
+        [HttpGet("good")]
+        public async Task<ICollection<SentRecipe>> getThemAllGood()
+        {
+            return await iLogicKitchen.getAllSentRecipe();
+        }
+
+
+        [HttpGet("good/{id}")]
+        public ActionResult<SentRecipe> getGoodById(int id)
+        {
+            return iLogicKitchen.GetRecipeById(id);
         }
 
         [HttpGet("/recipeName/{recipeName}")]

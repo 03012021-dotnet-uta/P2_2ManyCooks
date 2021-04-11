@@ -24,8 +24,8 @@ namespace Service.Authenticators
         public Dictionary<string, string> GetUserAuth0Dictionary(string token)
         {
             var success = false;
-            System.Console.WriteLine("token");
-            System.Console.WriteLine(token);
+            // System.Console.WriteLine("token");
+            // System.Console.WriteLine(token);
 
             //* Get the data from Auth0
             string url = $"https://{_configuration["Auth0:Domain"]}/userinfo";
@@ -36,13 +36,13 @@ namespace Service.Authenticators
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Authorization", token);
             IRestResponse response = client.Execute(request);
-            System.Console.WriteLine("status: " + response.ResponseStatus);
+            // System.Console.WriteLine("status: " + response.ResponseStatus);
             System.Console.WriteLine("user data:");
             Console.WriteLine(response.Content);
             System.Console.WriteLine("response status");
             Console.WriteLine(response.StatusCode);
             Console.WriteLine(response.IsSuccessful);
-            Console.WriteLine(response.ResponseStatus);
+            // Console.WriteLine(response.ResponseStatus);
 
             // success = response.ResponseStatus.Equals("True");
             // System.Console.WriteLine("succes: " + success);

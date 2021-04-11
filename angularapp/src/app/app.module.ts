@@ -5,27 +5,29 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { RegistrationComponent } from './registration/registration.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+// import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
+import { RecipeComponent } from './recipe/recipe.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { RecipeSaver } from './recipe/recipe-saver';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegistrationComponent,
-    HomeComponent
+    HomeComponent,
+    RecipeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatProgressSpinnerModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [RecipeSaver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
