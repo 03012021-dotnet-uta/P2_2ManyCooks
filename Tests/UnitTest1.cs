@@ -18,33 +18,8 @@ namespace Tests
 
 
 
-        [Fact]
-        public void Test1()
-        {
 
-            User user = new User()
-            {
-                UserId =1,
-                Firstname= "Anis",
-                Lastname = "Medini"
-            };
-            User result1 = new User();
-            User result2 = new User();
-
-            using(var context = new InTheKitchenDBContext(testOptions))
-            {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-                var msr = new UserLogic(context);
-                result1 =  msr.getUserById(user.UserId);
-            }
-            using(var context = new InTheKitchenDBContext(testOptions))
-            {
-                context.Database.EnsureCreated();
-                result2 =  context.Users.Find(user.UserId);
-            }
-            Assert.Equal(result1,result2);
-        }
+      
         [Fact]
         public void Test2()
         {
@@ -61,7 +36,7 @@ namespace Tests
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
                 var msr = new UserLogic(context);
-                result1 =  msr.getAUsers();
+                result1 =  msr.getAllUsers();
             }
             using(var context = new InTheKitchenDBContext(testOptions))
             {

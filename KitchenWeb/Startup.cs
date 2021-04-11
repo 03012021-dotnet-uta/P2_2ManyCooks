@@ -44,7 +44,7 @@ namespace KitchenWeb
                 {
                     options.UseSqlServer(connectionString);
                 }
-                });
+            });
 
             services.AddScoped<ILogicKitchen, KitchenLogic>();
             services.AddScoped<IReviewStepTagLogic, ReviewStepTagLogic>();
