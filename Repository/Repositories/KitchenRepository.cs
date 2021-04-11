@@ -97,5 +97,16 @@ namespace Repository.Repositories
             .Include(r => r.Steps)
             .ToList();
         }
+
+        public Recipe GetRecipeById(int id)
+        {
+            return _context.Recipes.Where(r => r.RecipeId == id)
+            .Include(r => r.RecipeIngredients)
+            .ThenInclude(ri => ri.Ingredient)
+            .Include(r => r.RecipeTags)
+            .ThenInclude(rt => rt.Tag)
+            .Include(r => r.Steps)
+            .FirstOrDefault();
+        }
     }
 }

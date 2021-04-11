@@ -1,20 +1,30 @@
-<div class="recipe-card" (click)="goToDetail()">
-  <div
-    class="img"
-    [ngStyle]="{
-      'background-image': 'url(' + recipe.recipeImage + ')'
-    }"
-  ></div>
-  <div>{{ recipe.recipeId }}</div>
-  <div>{{ recipe.recipeName }}</div>
-  <div>{{ recipe.recipeDescription }}</div>
-  <div>{{ recipe.recipeImage }}</div>
-  <div>{{ recipe.recipeAuthor }}</div>
-  <div>{{ recipe.dateCreated }}</div>
-  <div>{{ recipe.dateLastPrepared }}</div>
-  <div>{{ recipe.numTimesPrepared }}</div>
-  <div>{{ recipe.recipeAuthors }}</div>
-  <div>{{ recipe.ingredients }}</div>
-  <div>{{ recipe.tags }}</div>
-  <div>{{ recipe.steps }}</div>
-</div>
+<section class="section">
+  <div *ngIf="!recipe" class="page-loading">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div *ngIf="recipe" class="recipe-card">
+    <div
+      class="img"
+      [ngStyle]="{
+        'background-image': 'url(' + recipe.recipeImage + ')'
+      }"
+    ></div>
+    <div class="img-buffer"></div>
+    <div>{{ recipe.recipeId }}</div>
+    <div>{{ recipe.recipeName }}</div>
+    <div>{{ recipe.recipeDescription }}</div>
+    <div>{{ recipe.recipeImage }}</div>
+    <div>{{ recipe.recipeAuthor }}</div>
+    <div>{{ recipe.dateCreated }}</div>
+    <div>{{ recipe.dateLastPrepared }}</div>
+    <div>{{ recipe.numTimesPrepared }}</div>
+    <div>{{ recipe.recipeAuthors }}</div>
+    <div>{{ recipe.ingredients }}</div>
+    <div>{{ recipe.tags }}</div>
+    <div>{{ recipe.steps }}</div>
+    <input type="button" value="Start Preparing" />
+  </div>
+</section>

@@ -18,5 +18,6 @@ namespace Service.Logic
         bool existRecipeName(string recipeName);
         Task<Tag> getOneTag(string tagName);
         Task<bool> existTag(string name);
+        SentRecipe GetRecipeById(int id);
     }
 }

@@ -1,24 +1,56 @@
 <!-- <app-persondetails [person2]='stringPerson' (person3)=ChangedPerson($event)></app-persondetails> -->
 <section class="section">
   <h1>Check out Our Recipe Collection</h1>
-  <div *ngIf="!recipeList" class="page-loading">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-  <div class="recipe-grid">
+  <div [class]="girdStyle">
     <!-- <div></div> -->
-    <app-recipe [recipe]="recipeList[0]" class="main-recipe"></app-recipe>
-    <app-recipe
+    <div *ngIf="!recipeList" class="page-loading">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <!-- <div > -->
+
+    <!-- <div
       *ngFor="let recipe of recipeList"
-      [recipe]="recipe"
-      class="normal-recipe"
-    ></app-recipe>
-    <app-recipe [recipe]="recipeList[0]" class="normal-recipe"></app-recipe>
-    <app-recipe [recipe]="recipeList[0]" class="normal-recipe"></app-recipe>
-    <app-recipe [recipe]="recipeList[0]" class="normal-recipe"></app-recipe>
-    <app-recipe [recipe]="recipeList[0]" class="normal-recipe"></app-recipe>
-    <app-recipe [recipe]="recipeList[0]" class="normal-recipe"></app-recipe>
+      class="recipe-card"
+      (click)="goToDetail(recipe)"
+    >
+      <div class="recipe-img" [ngStyle]="getRecipeImageStyle(recipe)"></div>
+      <div class="recipe-info">
+        <h2 class="recipe-name">{{ recipe.recipeName }}</h2>
+        <div class="recipe-tag" *ngFor="let tag of recipe.tags">
+          {{ tag.tagName }}
+        </div>
+      </div>
+    </div> -->
+
+    <div
+      *ngFor="let recipe of testOnly"
+      class="recipe-card"
+      (click)="goToDetail(recipe)"
+    >
+      <div class="recipe-img" [ngStyle]="getRecipeImageStyle(recipe)"></div>
+      <div class="recipe-info">
+        <h2 class="recipe-name">{{ recipe.recipeName }}</h2>
+        <div class="recipe-prepares">
+          Prepared: {{ recipe.numTimesPrepared }} times
+        </div>
+        <!-- <div>Ingredients:</div>
+        <div
+          class="recipe-ingredient"
+          *ngFor="let ingredient of recipe.ingredients"
+        >
+          <span>{{ ingredient.ingredientName }}</span>
+        </div> -->
+        <div class="recipe-tag" *ngFor="let tag of recipe.tags">
+          {{ tag.tagName }}
+        </div>
+        <!-- <div class="recipe-views">
+        </div> -->
+      </div>
+    </div>
+
+    <!-- </div> -->
   </div>
 </section>

@@ -100,5 +100,11 @@ namespace Service.Logic
             ICollection<Recipe> rs = _repo.GetAllRecipes();
             return SentRecipe.MapMany(rs);
         }
+
+        public SentRecipe GetRecipeById(int id)
+        {
+            var recipe = _repo.GetRecipeById(id);
+            return SentRecipe.GetFromRecipe(recipe);
+        }
     }
 }

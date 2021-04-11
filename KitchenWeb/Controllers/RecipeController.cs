@@ -43,6 +43,13 @@ namespace KitchenWeb.Controllers
             return await iLogicKitchen.getAllSentRecipe();
         }
 
+
+        [HttpGet("good/{id}")]
+        public ActionResult<SentRecipe> getGoodById(int id)
+        {
+            return iLogicKitchen.GetRecipeById(id);
+        }
+
         [HttpGet("/recipeName/{recipeName}")]
         public List<Recipe> getThemByRecipeName(string recipeName)
         {

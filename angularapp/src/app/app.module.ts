@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { RecipeComponent } from './recipe/recipe.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { RecipeSaver } from './recipe/recipe-saver';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { RegistrationComponent } from './registration/registration.component';
     BrowserAnimationsModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [RecipeSaver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
