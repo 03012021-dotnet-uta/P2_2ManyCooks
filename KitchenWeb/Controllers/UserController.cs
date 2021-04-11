@@ -63,9 +63,12 @@ namespace KitchenWeb.Controllers
 
 
             // return true;
+           
+        
 
+        
 
-            [HttpGet("myinfo")]
+        [HttpGet("myinfo")]
         [Authorize]
         public ActionResult<AuthModel> GetCurrentUser()
         {
