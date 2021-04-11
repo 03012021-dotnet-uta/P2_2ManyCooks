@@ -20,6 +20,14 @@ namespace Service.Logic
             this._repo = _repo;
         }
 
+        // for test purpose 
+        public KitchenLogic(InTheKitchenDBContext _context)
+        {
+            this._context = _context;
+        }
+
+
+
         public List<Recipe> getAllRecipeByRecipeName(string recipeName)
         {
             if (!existRecipeName(recipeName))

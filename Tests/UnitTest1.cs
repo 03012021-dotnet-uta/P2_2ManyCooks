@@ -17,9 +17,6 @@ namespace Tests
             .Options;
 
 
-
-
-      
         [Fact]
         public void Test2()
         {
@@ -69,6 +66,62 @@ namespace Tests
                 result2 =  await context.Tags.ToListAsync();
             }
             Assert.Equal(result1,result2);
+        }
+        [Fact]
+        public async Task Test7Async()
+        {
+            var ingredient = new Ingredient()
+            {
+                IngredientId = 34,
+                IngredientName = "Cheese"
+            };
+            var result1 = new Ingredient();
+            var result2 = new Ingredient();
+
+            await using(var context = new InTheKitchenDBContext(testOptions))
+            {
+                await context.Database.EnsureDeletedAsync();
+                await context.Database.EnsureCreatedAsync();
+                var msr = new ReviewStepTagLogic(context);
+
+                result1 = await msr.getOneIngredientById(ingredient.IngredientId);
+            }
+
+            await using(var context = new InTheKitchenDBContext(testOptions))
+            {
+                await context.Database.EnsureCreatedAsync();
+                result2 = await context.Ingredients.FindAsync(ingredient.IngredientId);
+            }
+            Assert.Equal(result1,result2);
+
+        }
+        [Fact]
+        public async Task Test8Async()
+        {
+            var ingredient = new Ingredient()
+            {
+                IngredientId = 34,
+                IngredientName = "Cheese"
+            };
+            var result1 = new Ingredient();
+            var result2 = new Ingredient();
+
+            await using(var context = new InTheKitchenDBContext(testOptions))
+            {
+                await context.Database.EnsureDeletedAsync();
+                await context.Database.EnsureCreatedAsync();
+                var msr = new ReviewStepTagLogic(context);
+
+                result1 = await msr.getOneIngredientByName(ingredient.IngredientName);
+            }
+
+            await using(var context = new InTheKitchenDBContext(testOptions))
+            {
+                await context.Database.EnsureCreatedAsync();
+                result2 = await context.Ingredients.Where(i => i.IngredientName == ingredient.IngredientName).FirstOrDefaultAsync();
+            }
+            Assert.Equal(result1,result2);
+
         }
         [Fact]
         public async Task Test4Async()
