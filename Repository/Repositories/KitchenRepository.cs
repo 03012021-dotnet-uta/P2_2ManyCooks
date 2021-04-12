@@ -45,21 +45,35 @@ namespace Repository.Repositories
             return true;
         }
 
-        public User UpdateUserData(User user)
+        /// <summary>
+        /// only updates the following:
+        /// dbuser.Email = inUser.Email;
+        /// dbuser.Firstname = inUser.Firstname;
+        /// dbuser.Lastname = inUser.Lastname;
+        /// dbuser.ImageUrl = inUser.ImageUrl;
+        /// dbuser.Username = inUser.Username;
+        /// </summary>
+        /// <param name="inUser"></param>
+        /// <param name="OutUser"></param>
+        /// <returns></returns>
+        public bool UpdateUserPrimaryData(User inUser, out User OutUser)
         {
-            var dbuser = _context.Users.Where(u => u.Auth0 == user.Auth0).FirstOrDefault();
+            var dbuser = _context.Users.Where(u => u.Auth0 == inUser.Auth0).FirstOrDefault();
             if (dbuser == null)
             {
-                return null;
+                OutUser = null;
+                return false;
             }
-            dbuser.Email = user.Email;
-            dbuser.Firstname = user.Firstname;
-            dbuser.Lastname = user.Lastname;
-            dbuser.ImageUrl = user.ImageUrl;
-            dbuser.Username = user.Username;
+            // todo: if we want to save more data, change here as well as in save new user here
+            dbuser.Email = inUser.Email;
+            dbuser.Firstname = inUser.Firstname;
+            dbuser.Lastname = inUser.Lastname;
+            dbuser.ImageUrl = inUser.ImageUrl;
+            dbuser.Username = inUser.Username;
 
-            _context.SaveChanges();
-            return dbuser;
+            OutUser = dbuser;
+
+            return _context.SaveChanges() > 0;
         }
 
         public User GetUserDataById(int id)

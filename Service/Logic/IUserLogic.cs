@@ -64,7 +64,7 @@ namespace Service.Logic
         /// <param name="userDictionary"></param>
         /// <param name="newModel"></param>
         /// <returns>AuthModel of new User</returns>
-        bool CreateNewUser(AuthModel authModel, Dictionary<string, string> userDictionary, out AuthModel newModel);
+        bool UpdateUserData(AuthModel authModel, Dictionary<string, string> userDictionary, out AuthModel newModel, bool isNewUser);
     }
 }
 

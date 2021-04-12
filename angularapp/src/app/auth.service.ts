@@ -57,7 +57,7 @@ export class AuthService {
     tap(res => {
       this.loggedIn = res;
       this.notLoading = true;
-      console.log("loggedIn " + this.loggedIn);
+      console.log("loggedIn is authenticated pipe" + this.loggedIn);
       console.log("notLoading " + this.notLoading);
       // this.loading$.next(false);
     })
@@ -115,7 +115,11 @@ export class AuthService {
   getUser$(options?): Observable<any> {
     return this.auth0Client$.pipe(
       concatMap((client: Auth0Client) => from(client.getUser(options))),
-      tap(user => this.userProfileSubject$.next(user))
+      tap(user => {
+
+        this.userProfileSubject$.next(user);
+      })
+
     );
   }
 
@@ -127,7 +131,7 @@ export class AuthService {
     const checkAuth$ = this.isAuthenticated$.pipe(
       concatMap((loggedIn: boolean) => {
         if (loggedIn) {
-          console.log("loggedIn " + this.loggedIn);
+          console.log("loggedIn in checkauth pipe " + this.loggedIn);
           console.log("notLoading " + this.notLoading);
           // If authenticated, get user and set in app
           // NOTE: you could pass options here if needed
@@ -138,9 +142,12 @@ export class AuthService {
         return of(loggedIn);
       })
     );
-    checkAuth$.subscribe((reply) => {
-      console.log("in localAuthSetup()");
+
+    const temp = this.getTokenSilently$();
+    temp.subscribe(reply => {
+      console.log("subscribed to token silent");
       console.log(reply);
+      console.log("subscribed to token silent");
       this.userService.checkIfNewUser().then(reply => {
         this.authModel$.next(reply);
         if (reply.firstName == null && window.location.pathname != "/register") {
@@ -149,8 +156,44 @@ export class AuthService {
           // console.log(window.location.pathname);
           // console.log(window.location.href);
         }
+      }).catch(err => {
+        console.error(err);
+        console.log("error getting user data" + err.message);
       });
-      console.log("in localAuthSetup()");
+    })
+    this.auth0Client$.subscribe(reply => {
+      console.log("auth0Client$ subscription");
+      console.log(reply);
+      console.log("auth0Client$ subscription");
+    })
+    this.userProfile$.subscribe(reply => {
+      console.log("this is user profile");
+      console.log(reply);
+      console.log("this is user profile");
+    });
+    this.userProfileSubject$.subscribe(reply => {
+      console.log("userprofile");
+      console.log(reply);
+
+      console.log("user profile");
+
+    });
+    checkAuth$.subscribe((reply) => {
+      console.log("in checkAuth$ subscription");
+      console.log(reply);
+      console.log("in checkAuth$ subscription");
+      this.userService.checkIfNewUser().then(reply => {
+        this.authModel$.next(reply);
+        if (reply.firstName == null && window.location.pathname != "/register") {
+          console.log("firstname null");
+          this.router.navigate(["register"]);
+          // console.log(window.location.pathname);
+          // console.log(window.location.href);
+        }
+      }).catch(err => {
+        console.error(err);
+        console.log("error getting user data" + err.message);
+      });
       // this.loading = false;
       // this.getAuthModel();
     }, () => { }, () => {
@@ -164,7 +207,7 @@ export class AuthService {
     console.log("in login outside subscribe");
     // Ensure Auth0 client instance exists
     this.auth0Client$.subscribe((client: Auth0Client) => {
-      console.log("in login");
+      console.log("in login - this.auth0Client$.subscribe(");
       console.log(client);
       // this.loading = true;
       // Call method to log in
@@ -203,8 +246,9 @@ export class AuthService {
       // Subscribe to authentication completion observable
       // Response will be an array of user and login status
       authComplete$.subscribe(([user, loggedIn]) => {
-        console.log("loggedIn " + this.loggedIn);
+        console.log("loggedIn in authcomplete " + this.loggedIn);
         console.log("notLoading " + this.notLoading);
+
         // Redirect to target route after callback processing
         this.router.navigate([targetRoute]);
         // this.loading = false;

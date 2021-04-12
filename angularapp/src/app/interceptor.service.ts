@@ -18,7 +18,7 @@ export class InterceptorService implements HttpInterceptor {
   loggedIn: boolean;
 
   constructor(private auth: AuthService) {
-    auth.isAuthenticated$.subscribe((reply) => {
+    auth.userProfile$.subscribe((reply) => {
       console.log("in interceptor: " + reply);
       console.log(reply);
 
@@ -28,6 +28,7 @@ export class InterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.loggedIn) {
+      console.log("yes logged in in interceptor");
       return this.auth.getTokenSilently$().pipe(
         mergeMap(token => {
           const tokenReq = req.clone({
@@ -41,6 +42,8 @@ export class InterceptorService implements HttpInterceptor {
         })
       );
     } else {
+      console.log("not logged in in interceptor");
+
       return next.handle(req);
     }
   }

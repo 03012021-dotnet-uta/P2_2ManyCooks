@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthModel } from '../auth-model';
 import { AuthService } from '../auth.service';
 import { UserService } from '../user-service';
@@ -13,7 +14,7 @@ export class RegistrationComponent implements OnInit {
   // firstname: string;
   // lastname: string;
 
-  constructor(private service: UserService, private auth: AuthService) { }
+  constructor(private service: UserService, private auth: AuthService, private route: Router) { }
 
   ngOnInit(): void {
   }
@@ -28,6 +29,7 @@ export class RegistrationComponent implements OnInit {
       console.log("updating user:");
       console.log(reply);
       this.usermodel = reply;
+      this.route.navigate(["/"]);
     });
   }
 

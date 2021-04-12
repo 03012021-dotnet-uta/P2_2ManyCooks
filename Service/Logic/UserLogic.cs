@@ -48,11 +48,12 @@ namespace Service.Logic
             AuthModel model;
             if (_repo.DoesUserExist(userDictionary["sub"]))
             {
-                model = AuthModel.GetFromUser(_repo.UpdateUserData(user));
+                // AuthModel.GetFromUser(_repo.UpdateUserData(authModel, userDictionary, out model));
+                UpdateUserData(authModel, userDictionary, out model, false);
             }
             else
             {
-                CreateNewUser(authModel, userDictionary, out model);
+                UpdateUserData(authModel, userDictionary, out model);
             }
             return model;
         }
@@ -212,7 +213,7 @@ namespace Service.Logic
             }
         }
 
-        public bool CreateNewUser(AuthModel authModel, Dictionary<string, string> userDictionary, out AuthModel newModel)
+        public bool UpdateUserData(AuthModel authModel, Dictionary<string, string> userDictionary, out AuthModel newModel, bool isNewUser = true)
         {
             System.Console.WriteLine("update logic: dictionary:");
             System.Console.WriteLine(userDictionary);
@@ -223,15 +224,31 @@ namespace Service.Logic
             User authUser = _getUpdatedUserFromDictionary(userDictionary);
             authUser.Firstname = user.Firstname;
             authUser.Lastname = user.Lastname;
-            authUser.DateCreated = DateTime.Now;
             authUser.PasswordHash = "";
             authUser.PasswordSalt = "";
             authUser.Username = authUser.Email;
-            bool success = _repo.SaveNewUser(authUser, out user);
-            if (success)
-                newModel = AuthModel.GetFromUser(user);
+            bool success = false;
+            if (isNewUser)
+            {
+                authUser.DateCreated = DateTime.Now;
+                success = _repo.SaveNewUser(authUser, out user);
+                if (success)
+                    newModel = AuthModel.GetFromUser(user);
+                else
+                    newModel = null;
+            }
             else
-                newModel = null;
+            {
+                if (_repo.UpdateUserPrimaryData(authUser, out user))
+                {
+                    newModel = AuthModel.GetFromUser(user);
+                    success = true;
+                }
+                else
+                {
+                    newModel = null;
+                }
+            }
             return success;
         }
 
