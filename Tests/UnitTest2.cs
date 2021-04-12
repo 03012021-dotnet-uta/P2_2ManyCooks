@@ -100,6 +100,7 @@ namespace Tests
             }
             Assert.Equal(result1,result2);
         }
+        [Fact]
         public async Task Test4Async()
         {
             var recipe = new Recipe()
