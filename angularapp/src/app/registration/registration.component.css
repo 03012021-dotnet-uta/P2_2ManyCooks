@@ -28,3 +28,13 @@ input[type="username"]:placeholder,
 input[type="password"]:placeholder {
   color: #cccccc;
 }
+
+.logout {
+  color: white;
+  border-radius: 5pt;
+  background-color: red;
+  display: inline-block;
+  padding: 5px;
+  margin-bottom: 10pt;
+  cursor: pointer;
+}

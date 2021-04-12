@@ -18,6 +18,7 @@ namespace Models.LogicModels
         public virtual ICollection<Ingredient> ingredients { get; set; }
         public virtual ICollection<Tag> tags { get; set; }
         public virtual ICollection<Step> Steps { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
 
         public static SentRecipe GetFromRecipe(Recipe recipe)
         {
@@ -44,7 +45,15 @@ namespace Models.LogicModels
                 Steps = recipe.Steps,
                 tags = tagList,
                 ingredients = ingList,
+                Reviews = recipe.Reviews
             };
+        }
+
+        public Recipe GetRecipe()
+        {
+            Recipe recipe = new Recipe();
+            throw new NotImplementedException();
+            return recipe;
         }
 
         public static ICollection<SentRecipe> MapMany(ICollection<Recipe> recipes)

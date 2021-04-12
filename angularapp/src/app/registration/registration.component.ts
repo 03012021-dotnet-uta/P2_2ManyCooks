@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AuthModel } from '../auth-model';
+import { AuthService } from '../auth.service';
 import { UserService } from '../user-service';
 
 @Component({
@@ -12,7 +13,7 @@ export class RegistrationComponent implements OnInit {
   // firstname: string;
   // lastname: string;
 
-  constructor(private service: UserService) { }
+  constructor(private service: UserService, private auth: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -27,7 +28,6 @@ export class RegistrationComponent implements OnInit {
       console.log("updating user:");
       console.log(reply);
       this.usermodel = reply;
-      this.redirectToHome();
     });
   }
 
@@ -35,4 +35,7 @@ export class RegistrationComponent implements OnInit {
     window.location.href = window.location.origin;
   }
 
+  logout() {
+    this.auth.logout();
+  }
 }
