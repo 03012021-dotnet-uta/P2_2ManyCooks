@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
+using Service.Helpers;
 using Service.Logic;
 using Models.LogicModels;
 
@@ -61,6 +62,12 @@ namespace KitchenWeb.Controllers
         public async Task<List<Recipe>> getThemByTag(string tag)
         {
             return await iLogicKitchen.getAllRecipeByTags(tag);
+        }
+
+        [HttpGet("/api/{search}")]
+        public async Task<RecipeModel> getInfo(string search)
+        {
+            return await RecipeProcessor.LoadRecipe(search);
         }
     }
 }

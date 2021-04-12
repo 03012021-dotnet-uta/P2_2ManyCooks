@@ -66,7 +66,7 @@ namespace Service.Logic
             }
 
             // NOT SURE IF IT WORKS 
-            return await _context.Recipes.FromSqlRaw("$SELECT * FROM Recipes WHERE RecipeId IN (SELECT RecipeId FROM RecipeTags WHERE TagId = {tagId})").ToListAsync();
+            return await _context.Recipes.FromSqlRaw($"SELECT * FROM Recipes WHERE RecipeId IN (SELECT RecipeId FROM RecipeTags WHERE TagId = {tagId})").ToListAsync();
         }
 
         public async Task<bool> existTag(string name)
