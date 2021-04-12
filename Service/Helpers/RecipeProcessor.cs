@@ -19,7 +19,9 @@ namespace Service.Helpers
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://nutritionix-api.p.rapidapi.com/v1_1/search/ {search}?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat"),
+
+                RequestUri = new Uri($"https://nutritionix-api.p.rapidapi.com/v1_1/search/ {search} ?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat"),
+
                 Headers =
                 {
                     { "x-rapidapi-key", "e157b8d687msh431e30623e70dd3p174a1cjsn7ea0d090c0f9" },

@@ -61,12 +61,7 @@ namespace KitchenWeb.Controllers
             return iUserLogic.UpdateUser(model, dic);
         }
 
-
-
-            // return true;
-
-
-            [HttpGet("myinfo")]
+        [HttpGet("myinfo")]
         [Authorize]
         public ActionResult<AuthModel> GetCurrentUser()
         {
