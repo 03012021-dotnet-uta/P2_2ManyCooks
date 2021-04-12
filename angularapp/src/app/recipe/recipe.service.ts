@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Recipe } from './recipe';
 
 @Injectable({
@@ -17,7 +18,21 @@ export class RecipeService {
   constructor(private http: HttpClient) { }
 
   getAllRecipes(): Observable<Recipe[]> {
-    return this.http.get<Recipe[]>(`${this.baseUrl}/good`, this.httpOptions);
+    console.log("in service");
+    return this.http.get<Recipe[]>(`${this.baseUrl}/good`, this.httpOptions).pipe(
+      tap((x) => {
+        console.log("alo?");
+      }), catchError(this.handleError<Recipe[]>("error in all recipes", [])
+      ));
+
+  }
+
+  handleError<T>(text, result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      console.log(text + " " + error.message);
+      return of(result);
+    };
   }
 
   getRecipeId(id: number): Observable<Recipe> {

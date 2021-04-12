@@ -22,8 +22,8 @@ export class UserService {
     return this.http.put<AuthModel>(`${this.baseUrl}User`, authModel, this.httpOptions);
   }
 
-  checkIfNewUser(): Observable<AuthModel> {
-    return this.http.get<AuthModel>(`${this.baseUrl}User/myinfo`, this.httpOptions);
+  checkIfNewUser(): Promise<AuthModel> {
+    return this.http.get<AuthModel>(`${this.baseUrl}User/myinfo`, this.httpOptions).toPromise();
   }
 
   saveFirstTimeUser(authModel: AuthModel): Observable<AuthModel> {

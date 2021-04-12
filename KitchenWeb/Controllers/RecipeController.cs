@@ -41,6 +41,7 @@ namespace KitchenWeb.Controllers
         [HttpGet("good")]
         public async Task<ICollection<SentRecipe>> getThemAllGood()
         {
+            System.Console.WriteLine("getting all recipes");
             return await iLogicKitchen.getAllSentRecipe();
         }
 

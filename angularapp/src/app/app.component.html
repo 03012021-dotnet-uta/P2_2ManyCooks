@@ -10,11 +10,11 @@
       <a class="website-name" routerLink="/">{{ title }}</a>
     </li>
     <li class="nav-right" routerLink="/register" *ngIf="auth.loggedIn">
-      <span>{{ auth.authModel.lastName }}, {{ auth.authModel.firstName }}</span>
+      <span>{{ authModel.lastName }}, {{ authModel.firstName }}</span>
       <div
         class="nav-right profile-img"
         [ngStyle]="{
-          'background-image': 'url(' + auth.authModel.profileImage + ')'
+          'background-image': 'url(' + authModel.profileImage + ')'
         }"
       ></div>
     </li>

@@ -24,11 +24,12 @@ export class HomeComponent implements OnInit {
   }
 
   getAllRecipes() {
+    console.log("in get all recipes");
     this.service.getAllRecipes().subscribe((reply) => {
       console.log(reply);
       this.recipeList = reply;
       this.fillTest();
-    })
+    });
   }
 
   getRecipeImageStyle(recipe: Recipe): Object {

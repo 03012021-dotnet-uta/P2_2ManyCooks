@@ -19,12 +19,18 @@ export class AppComponent implements OnInit {
   constructor(public auth: AuthService, private http: HttpClient, private userService: UserService) { }
 
   ngOnInit(): void {
+    this.auth.authModel$.subscribe(reply => {
+      console.log("app component reply");
+      console.log(reply);
+      console.log("app component reply");
+      this.authModel = reply;
+    });
     //* on page start: check the user status
     // this.checkUser();
     // this.loading$.next(false);
-    this.loading$ = this.auth.getLoading$();
+    // this.loading$ = this.auth.getLoading$();
     // this.loading$.next(true);
-    this.auth.initialize();
+    // this.auth.initialize();
   }
 
   // getUsers() {
@@ -34,17 +40,17 @@ export class AppComponent implements OnInit {
   //   });
   // }
 
-  checkUser() {
-    // * check if user is logged in
-    if (this.auth.loggedIn) {
-      this.userService.checkIfNewUser().subscribe((reply) => {
-        // * if logged in, check if new user
-        console.log(reply);
-        if (reply == null) {
-          // * if new user, redirect to reg form
-          window.location.href = "register"
-        }
-      });
-    }
-  }
+  // checkUser() {
+  //   // * check if user is logged in
+  //   if (this.auth.loggedIn) {
+  //     this.userService.checkIfNewUser().subscribe((reply) => {
+  //       // * if logged in, check if new user
+  //       console.log(reply);
+  //       if (reply == null) {
+  //         // * if new user, redirect to reg form
+  //         window.location.href = "register"
+  //       }
+  //     });
+  //   }
+  // }
 }
