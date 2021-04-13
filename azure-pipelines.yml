@@ -94,21 +94,11 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
-
 - task: DotNetCoreCLI@2
   displayName: 'Publishing'
   inputs:
     command: 'publish'
-    publishWebProjects: true
-    modifyOutputPath: false
-    workingDirectory: 'WebApi'
+    publishWebProjects: false
     projects: '$(solution)'
     zipAfterPublish: true
 
