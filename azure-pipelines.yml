@@ -38,7 +38,7 @@ steps:
     versionSpec: '11'
     jdkArchitectureOption: 'x64'
     jdkSourceOption: 'LocalDirectory'
-    jdkFile: 'D:/jdk-11.0.10_windows-x64_bin.zip'
+    jdkFile: 'C:/Users/Home/Downloads/jdk-11.0.10_windows-x64_bin.zip'
     jdkDestinationDirectory: '/builds/binaries/externals'
     cleanDestinationDirectory: true
 
@@ -52,18 +52,25 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-
-# sonar.exclusions=**/AngularTest/*
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud'
-    organization: '2manycooksinthekitchen'
+    organization: 'eventfunctionsangular'
     scannerMode: 'MSBuild'
-    projectKey: '2ManyCooksInTheKitchen_InTheKitchenApp'
-    projectName: 'InTheKitchenApp'
-    extraProperties: |
-      sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
-#this will restore and build the directory.
+    projectKey: 'EventFunctions_Some'
+    projectName: 'Some'
+
+# sonar.exclusions=**/AngularTest/*
+# - task: SonarCloudPrepare@1
+#   inputs:
+#     SonarCloud: 'SonarCloud'
+#     organization: '2manycooksinthekitchen'
+#     scannerMode: 'MSBuild'
+#     projectKey: '2ManyCooksInTheKitchen_InTheKitchenApp'
+#     projectName: 'InTheKitchenApp'
+#     extraProperties: |
+#       sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
+# #this will restore and build the directory.
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
@@ -104,11 +111,11 @@ steps:
     projects: '$(solution)'
     zipAfterPublish: true
 
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1(9397ed34-7cce-4ecb-964e-961c2674cac7)'
-    appType: 'webApp'
-    WebAppName: 'inthekitchen'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+# - task: AzureRmWebAppDeployment@4
+#   inputs:
+#     ConnectionType: 'AzureRM'
+#     azureSubscription: 'Azure subscription 1(9397ed34-7cce-4ecb-964e-961c2674cac7)'
+#     appType: 'webApp'
+#     WebAppName: 'inthekitchen'
+#     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 
