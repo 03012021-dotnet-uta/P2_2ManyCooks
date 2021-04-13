@@ -28,3 +28,7 @@ img:hover {
   border-radius: 7pt;
   overflow: hidden;
 }
+
+input[type="button"]:disabled {
+  background-color: grey;
+}

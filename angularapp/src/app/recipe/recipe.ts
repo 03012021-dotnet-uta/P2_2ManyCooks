@@ -2,7 +2,7 @@ import { NumberInput } from "@angular/cdk/coercion";
 import { Moment } from "moment";
 
 export class Recipe {
-    recipeId: string;
+    recipeId: number;
     recipeName: string;
     recipeDescription: string;
     recipeImage: string;

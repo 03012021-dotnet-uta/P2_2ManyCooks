@@ -14,5 +14,7 @@ namespace Service.Interfaces
         Dictionary<string, string> GetUserAuth0Dictionary(string sub);
 
         // AuthModel GetCurrentUserData(string sub);
+
+        // string GetTokenFromRequest(dynamic requet);
     }
 }

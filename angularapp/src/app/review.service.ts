@@ -2,14 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Recipe } from './recipe';
+import { Review } from './review';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RecipeService {
+export class ReviewService {
 
-  baseUrl: string = "https://localhost:5001/recipe";
+  baseUrl: string = "https://localhost:5001/Review";
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -17,15 +17,17 @@ export class RecipeService {
   };
   constructor(private http: HttpClient) { }
 
-  getAllRecipes(): Observable<Recipe[]> {
+  getReviewsForRecipe(id: number): Promise<Review[]> {
     console.log("in service");
-    return this.http.get<Recipe[]>(`${this.baseUrl}/good`, this.httpOptions).pipe(
-      tap((x) => {
-        console.log("alo?");
-      }), catchError(this.handleError<Recipe[]>("error in all recipes", [])
-      ));
-
+    return this.http.get<Review[]>(`${this.baseUrl}/recipe/${id}`, this.httpOptions).toPromise();
   }
+
+
+  sendReviewGetNewReviews(review: Review): Promise<Review[]> {
+    console.log("in service posting");
+    return this.http.post<Review[]>(`${this.baseUrl}`, review, this.httpOptions).toPromise();
+  }
+
 
   handleError<T>(text, result?: T) {
     return (error: any): Observable<T> => {
@@ -33,9 +35,5 @@ export class RecipeService {
       console.log(text + " " + error.message);
       return of(result);
     };
-  }
-
-  getRecipeId(id: number): Promise<Recipe> {
-    return this.http.get<Recipe>(`${this.baseUrl}/good/${id}`, this.httpOptions).toPromise();
   }
 }

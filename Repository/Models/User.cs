@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 #nullable disable
@@ -31,6 +32,7 @@ namespace Repository.Models
 
         public virtual UserPermission Permission { get; set; }
         public virtual ICollection<RecipeAuthor> RecipeAuthors { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<UserSearchHistory> UserSearchHistories { get; set; }
         public virtual ICollection<UserViewHistory> UserViewHistories { get; set; }

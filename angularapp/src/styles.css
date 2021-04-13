@@ -152,22 +152,28 @@ body {
   /* border-radius: 5pt; */
 }
 
-.nav-list *:hover {
-  background-color: var(--white);
+.nav-list li:hover * {
   color: var(--text-dark);
 }
 
+li:hover {
+  background-color: var(--white);
+}
+
 .nav-title {
+  color: inherit;
   cursor: pointer;
   float: left;
 }
 
 .nav-left {
+  color: inherit;
   cursor: pointer;
   float: left;
 }
 
 .nav-right {
+  color: inherit;
   cursor: pointer;
   float: right;
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Repository.Helpers;
 using Repository.Models;
@@ -76,6 +77,28 @@ namespace Repository.Repositories
             return _context.SaveChanges() > 0;
         }
 
+        public Task<List<Review>> AddNewReview(string sub, Review review)
+        {
+            var dbUser = _context.Users.Where(u => u.Auth0 == sub).FirstOrDefault();
+            if (_context.Reviews.Any(r => r.UserId == dbUser.UserId && r.RecipeId == review.RecipeId))
+            {
+                return null;
+            }
+            review.ReviewDate = DateTime.Now;
+            review.User = dbUser;
+            review.UserId = dbUser.UserId;
+            _context.Reviews.Add(review);
+            _context.SaveChanges();
+            return _context.Reviews.Where(r => r.RecipeId == review.RecipeId).Include(r => r.User).ToListAsync();
+        }
+
+        public Task<List<Review>> GetReviewsByRecipeId(int recipeId)
+        {
+            return _context.Reviews.Where(r => r.RecipeId == recipeId)
+            .Include(r => r.User)
+            .ToListAsync();
+        }
+
         public User GetUserDataById(int id)
         {
             return _context.Users.Where(u => u.UserId == id).FirstOrDefault();
@@ -120,6 +143,7 @@ namespace Repository.Repositories
             .Include(r => r.RecipeTags)
             .ThenInclude(rt => rt.Tag)
             .Include(r => r.Steps)
+            .Include(r => r.Reviews)
             .FirstOrDefault();
         }
     }

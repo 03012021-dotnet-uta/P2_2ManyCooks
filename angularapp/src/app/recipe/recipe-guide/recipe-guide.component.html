@@ -1,0 +1,33 @@
+<div id="top" class="recipe-holder">
+  <div class="recipe-name">
+    {{ recipe.recipeName }}
+  </div>
+  <div
+    class="recipe-img"
+    [ngStyle]="{
+      'background-image': 'url(' + recipe.recipeImage + ')'
+    }"
+  ></div>
+  <div
+    class="step-card"
+    [attr.id]="'step' + step.stepId"
+    [class.selected]="isAtCurrentStep(step)"
+    *ngFor="let step of recipe.steps"
+  >
+    <div class="r-step">
+      {{ step | json }}
+    </div>
+    <input
+      type="button"
+      value="Next"
+      *ngIf="hasNext(step)"
+      (click)="scrollToElement(step.nextStep)"
+    />
+    <input
+      *ngIf="hasPrevious(step)"
+      type="button"
+      value="Previous"
+      (click)="scrollToPrevious(step)"
+    />
+  </div>
+</div>
