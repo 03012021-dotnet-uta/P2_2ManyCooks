@@ -87,7 +87,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-    projects: 'Testing/*.csproj'
+    projects: 'Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "xplat code coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
     testRunTitle: 'Dotnet tests running'
 
