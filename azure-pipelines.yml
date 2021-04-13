@@ -9,8 +9,8 @@ trigger:
 
 pool:
   #name: 'azure pipelines'
-  #vmImage: 'windows-latest'
-  name: 'default'
+  vmImage: 'windows-latest'
+  #name: 'default'
 
 variables:
   solution: 'P2_2ManyCooks.sln'
@@ -18,33 +18,37 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+# - task: NodeTool@0
+#   inputs:
+#     versionSpec: '10.x'
+#   displayName: 'Install Node.js'
+
+# - script: |
+#     cd angularapp
+#     npm install -g @angular/cli
+#     npm install
+#     ng build --prod
+#   displayName: 'npm install and build'
+
+# - task: AzureRmWebAppDeployment@4
+#   inputs:
+#     ConnectionType: 'AzureRM'
+#     azureSubscription: 'Azure subscription 1(9397ed34-7cce-4ecb-964e-961c2674cac7)'
+#     appType: 'webApp'
+#     WebAppName: 'inthekitchenapp'
+#     packageForLinux: '$(System.DefaultWorkingDirectory)/angularapp/**/*.zip'
+
 - task: UseDotNet@2
   displayName: 'Install .NET Core SDK'
   inputs:
     packageType: 'sdk'
     version: '5.0.x'
-    # performMultiLevelLookup: true
-    # includePreviewVersions: false # Required 'true' to use preview versions
 
 - task: UseDotNet@2
   displayName: 'Install .NET Core Runtime'
   inputs:
     packageType: 'runtime'
     version: '2.x'
-    # performMultiLevelLookup: true
-
-- task: JavaToolInstaller@0
-  inputs:
-    versionSpec: '11'
-    jdkArchitectureOption: 'x64'
-    jdkSourceOption: 'LocalDirectory'
-    jdkFile: 'D:/jdk-11.0.10_windows-x64_bin.zip'
-    jdkDestinationDirectory: '/builds/binaries/externals'
-    cleanDestinationDirectory: true
-
-- task: NodeTool@0
-  inputs:
-    versionSpec: '11.x'
 
 - task: NuGetToolInstaller@1
 
@@ -52,43 +56,32 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-
-# sonar.exclusions=**/AngularTest/*
 - task: SonarCloudPrepare@1
   inputs:
-    SonarCloud: 'SonarCloud'
-    organization: '2manycooksinthekitchen'
+    SonarCloud: 'SonarCloudService'
+    organization: '03012021batch'
     scannerMode: 'MSBuild'
-    projectKey: '2ManyCooksInTheKitchen_InTheKitchenApp'
-    projectName: 'InTheKitchenApp'
-    extraProperties: |
-      sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
-#this will restore and build the directory.
-- task: DotNetCoreCLI@2
-  inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
+    projectKey: '03012021Batch_P2_2ManyCooks'
+    projectName: 'P2_2ManyCooks'
 
-# this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
-- task: PublishBuildArtifacts@1
+- task: DotNetCoreCLI@2
+  displayName: 'building'
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'EventFunctionsP2'
+    command: 'build'
+    projects: '*.sln'
+    arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-    projects: 'Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "xplat code coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
+    projects: '*.sln'
+    arguments: '--configuration $(buildConfiguration) --collect "Code Coverage"'
     testRunTitle: 'Dotnet tests running'
 
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(Agent.TempDirectory)/*/coverage.cobertura.xml'
-    # summaryFileLocation: '**/coburtura/coverage.xml'
+    summaryFileLocation: '**/coburtura/coverage.xml'
 
 - task: SonarCloudAnalyze@1
 
