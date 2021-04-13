@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecipeComponent } from './recipe/recipe.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { RecipeSaver } from './recipe/recipe-saver';
@@ -26,6 +26,7 @@ import { RecipeSaver } from './recipe/recipe-saver';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   providers: [RecipeSaver],
   bootstrap: [AppComponent]

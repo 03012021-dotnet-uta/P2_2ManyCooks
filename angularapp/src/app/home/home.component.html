@@ -1,7 +1,22 @@
 <!-- <app-persondetails [person2]='stringPerson' (person3)=ChangedPerson($event)></app-persondetails> -->
 <section class="section">
   <h1>Check out Our Recipe Collection</h1>
-  <div [class]="girdStyle">
+  <div>
+    <form #searchForm="ngForm" action="">
+      <input
+        name="search"
+        [(ngModel)]="searchString"
+        #searchValue="ngModel"
+        type="text"
+        placeholder="Search Recipe Names, Ingredients or Tags"
+        required
+      />
+    </form>
+
+    {{ searchString }}
+  </div>
+  <!-- <div [ngClass]="{ search: searchValue.pristine, normal: searchValue.dirty }"> -->
+  <div [class.search]="searchValue.value" [class.normal]="!searchValue.value">
     <!-- <div></div> -->
     <div *ngIf="!recipeList" class="page-loading">
       <div></div>
@@ -27,6 +42,7 @@
 
     <div
       *ngFor="let recipe of testOnly"
+      [hidden]="!withinSearch(recipe)"
       class="recipe-card"
       (click)="goToDetail(recipe)"
     >
