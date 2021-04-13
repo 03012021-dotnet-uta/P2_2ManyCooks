@@ -8,9 +8,8 @@ namespace Service.Helpers
 {
     public class RecipeModel
     {
-        public int total_hits { get; set; }
-        public double max_score { get; set; }
-        public List<dynamic> hits { get; set; }
+       
+        public List<dynamic> items { get; set; }
 
     }
 }
