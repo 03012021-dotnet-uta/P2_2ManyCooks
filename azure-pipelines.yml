@@ -18,18 +18,33 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-
 - task: UseDotNet@2
   displayName: 'Install .NET Core SDK'
   inputs:
     packageType: 'sdk'
     version: '5.0.x'
+    # performMultiLevelLookup: true
+    # includePreviewVersions: false # Required 'true' to use preview versions
 
 - task: UseDotNet@2
   displayName: 'Install .NET Core Runtime'
   inputs:
     packageType: 'runtime'
     version: '2.x'
+    # performMultiLevelLookup: true
+
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '11'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'LocalDirectory'
+    jdkFile: 'C://Users/Home/Downloads/jdk-11.0.10_windows-x64_bin.zip'
+    jdkDestinationDirectory: '/builds/binaries/externals'
+    cleanDestinationDirectory: true
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '11.x'
 
 - task: NuGetToolInstaller@1
 
@@ -44,19 +59,28 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: '2ManyCooksInTheKitchen_InTheKitchenApp'
     projectName: 'InTheKitchenApp'
-
+    # extraProperties: |
+    #   sonar.exclusions=**/AngularTest/*
+    #   sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
+#this will restore and build the directory.
 - task: DotNetCoreCLI@2
-  displayName: 'building'
   inputs:
-    command: 'build'
-    projects: '*.sln'
-    arguments: '--configuration $(buildConfiguration)'
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+
+# this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'EventFunctionsP2'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-    projects: '*.sln'
-    arguments: '--configuration $(buildConfiguration) --collect "Code Coverage"'
+    projects: 'Testing/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "xplat code coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
     testRunTitle: 'Dotnet tests running'
 
 - task: PublishCodeCoverageResults@1
@@ -70,11 +94,21 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+
 - task: DotNetCoreCLI@2
   displayName: 'Publishing'
   inputs:
     command: 'publish'
-    publishWebProjects: false
+    publishWebProjects: true
+    modifyOutputPath: false
+    workingDirectory: 'WebApi'
     projects: '$(solution)'
     zipAfterPublish: true
 
