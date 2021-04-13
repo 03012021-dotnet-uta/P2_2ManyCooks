@@ -51,7 +51,7 @@ namespace Repository.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.IngredientImage)
-                    .HasMaxLength(100)
+                    .HasMaxLength(350)
                     .IsUnicode(false);
 
                 entity.Property(e => e.IngredientName)
@@ -60,7 +60,6 @@ namespace Repository.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.ThirdPartyApiId)
-                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
@@ -80,7 +79,7 @@ namespace Repository.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.RecipeImage)
-                    .HasMaxLength(100)
+                    .HasMaxLength(350)
                     .IsUnicode(false);
 
                 entity.Property(e => e.RecipeName)
