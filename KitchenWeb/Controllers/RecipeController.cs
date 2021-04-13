@@ -58,7 +58,6 @@ namespace KitchenWeb.Controllers
             return iLogicKitchen.getAllRecipeByRecipeName(recipeName);
         }
 
-        // not working properly 
         [HttpGet("/tag/{tag}")]
         public async Task<List<Recipe>> getThemByTag(string tag)
         {
