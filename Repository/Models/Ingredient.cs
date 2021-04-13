@@ -17,7 +17,7 @@ namespace Repository.Models
         public string IngredientName { get; set; }
         public string IngredientDescription { get; set; }
         public string IngredientImage { get; set; }
-        public string ThirdPartyApiId { get; set; }
+        public string? ThirdPartyApiId { get; set; }
 
         public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
 

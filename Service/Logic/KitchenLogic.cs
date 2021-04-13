@@ -49,6 +49,8 @@ namespace Service.Logic
                 }
             }
             recipe.RecipeId = getAllRecipe().Result.Count() + 1;
+            recipe.DateCreated = DateTime.Now;
+            recipe.DateLastPrepared = DateTime.Now;
             await _context.Recipes.AddAsync(recipe);
             await _context.SaveChangesAsync();
             return recipe;
@@ -65,7 +67,6 @@ namespace Service.Logic
                 return await _context.Recipes.ToListAsync();
             }
 
-            // NOT SURE IF IT WORKS 
             return await _context.Recipes.FromSqlRaw($"SELECT * FROM Recipes WHERE RecipeId IN (SELECT RecipeId FROM RecipeTags WHERE TagId = {tagId})").ToListAsync();
         }
 
