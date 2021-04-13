@@ -4,33 +4,65 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- main
+#- main
 - master
 
 pool:
   #name: 'azure pipelines'
-  #vmImage: 'windows-latest'
-  name: 'default'
+  vmImage: 'windows-latest'
+  #name: 'default'
 
 variables:
   solution: 'P2_2ManyCooks.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-
-
 steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
 
+- script: |
+    cd angularapp
+    npm install -g @angular/cli
+    npm install
+    ng build --prod
+  displayName: 'npm install and build'
 
-# SonarCloud Prepare Analysis Configuration - Must be before build step
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(9397ed34-7cce-4ecb-964e-961c2674cac7)'
+    appType: 'webApp'
+    WebAppName: 'inthekitchenapp'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/angularapp/**/*.zip'
+
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '5.0.x'
+
+- task: UseDotNet@2
+  displayName: 'Install .NET Core Runtime'
+  inputs:
+    packageType: 'runtime'
+    version: '2.x'
+
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
 - task: SonarCloudPrepare@1
   inputs:
-    SonarCloud: 'SonarCloudServiceConnection'
-    organization: '2manycooks'
+    SonarCloud: 'SonarCloudService'
+    organization: '03012021batch'
     scannerMode: 'MSBuild'
-    projectKey: '2ManyCooks_P2_2ManyCooks.git'
-    projectName: 'P2_2ManyCooks.git'
-
+    projectKey: '03012021Batch_P2_2ManyCooks'
+    projectName: 'P2_2ManyCooks'
 
 - task: DotNetCoreCLI@2
   displayName: 'building'
@@ -38,8 +70,6 @@ steps:
     command: 'build'
     projects: '*.sln'
     arguments: '--configuration $(buildConfiguration)'
-
-
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -53,16 +83,25 @@ steps:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '**/coburtura/coverage.xml'
 
+- task: SonarCloudAnalyze@1
 
-#- script: dotnet --info #dotnet build --configuration $(buildConfiguration)
-#  displayName: 'dotnet build $(buildConfiguration)'
-
-## Uncomment -Run Code Analysis and -Publish Quality Gate Result once there is code to be analyzed
-# SonarCloud Run Code Analysis
-#- task: SonarCloudAnalyze@1
-  
-# SonarCloud Publish Quality Gate Result
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publishing'
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '$(solution)'
+    zipAfterPublish: true
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(9397ed34-7cce-4ecb-964e-961c2674cac7)'
+    appType: 'webApp'
+    WebAppName: 'inthekitchen'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 
