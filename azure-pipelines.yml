@@ -52,6 +52,8 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+
+# sonar.exclusions=**/AngularTest/*
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud'
@@ -59,9 +61,8 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: '2ManyCooksInTheKitchen_InTheKitchenApp'
     projectName: 'InTheKitchenApp'
-    # extraProperties: |
-    #   sonar.exclusions=**/AngularTest/*
-    #   sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
+    extraProperties: |
+      sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
 #this will restore and build the directory.
 - task: DotNetCoreCLI@2
   inputs:
@@ -86,7 +87,8 @@ steps:
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '**/coburtura/coverage.xml'
+    summaryFileLocation: '$(Agent.TempDirectory)/*/coverage.cobertura.xml'
+    # summaryFileLocation: '**/coburtura/coverage.xml'
 
 - task: SonarCloudAnalyze@1
 
