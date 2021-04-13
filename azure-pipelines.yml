@@ -39,11 +39,11 @@ steps:
 
 - task: SonarCloudPrepare@1
   inputs:
-    SonarCloud: 'SonarCloudService'
-    organization: '03012021batch'
+    SonarCloud: 'SonarCloud'
+    organization: '2manycooksinthekitchen'
     scannerMode: 'MSBuild'
-    projectKey: '03012021Batch_P2_2ManyCooks'
-    projectName: 'P2_2ManyCooks'
+    projectKey: '2ManyCooksInTheKitchen_InTheKitchenApp'
+    projectName: 'InTheKitchenApp'
 
 - task: DotNetCoreCLI@2
   displayName: 'building'
