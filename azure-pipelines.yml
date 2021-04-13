@@ -36,7 +36,7 @@ steps:
     azureSubscription: 'Azure subscription 1(9397ed34-7cce-4ecb-964e-961c2674cac7)'
     appType: 'webApp'
     WebAppName: 'inthekitchenapp'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/angularapp/**/*.zip'
 
 - task: UseDotNet@2
   displayName: 'Install .NET Core SDK'
