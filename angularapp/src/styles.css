@@ -1,1 +1,390 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --bgColor: #f6f6f6;
+  --white: white;
+  --blue: #56baec;
+  --blue-hover: #39ace7;
+  --text-light: #b6a8a7;
+  --text-dark: #0d0d0d;
+  --link-color: #92badd;
+  --inactive-color: #cccccc;
+  --cart-yellow: rgb(243, 199, 2);
+}
+
+a {
+  text-decoration: none;
+}
+
+.error-popup {
+  border: 3px solid red;
+  background-color: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  padding: 20pt;
+  color: red;
+  display: inline-block;
+  width: fit-content;
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  text-align: center;
+  /* margin-left: -50%; */
+  transform: translateX(-50%);
+  /* margin-right: auto; */
+  z-index: 9999;
+}
+
+/* FORM TYPOGRAPHY*/
+
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  background-color: #56baed;
+  border: none;
+  color: white;
+  padding: 15px 80px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 13px;
+  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  border-radius: 5px 5px 5px 5px;
+  margin: 5px 20px 40px 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+  background-color: #39ace7;
+  cursor: pointer;
+}
+
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="reset"]:active {
+  transform: scale(0.95);
+}
+
+input[type="text"],
+input[type="username"],
+input[type="password"] {
+  background-color: #f6f6f6;
+  border: none;
+  color: #0d0d0d;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  width: 85%;
+  border: 2px solid #f6f6f6;
+  transition: all 0.5s ease-in-out;
+  border-radius: 5px 5px 5px 5px;
+}
+
+input[type="text"]:focus,
+input[type="username"]:focus,
+input[type="password"]:focus {
+  background-color: #fff;
+  border-bottom: 2px solid #5fbae9;
+}
+
+input[type="text"]:placeholder,
+input[type="username"]:placeholder,
+input[type="password"]:placeholder {
+  color: #cccccc;
+}
+
+input[type="submit"] {
+  cursor: pointer;
+}
+
+.fancy-container-shadow-border {
+  /* background-color: var(--blue); */
+  border: 3px solid var(--blue);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  padding: 20pt;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;
+  font-size: 15pt;
+  color: var(--text-light);
+}
+
+body {
+  background-color: var(--bgColor);
+}
+
+.nav-bar {
+  background-color: var(--blue);
+  /* padding: 10pt; */
+  /* height: 50pt; */
+  -webkit-box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 0 0 5px 5px;
+}
+
+.nav-list {
+  list-style-type: none;
+  background-color: var(--blue);
+  overflow: hidden;
+  /* padding: 10pt; */
+  /* height: 50pt; */
+  -webkit-box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 0 0 5px 5px;
+}
+
+.nav-list * {
+  color: var(--white);
+  font-size: 18pt;
+  padding: 8pt 5pt;
+  transition: 0.2s;
+  /* border-radius: 5pt; */
+}
+
+.nav-list *:hover {
+  background-color: var(--white);
+  color: var(--text-dark);
+}
+
+.nav-title {
+  cursor: pointer;
+  float: left;
+}
+
+.nav-left {
+  cursor: pointer;
+  float: left;
+}
+
+.nav-right {
+  cursor: pointer;
+  float: right;
+}
+
+h1 {
+  font-size: 30pt;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 23pt;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.white-text {
+  color: var(--white);
+}
+
+.section {
+  padding: 2vh 5vw;
+}
+
+.round-border {
+  border-radius: 5pt;
+}
+
+.blue-shadow {
+  -webkit-box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+}
+
+.black-shadow {
+  -webkit-box-shadow: 0 20px 30px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 30px 0 rgba(0, 0, 0, 0.1);
+}
+
+.wide-black-shadow {
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+}
+
+.tag {
+  display: inline-block;
+  background-color: var(--blue);
+  color: var(--white);
+  border-radius: 5pt;
+  line-height: 1.1;
+  margin-left: 5pt;
+  padding: 3pt 2pt;
+}
+
+.underlineHover:after {
+  display: block;
+  left: 0;
+  bottom: -10px;
+  width: 0;
+  height: 2px;
+  background-color: var(--blue);
+  content: "";
+  transition: width 0.2s;
+}
+
+.underlineHover:hover {
+  color: var(--text-dark);
+}
+
+.underlineHover:hover:after {
+  width: 100%;
+}
+
+/* cart section */
+/* .cart-container {
+  background-color: var(--cart-yellow);
+  display: inline-block;
+  position: fixed;
+  padding: 5pt;
+  right: 8pt;
+  top: 60pt;
+  border-radius: 5pt;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+}
+
+.cart-container * {
+  color: white;
+  padding: 5pt;
+}
+
+.cart-text {
+  color: white;
+}
+
+.grid-cart {
+  display: grid;
+  grid: auto auto / auto auto auto;
+}
+
+.cart-total {
+  grid-column: 2 / span 1;
+}
+
+.total-price {
+  grid-column: 3 / span 1;
+}
+
+@media screen and (max-width: 600px) {
+  .cart-container {
+    bottom: 5pt;
+    top: auto;
+    left: 3pt;
+    right: 3pt;
+  }
+
+  .grid-cart {
+    grid: 30px / auto auto auto auto auto;
+  }
+
+  .cart-total {
+    grid-column: 4 / span 1;
+    grid-row: 1 / span 1;
+  }
+
+  .total-price {
+    grid-column: 5 / span 1;
+    grid-row: 1 / span 1;
+  }
+} */
+
+*::-webkit-scrollbar {
+  height: 10px;
+  /* background-color: white; */
+}
+*::-webkit-scrollbar-thumb {
+  height: 10px;
+  background-color: var(--blue);
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  /* font-family: Roboto, "Helvetica Neue", sans-serif; */
+}
+
+.page-loading {
+  /* float: right; */
+  position: relative;
+  width: 40pt;
+  height: 22pt;
+}
+
+.page-loading div {
+  display: inline-block;
+  position: absolute;
+  top: 8pt;
+  width: 6pt;
+  height: 6pt;
+  border-radius: 50%;
+  background-color: var(--blue);
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  /* transition: 0.5s ease-out; */
+}
+
+.page-loading,
+.page-loading * {
+  padding: 0;
+}
+
+.page-loading div:nth-child(1) {
+  left: 2pt;
+  animation: loading-animation1 0.6s infinite;
+}
+
+.page-loading div:nth-child(2) {
+  left: 2pt;
+  animation: loading-animation2 0.6s infinite;
+}
+
+.page-loading div:nth-child(3) {
+  left: 12pt;
+  animation: loading-animation2 0.6s infinite;
+}
+
+.page-loading div:nth-child(4) {
+  left: 22pt;
+  animation: loading-animation3 0.6s infinite;
+}
+
+@keyframes loading-animation1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes loading-animation3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes loading-animation2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(10pt, 0);
+  }
+}

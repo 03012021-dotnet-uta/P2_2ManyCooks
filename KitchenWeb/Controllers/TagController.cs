@@ -21,9 +21,9 @@ namespace KitchenWeb.Controllers
         }
 
         [HttpGet]
-        public async Task GetTags()
+        public async Task<List<Tag>> GetTags()
         {
-            iReviewStepTagLogic.geTags();
+            return await iReviewStepTagLogic.geTags();
         }
     }
 }

@@ -1,0 +1,70 @@
+:root {
+  --bgColor: #f6f6f6;
+  --white: white;
+  --blue: #56baec;
+  --blue-hover: #39ace7;
+  --text-light: #b6a8a7;
+  --text-dark: #0d0d0d;
+  --link-color: #92badd;
+  --inactive-color: #cccccc;
+  --cart-yellow: rgb(243, 199, 2);
+}
+
+.profile-img {
+  overflow: hidden;
+  /* margin: auto 0; */
+  margin-left: 5pt;
+  width: 40px;
+  border-radius: 50px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.logo {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background-image: url("https://i.imgur.com/dUe1P7L.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.logo-container {
+  float: left;
+  /* padding: 8pt 5pt; */
+  height: 22pt;
+  width: 22pt;
+  padding: 0;
+  /* margin-right: 8pt 5pt; */
+  top: 4pt;
+  left: 5pt;
+  /* padding: 0; */
+  position: relative;
+  content: ".";
+  overflow: hidden;
+  text-align: center;
+}
+
+.nav-title a {
+  padding: 0;
+}
+
+.nav-title {
+  margin-left: 8pt;
+}
+
+.page-loading div {
+  background-color: var(--white);
+  /* height: 1pt;
+  width: 2pt; */
+}
+.page-loading {
+  float: right;
+  padding: 8pt 5pt;
+  margin-top: 4pt;
+}

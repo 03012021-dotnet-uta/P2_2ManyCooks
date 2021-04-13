@@ -1,0 +1,30 @@
+.img {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  width: 100%;
+  transition: 0.6s ease-in;
+  -moz-transition: 0.6s ease-in;
+  -ms-transition: 0.6s ease-in;
+  -o-transition: 0.6s ease-in;
+  -webkit-transition: 0.6s ease-in;
+}
+
+.img-buffer,
+.img {
+  height: 44vh;
+}
+
+.img:hover + .img-buffer,
+img:hover {
+  background-size: cover;
+  height: 55vh;
+}
+
+.recipe-card {
+  position: relative;
+  /* height: 100%; */
+  border-radius: 7pt;
+  overflow: hidden;
+}

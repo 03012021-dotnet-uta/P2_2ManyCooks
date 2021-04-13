@@ -1,12 +1,77 @@
 <!-- from: https://medium.com/swlh/using-auth0-to-secure-your-angular-application-and-access-your-asp-net-core-api-1947b9389f4f -->
-<button (click)="auth.login()" *ngIf="!auth.loggedIn">Log In</button>
-<button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</button>
-<br />
-<button (click)="getUsers()">Get Users</button>
+<nav class="nav-bar">
+  <ul class="nav-list">
+    <!-- <button><a routerLink="/listpersons">See a list of People</a></button
+    >&nbsp; -->
+    <div class="logo-container">
+      <div class="logo"></div>
+    </div>
+    <li class="nav-title">
+      <a class="website-name" routerLink="/">{{ title }}</a>
+    </li>
+    <li class="nav-right" routerLink="/register" *ngIf="auth.loggedIn">
+      <span>{{ authModel.lastName }}, {{ authModel.firstName }}</span>
+      <div
+        class="nav-right profile-img"
+        [ngStyle]="{
+          'background-image': 'url(' + authModel.profileImage + ')'
+        }"
+      ></div>
+    </li>
+    <li
+      class="nav-right"
+      (click)="auth.login()"
+      *ngIf="!auth.loggedIn && auth.notLoading"
+    >
+      Get Started
+    </li>
+    <div *ngIf="!auth.notLoading" class="page-loading">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
 
-<ul>
-  <li *ngFor="let user of userList">{{ user.firstname }}</li>
-</ul>
+    <!-- <li class="nav-right" *ngIf="!auth.notLoading">Loading...</li> -->
+  </ul>
+</nav>
+<router-outlet></router-outlet>
+<div></div>
+
+<!-- <input
+  type="button"
+  (click)="auth.login()"
+  *ngIf="!auth.loggedIn"
+  value="Login"
+/>
+<input
+  type="button"
+  (click)="auth.logout()"
+  *ngIf="auth.loggedIn"
+  value="Logout"
+/> -->
+<!-- <section class="section">
+  <div>
+    <input
+      type="button"
+      (click)="auth.login()"
+      *ngIf="!auth.loggedIn"
+      value="Login"
+    />
+    <input
+      type="button"
+      (click)="auth.logout()"
+      *ngIf="auth.loggedIn"
+      value="Logout"
+    />
+    <br />
+
+    <input type="button" (click)="getUsers()" value="Get Users" />
+    <ul>
+      <li *ngFor="let user of userList">{{ user.firstname }}</li>
+    </ul>
+  </div>
+</section> -->
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!--` * * * * * * * * * * * The content below * * * * * * * * * * * -->

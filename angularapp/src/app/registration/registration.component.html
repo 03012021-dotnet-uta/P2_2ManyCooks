@@ -1,0 +1,27 @@
+<!-- username: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    profileImage: string;
+    password: string;
+    sub: string; -->
+<section class="section">
+  <div (click)="logout()" class="logout" routerLink="/">Logout</div>
+  <div class="fancy-container-shadow-border">
+    <form action="">
+      <input
+        type="text"
+        name="d"
+        [(ngModel)]="usermodel.firstName"
+        placeholder="First Name"
+      />
+      <input
+        type="text"
+        name="b"
+        [(ngModel)]="usermodel.lastName"
+        placeholder="Last Name"
+      />
+      <input type="button" (click)="sendinfo()" value="Confirm" />
+    </form>
+  </div>
+</section>

@@ -24,5 +24,16 @@ namespace KitchenWeb.Controllers
         {
             return await iReviewStepTagLogic.getIngredients();
         }
+
+        [HttpGet("/byIngredientName/{name}")]
+        public async Task<Ingredient> getIngredByName(string name)
+        {
+            return await iReviewStepTagLogic.getOneIngredientByName(name);
+        }
+        [HttpGet("/byIngredientId/{id}")]
+        public async Task<Ingredient> getIngredByName(int id)
+        {
+            return await iReviewStepTagLogic.getOneIngredientById(id);
+        }
     }
 }

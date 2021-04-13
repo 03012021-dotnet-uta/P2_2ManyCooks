@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
+using Service.Helpers;
 using Service.Logic;
+using Models.LogicModels;
 
 namespace KitchenWeb.Controllers
 {
@@ -35,8 +37,23 @@ namespace KitchenWeb.Controllers
             return await iLogicKitchen.getAllRecipe();
         }
 
+
+        [HttpGet("good")]
+        public async Task<ICollection<SentRecipe>> getThemAllGood()
+        {
+            System.Console.WriteLine("getting all recipes");
+            return await iLogicKitchen.getAllSentRecipe();
+        }
+
+
+        [HttpGet("good/{id}")]
+        public ActionResult<SentRecipe> getGoodById(int id)
+        {
+            return iLogicKitchen.GetRecipeById(id);
+        }
+
         [HttpGet("/recipeName/{recipeName}")]
-        public  List<Recipe> getThemByRecipeName(string recipeName)
+        public List<Recipe> getThemByRecipeName(string recipeName)
         {
             return iLogicKitchen.getAllRecipeByRecipeName(recipeName);
         }
@@ -46,6 +63,12 @@ namespace KitchenWeb.Controllers
         public async Task<List<Recipe>> getThemByTag(string tag)
         {
             return await iLogicKitchen.getAllRecipeByTags(tag);
+        }
+
+        [HttpGet("/api/{search}")]
+        public async Task<RecipeModel> getInfo(string search)
+        {
+            return await RecipeProcessor.LoadRecipe(search);
         }
     }
 }

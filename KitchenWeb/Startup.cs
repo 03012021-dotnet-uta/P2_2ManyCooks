@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,7 +39,12 @@ namespace KitchenWeb
         {
             services.AddControllers();
             string connectionString = Configuration.GetConnectionString("KitchenDB");
-            services.AddDbContext<InTheKitchenDBContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<InTheKitchenDBContext>(options => { 
+                if (!options.IsConfigured)
+                {
+                    options.UseSqlServer(connectionString);
+                }
+            });
 
             services.AddScoped<ILogicKitchen, KitchenLogic>();
             services.AddScoped<IReviewStepTagLogic, ReviewStepTagLogic>();
@@ -113,3 +119,4 @@ namespace KitchenWeb
         }
     }
 }
+
