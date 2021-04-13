@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Repository.Repositories;
 using Repository.Models;
 using Models.LogicModels;
+using System.Linq;
 
 namespace Service.Authenticators
 {

@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using Service.Interfaces;
 using Models.LogicModels;
+using KitchenWeb.Helpers;
 
 namespace KitchenWeb.Controllers
 {
@@ -56,8 +57,9 @@ namespace KitchenWeb.Controllers
             System.Console.WriteLine("authmodel recieved in controller:");
             System.Console.WriteLine(model.FirstName);
             System.Console.WriteLine(model.LastName);
-            var tok = this.Request.Headers.Where(h => h.Key == "Authorization").FirstOrDefault();
-            var dic = _authenticator.GetUserAuth0Dictionary(tok.Value);
+            // var tok = this.Request.Headers.Where(h => h.Key == "Authorization").FirstOrDefault();
+            var tok = ControllerHelper.GetTokenFromRequest(this.Request);
+            var dic = _authenticator.GetUserAuth0Dictionary(tok);
             return iUserLogic.UpdateUser(model, dic);
         }
 
@@ -66,10 +68,12 @@ namespace KitchenWeb.Controllers
         public ActionResult<AuthModel> GetCurrentUser()
         {
             string sub = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var tok = this.Request.Headers.Where(h => h.Key == "Authorization").FirstOrDefault();
-            var dictionary = _authenticator.GetUserAuth0Dictionary(tok.Value);
+            // var tok = this.Request.Headers.Where(h => h.Key == "Authorization").FirstOrDefault();
+            // var dictionary = _authenticator.GetUserAuth0Dictionary(tok.Value);
+            var tok = ControllerHelper.GetTokenFromRequest(this.Request);
+            var dic = _authenticator.GetUserAuth0Dictionary(tok);
             var model = new AuthModel();
-            iUserLogic.CheckIfNewUser(dictionary, out model);
+            iUserLogic.CheckIfNewUser(dic, out model);
             return model;
 
         }

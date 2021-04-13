@@ -1,0 +1,16 @@
+.step-card {
+  transition: 0.5s;
+  /* height: 50vw; */
+}
+
+.step-card:not(.selected) {
+  margin-bottom: 50vh;
+  margin-top: 50vh;
+}
+
+.step-card.selected {
+  padding-top: 50vh;
+  /* margin-bottom: 50vh; */
+  /* height: 100vh; */
+  background-color: green;
+}
