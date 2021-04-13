@@ -33,14 +33,14 @@ steps:
     version: '2.x'
     # performMultiLevelLookup: true
 
-- task: JavaToolInstaller@0
-  inputs:
-    versionSpec: '11'
-    jdkArchitectureOption: 'x64'
-    jdkSourceOption: 'LocalDirectory'
-    jdkFile: 'E:/Downloads/jdk-16_windows-x64_bin.zip'
-    jdkDestinationDirectory: '/builds/binaries/externals'
-    cleanDestinationDirectory: true
+# - task: JavaToolInstaller@0
+#   inputs:
+#     versionSpec: '11'
+#     jdkArchitectureOption: 'x64'
+#     jdkSourceOption: 'LocalDirectory'
+#     jdkFile: 'E:/Downloads/jdk-16_windows-x64_bin.zip'
+#     jdkDestinationDirectory: '/builds/binaries/externals'
+#     cleanDestinationDirectory: true
 
 - task: NodeTool@0
   inputs:
