@@ -67,34 +67,34 @@ namespace Tests
             }
             Assert.Equal(result1,result2);
         }
-        [Fact]
-        public async Task Test7Async()
-        {
-            var ingredient = new Ingredient()
-            {
-                IngredientId = 34,
-                IngredientName = "Cheese"
-            };
-            var result1 = new Ingredient();
-            var result2 = new Ingredient();
+        //[Fact]
+        //public async Task Test7Async()
+        //{
+        //    var ingredient = new Ingredient()
+        //    {
+        //        IngredientId = 34,
+        //        IngredientName = "Cheese"
+        //    };
+        //    var result1 = new Ingredient();
+        //    var result2 = new Ingredient();
 
-            await using(var context = new InTheKitchenDBContext(testOptions))
-            {
-                await context.Database.EnsureDeletedAsync();
-                await context.Database.EnsureCreatedAsync();
-                var msr = new ReviewStepTagLogic(context);
+        //    await using(var context = new InTheKitchenDBContext(testOptions))
+        //    {
+        //        await context.Database.EnsureDeletedAsync();
+        //        await context.Database.EnsureCreatedAsync();
+        //        var msr = new ReviewStepTagLogic(context);
 
-                result1 = await msr.getOneIngredientById(ingredient.IngredientId);
-            }
+        //        result1 = await msr.getOneIngredientById(ingredient.IngredientId);
+        //    }
 
-            await using(var context = new InTheKitchenDBContext(testOptions))
-            {
-                await context.Database.EnsureCreatedAsync();
-                result2 = await context.Ingredients.FindAsync(ingredient.IngredientId);
-            }
-            Assert.Equal(result1,result2);
+        //    await using(var context = new InTheKitchenDBContext(testOptions))
+        //    {
+        //        await context.Database.EnsureCreatedAsync();
+        //        result2 = await context.Ingredients.FindAsync(ingredient.IngredientId);
+        //    }
+        //    Assert.Equal(result1,result2);
 
-        }
+        //}
         [Fact]
         public async Task Test8Async()
         {
