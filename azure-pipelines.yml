@@ -39,15 +39,16 @@ steps:
     cliProjectName: 'InTheKitchenApp'
     cliSources: '$(System.DefaultWorkingDirectory)/angularapp'
     extraProperties:
+      sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/AngularTest/coverage/cobertura-coverage.xml
       sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/lcov.info
 
-# - script: |
-#     cd "$(System.DefaultWorkingDirectory)/AngularTest"
-#     npm install -g @angular/cli
-#     npm install --save-dev @angular-devkit/build-angular
-#     npm install
-#     ng build --prod --verbose
-#   displayName: 'npm install and build'
+- script: |
+    cd "$(System.DefaultWorkingDirectory)/AngularTest"
+    npm install -g @angular/cli
+    npm install --save-dev @angular-devkit/build-angular
+    npm install
+    ng build --prod --verbose
+  displayName: 'npm install and build'
 
 - task: Npm@1
   inputs:
