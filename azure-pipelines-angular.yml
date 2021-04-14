@@ -39,6 +39,7 @@ steps:
     cliProjectName: 'InTheKitchenApp'
     cliSources: '$(System.DefaultWorkingDirectory)/angularapp'
     extraProperties:
+      sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/AngularTest/coverage/cobertura-coverage.xml
       sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/lcov.info
 
 - script: |
@@ -54,6 +55,7 @@ steps:
     command: 'install'
     workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
     verbose: true
+  displayName: 'npm install dependencies'
 
 - task: Npm@1
   inputs:
@@ -61,6 +63,7 @@ steps:
     workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
     customCommand: 'run build -- $(ngBuildConfiguration)'
     verbose: true
+  displayName: 'npm build'
 
 - task: Npm@1
   inputs:
@@ -70,6 +73,7 @@ steps:
     # --karma-config=karma.conf.ci.js'
     # customCommand: 'run test -- --watch=false --source-map=false --browsers=ChromeHeadless --code-coverage'
   continueOnError: true
+  displayName: 'npm run tests'
 
 - task: PublishCodeCoverageResults@1
   condition: succeededOrFailed()

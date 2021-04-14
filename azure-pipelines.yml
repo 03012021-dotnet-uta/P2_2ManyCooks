@@ -1,85 +1,87 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
+#- main
 - master
 
 pool:
-  # vmImage: ubuntu-latest
-  name: default
+  #name: 'azure pipelines'
+  vmImage: 'windows-latest'
+  #name: 'default'
 
 variables:
+  solution: 'P2_2ManyCooks.sln'
+  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  ngBuildConfiguration: '--prod'
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+# - task: NodeTool@0
+#   inputs:
+#     versionSpec: '10.x'
+#   displayName: 'Install Node.js'
 
-- task: JavaToolInstaller@0
+# - script: |
+#     cd angularapp
+#     npm install -g @angular/cli
+#     npm install
+#     ng build --prod
+#   displayName: 'npm install and build'
+
+# - task: AzureRmWebAppDeployment@4
+#   inputs:
+#     ConnectionType: 'AzureRM'
+#     azureSubscription: 'Azure subscription 1(9397ed34-7cce-4ecb-964e-961c2674cac7)'
+#     appType: 'webApp'
+#     WebAppName: 'inthekitchenapp'
+#     packageForLinux: '$(System.DefaultWorkingDirectory)/angularapp/**/*.zip'
+
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK'
   inputs:
-    versionSpec: '11'
-    jdkArchitectureOption: 'x64'
-    jdkSourceOption: 'LocalDirectory'
-    jdkFile: 'D:/jdk-11.0.10_windows-x64_bin.zip'
-    jdkDestinationDirectory: '/builds/binaries/externals'
-    cleanDestinationDirectory: true
+    packageType: 'sdk'
+    version: '5.0.x'
+
+- task: UseDotNet@2
+  displayName: 'Install .NET Core Runtime'
+  inputs:
+    packageType: 'runtime'
+    version: '2.x'
+
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
 
 - task: SonarCloudPrepare@1
   inputs:
-    SonarCloud: 'SonarCloudAngular'
-    organization: '2manycooksinthekitchen'
-    scannerMode: 'CLI'
-    configMode: 'manual'
-    cliProjectKey: '2ManyCooksInTheKitchen_InTheKitchenApp'
-    cliProjectName: 'InTheKitchenApp'
-    cliSources: '$(System.DefaultWorkingDirectory)/angularapp'
-    extraProperties:
-      sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/AngularTest/coverage/cobertura-coverage.xml
-      sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/lcov.info
+    SonarCloud: 'SonarCloudService'
+    organization: '03012021batch'
+    scannerMode: 'MSBuild'
+    projectKey: '03012021Batch_P2_2ManyCooks'
+    projectName: 'P2_2ManyCooks'
 
-- script: |
-    cd "$(System.DefaultWorkingDirectory)/AngularTest"
-    npm install -g @angular/cli
-    npm install --save-dev @angular-devkit/build-angular
-    npm install
-    ng build --prod --verbose
-  displayName: 'npm install and build'
-
-- task: Npm@1
+- task: DotNetCoreCLI@2
+  displayName: 'building'
   inputs:
-    command: 'install'
-    workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
-    verbose: true
-  displayName: 'npm install dependencies'
+    command: 'build'
+    projects: '*.sln'
+    arguments: '--configuration $(buildConfiguration)'
 
-- task: Npm@1
+- task: DotNetCoreCLI@2
   inputs:
-    command: 'custom'
-    workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
-    customCommand: 'run build -- $(ngBuildConfiguration)'
-    verbose: true
-  displayName: 'npm build'
-
-- task: Npm@1
-  inputs:
-    command: 'custom'
-    workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
-    customCommand: 'run test -- --watch=false --code-coverage'
-    # --karma-config=karma.conf.ci.js'
-    # customCommand: 'run test -- --watch=false --source-map=false --browsers=ChromeHeadless --code-coverage'
-  continueOnError: true
-  displayName: 'npm run tests'
+    command: 'test'
+    projects: '*.sln'
+    arguments: '--configuration $(buildConfiguration) --collect "Code Coverage"'
+    testRunTitle: 'Dotnet tests running'
 
 - task: PublishCodeCoverageResults@1
-  condition: succeededOrFailed()
   inputs:
-    # codeCoverageTool: 'Cobertura'
-    summaryFileLocation: './angularapp/coverage/lcov.info'
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '**/coburtura/coverage.xml'
 
 - task: SonarCloudAnalyze@1
 
@@ -87,18 +89,18 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
-- task: ArchiveFiles@2
+- task: DotNetCoreCLI@2
+  displayName: 'Publishing'
   inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/angularapp/dist/'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
+    command: 'publish'
+    publishWebProjects: false
+    projects: '$(solution)'
+    zipAfterPublish: true
 
-- task: AzureWebApp@1
+- task: AzureRmWebAppDeployment@4
   inputs:
+    ConnectionType: 'AzureRM'
     azureSubscription: 'Azure subscription 1(9397ed34-7cce-4ecb-964e-961c2674cac7)'
     appType: 'webApp'
-    appName: 'inthekitchenfront'
-    package: '$(Build.ArtifactStagingDirectory)/*.zip'
-    deploymentMethod: 'auto'
+    WebAppName: 'inthekitchen'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
