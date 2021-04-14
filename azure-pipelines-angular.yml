@@ -78,11 +78,18 @@ steps:
   continueOnError: true
   displayName: 'npm run tests'
 
+# - task: PublishCodeCoverageResults@1
+#   condition: succeededOrFailed()
+#   inputs:
+#     summaryFileLocation: './angularapp/node_modules/selenium-webdriver/node_modules/tmp/coverage/lcov.info'
+#     pathToSources: '$(System.DefaultWorkingDirectory)/angularapp'
+
 - task: PublishCodeCoverageResults@1
-  condition: succeededOrFailed()
   inputs:
-    summaryFileLocation: './angularapp/node_modules/selenium-webdriver/node_modules/tmp/coverage/lcov.info'
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/angularapp/**/coverage/lcov.info'
     pathToSources: '$(System.DefaultWorkingDirectory)/angularapp'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/angularapp/**/coverage'
 
 - task: SonarCloudAnalyze@1
 
