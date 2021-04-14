@@ -1,7 +1,7 @@
-import { RecipeViewType } from './recipe-view-type';
+import { RecipeEnum, RecipeViewType } from './recipe-view-type';
 
 describe('RecipeViewType', () => {
   it('should create an instance', () => {
-    expect(new RecipeViewType()).toBeTruthy();
+    expect(new RecipeViewType(RecipeEnum.normal)).toBeTruthy();
   });
 });

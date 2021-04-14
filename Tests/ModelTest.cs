@@ -183,6 +183,7 @@ namespace Tests
             var sut = new Review()
             {
                 ReviewId = 3,
+
                 ReviewDescription = "Message",
                 ReviewRating = 5,
                 ReviewDate = DateTime.Today,
@@ -209,8 +210,6 @@ namespace Tests
             Assert.Equal(expected4,result4);
             Assert.Equal(expected5,result5);
             Assert.Equal(expected6,result6);
-
-
         }
         [Fact]
         public void TestStep()
