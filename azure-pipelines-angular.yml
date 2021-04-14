@@ -60,7 +60,7 @@ steps:
 - task: Npm@1
   inputs:
     command: 'custom'
-    workingDir: '$(System.DefaultWorkingDirectory)/AngularTest'
+    workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
     customCommand: 'install puppeteer --save-dev'
   displayName: 'npm install puppeteer'
 
