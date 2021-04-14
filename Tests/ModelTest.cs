@@ -88,11 +88,11 @@ namespace Tests
             var sut = new Review()
             {
                 ReviewId = 3,
-                ReviewDate = DateTime.Now
+                ReviewDescription = "yeah"
             };
 
-            var expected = DateTime.Now;
-            var result = sut.ReviewDate;
+            var expected = "yeah";
+            var result = sut.ReviewDescription;
             Assert.Equal(expected,result);
 
         }
