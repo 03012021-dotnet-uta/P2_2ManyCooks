@@ -5,7 +5,7 @@ import { take } from 'rxjs/operators';
 import { AuthModel } from '../auth-model';
 import { AuthService } from '../auth.service';
 import { Review } from '../review';
-import { ReviewService } from '../review.service';
+import { ReviewService } from './review.service';
 import { Recipe } from './recipe';
 import { RecipeSaver } from './recipe-saver';
 import { RecipeEnum, RecipeViewType } from './recipe-view-type';
