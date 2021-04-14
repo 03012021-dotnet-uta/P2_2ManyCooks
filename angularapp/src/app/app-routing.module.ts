@@ -5,11 +5,13 @@ import { InterceptorService } from './interceptor.service';
 import { HomeComponent } from './home/home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { RecipeComponent } from './recipe/recipe.component';
+import { AdminHomeComponent } from './admin-home/admin-home.component';
 
 
 const routes: Routes = [
   { path: 'register', component: RegistrationComponent },
   { path: 'recipeDetail/:id', component: RecipeComponent },
+  { path: 'admin', component: AdminHomeComponent },
   { path: '**', component: HomeComponent },
 
 ];

@@ -32,4 +32,8 @@ export class UserService {
   saveFirstTimeUser(authModel: AuthModel): Observable<AuthModel> {
     return this.http.get<AuthModel>(`${this.baseUrl}/myinfo`, this.httpOptions);
   }
+
+  isUserAdmin(): Promise<boolean> {
+    return this.http.get<boolean>(`${this.baseUrl}/isadmin`, this.httpOptions).toPromise();
+  }
 }
