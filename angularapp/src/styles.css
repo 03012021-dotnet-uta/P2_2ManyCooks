@@ -109,14 +109,14 @@ input[type="submit"] {
   padding: 20pt;
 }
 
-* {
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;
   font-size: 15pt;
   color: var(--text-light);
-}
+} */
 
 body {
   background-color: var(--bgColor);
@@ -315,14 +315,15 @@ h2 {
   background-color: var(--blue);
 }
 
-html,
+/* html,
 body {
   height: 100%;
 }
 body {
   margin: 0;
-  /* font-family: Roboto, "Helvetica Neue", sans-serif; */
-}
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+} */
+/* from: https://loading.io/css/ */
 
 .page-loading {
   /* float: right; */
@@ -342,7 +343,6 @@ body {
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
   /* transition: 0.5s ease-out; */
 }
-
 .page-loading,
 .page-loading * {
   padding: 0;
