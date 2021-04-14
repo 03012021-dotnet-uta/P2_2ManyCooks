@@ -48,7 +48,7 @@ namespace KitchenWeb
             services.AddScoped<IUserLogic, UserLogic>();
             services.AddScoped<IAuthenticator, Authenticator>();
             services.AddScoped<KitchenRepository>();
-            services.AddScoped<TestLogic>();
+            
 
         }
 
