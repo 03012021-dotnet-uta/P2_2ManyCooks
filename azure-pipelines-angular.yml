@@ -38,7 +38,9 @@ steps:
     cliProjectName: 'InTheKitchenApp'
     cliSources: '$(System.DefaultWorkingDirectory)/angularapp'
     extraProperties:
-      sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/lcov.info
+      sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/cobertura-coverage.xml
+      # sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/**/coverage/lcov.info
+
 
 - script: |
     cd "$(System.DefaultWorkingDirectory)/AngularTest"
@@ -55,12 +57,12 @@ steps:
     verbose: true
   displayName: 'npm install dependencies'
 
-- task: Npm@1
-  inputs:
-    command: 'custom'
-    workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
-    customCommand: 'install puppeteer --save-dev'
-  displayName: 'npm install puppeteer'
+# - task: Npm@1
+#   inputs:
+#     command: 'custom'
+#     workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
+#     customCommand: 'install puppeteer --save-dev'
+#   displayName: 'npm install puppeteer'
 
 - task: Npm@1
   inputs:
@@ -81,8 +83,16 @@ steps:
 - task: PublishCodeCoverageResults@1
   condition: succeededOrFailed()
   inputs:
-    summaryFileLocation: './angularapp/coverage/lcov.info'
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/angularapp/coverage/cobertura-coverage.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)/angularapp'
+
+# - task: PublishCodeCoverageResults@1
+#   inputs:
+#     codeCoverageTool: 'Cobertura'
+#     summaryFileLocation: '$(System.DefaultWorkingDirectory)/angularapp/**/coverage/lcov.info'
+#     pathToSources: '$(System.DefaultWorkingDirectory)/angularapp'
+#     reportDirectory: '$(System.DefaultWorkingDirectory)/angularapp/**/coverage'
 
 - task: SonarCloudAnalyze@1
 
