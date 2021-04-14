@@ -20,14 +20,26 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-# - task: JavaToolInstaller@0
-#   inputs:
-#     versionSpec: '11'
-#     jdkArchitectureOption: 'x64'
-#     jdkSourceOption: 'LocalDirectory'
-#     jdkFile: 'C:/Users/Home/Downloads/jdk-11.0.10_windows-x64_bin.zip'
-#     jdkDestinationDirectory: '/builds/binaries/externals'
-#     cleanDestinationDirectory: true
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '11'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'LocalDirectory'
+    jdkFile: 'D:/jdk-11.0.10_windows-x64_bin.zip'
+    jdkDestinationDirectory: '/builds/binaries/externals'
+    cleanDestinationDirectory: true
+
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloudAngular'
+    organization: '2manycooksinthekitchen'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: '2ManyCooksInTheKitchen_InTheKitchenApp'
+    cliProjectName: 'InTheKitchenApp'
+    cliSources: '$(System.DefaultWorkingDirectory)/angularapp'
+    extraProperties:
+      sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/lcov.info
 
 - script: |
     cd "$(System.DefaultWorkingDirectory)/AngularTest"
@@ -36,18 +48,6 @@ steps:
     npm install
     ng build --prod --verbose
   displayName: 'npm install and build'
-
-# - task: Npm@1
-#   inputs:
-#     command: 'custom'
-#     workingDir: '$(System.DefaultWorkingDirectory)/AngularTest'
-#     customCommand: 'install -g @angular/cli'
-
-# - task: Npm@1
-#   inputs:
-#     command: 'custom'
-#     workingDir: '$(System.DefaultWorkingDirectory)/AngularTest'
-#     customCommand: 'install --save-dev @angular-devkit/build-angular'
 
 - task: Npm@1
   inputs:
@@ -61,6 +61,27 @@ steps:
     workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
     customCommand: 'run build -- $(ngBuildConfiguration)'
     verbose: true
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
+    customCommand: 'run test -- --watch=false --code-coverage'
+    # --karma-config=karma.conf.ci.js'
+    # customCommand: 'run test -- --watch=false --source-map=false --browsers=ChromeHeadless --code-coverage'
+  continueOnError: true
+
+- task: PublishCodeCoverageResults@1
+  condition: succeededOrFailed()
+  inputs:
+    # codeCoverageTool: 'Cobertura'
+    summaryFileLocation: './angularapp/coverage/lcov.info'
+
+- task: SonarCloudAnalyze@1
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
 
 - task: ArchiveFiles@2
   inputs:
