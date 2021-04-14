@@ -39,8 +39,8 @@ steps:
     cliProjectName: 'InTheKitchenApp'
     cliSources: '$(System.DefaultWorkingDirectory)/angularapp'
     extraProperties:
-      sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/AngularTest/coverage/cobertura-coverage.xml
       sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/lcov.info
+      # sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/AngularTest/coverage/cobertura-coverage.xml
 
 - script: |
     cd "$(System.DefaultWorkingDirectory)/AngularTest"
@@ -60,6 +60,13 @@ steps:
 - task: Npm@1
   inputs:
     command: 'custom'
+    workingDir: '$(System.DefaultWorkingDirectory)/AngularTest'
+    customCommand: 'install puppeteer --save-dev'
+  displayName: 'npm install puppeteer'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
     workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
     customCommand: 'run build -- $(ngBuildConfiguration)'
     verbose: true
@@ -69,7 +76,8 @@ steps:
   inputs:
     command: 'custom'
     workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
-    customCommand: 'run test -- --watch=false --code-coverage'
+    customCommand: 'run test -- --watch=false --code-coverage --karma-config=karma.config.js'
+    # customCommand: 'run test -- --watch=false --code-coverage'
     # --karma-config=karma.conf.ci.js'
     # customCommand: 'run test -- --watch=false --source-map=false --browsers=ChromeHeadless --code-coverage'
   continueOnError: true
@@ -78,8 +86,9 @@ steps:
 - task: PublishCodeCoverageResults@1
   condition: succeededOrFailed()
   inputs:
-    # codeCoverageTool: 'Cobertura'
-    summaryFileLocation: './angularapp/coverage/lcov.info'
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(Build.SourcesDirectory)/coverage/cobertura-coverage.xml'
+    pathToSources: '$(System.DefaultWorkingDirectory)/angularapp'
 
 - task: SonarCloudAnalyze@1
 
