@@ -52,15 +52,6 @@ namespace KitchenWeb
             services.AddScoped<IUserLogic, UserLogic>();
             services.AddScoped<IAuthenticator, Authenticator>();
             services.AddScoped<KitchenRepository>();
-            services.AddScoped<TestLogic>();
-            // services.AddCors(options =>
-            // {
-            //     options.AddPolicy("CorsPolicy",
-            //         builder => builder.AllowAnyOrigin()
-            //         .AllowAnyMethod()
-            //         .AllowAnyHeader()
-            //         .AllowCredentials());
-            // });
             services.AddCors(options =>
             {
                 options.AddPolicy(name: _corsPolicy,
@@ -98,12 +89,11 @@ namespace KitchenWeb
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
+           
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "KitchenWeb v1"));
-            //}
+            
 
             app.UseHttpsRedirection();
 
