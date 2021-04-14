@@ -19,7 +19,9 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.authModel$.subscribe(reply => {
-      if (reply == null)
+      console.log("reply for register model");
+      console.log(reply);
+      if (reply == undefined || reply.username == null || reply.firstName == null)
         this.usermodel = new AuthModel();
       else
         this.usermodel = reply;
