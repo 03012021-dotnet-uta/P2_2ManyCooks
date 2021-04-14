@@ -19,5 +19,6 @@ namespace Service.Logic
         Task<Tag> getOneTag(string tagName);
         Task<bool> existTag(string name);
         SentRecipe GetRecipeById(int id);
+        Task<Recipe> getOneRecipeById(int id);
     }
 }

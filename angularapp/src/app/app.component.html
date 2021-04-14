@@ -7,7 +7,7 @@
       <div class="logo"></div>
     </div>
     <li class="nav-title">
-      <a class="website-name" routerLink="/">{{ title }}</a>
+      <span class="website-name" routerLink="/">{{ title }}</span>
     </li>
     <li class="nav-right" routerLink="/register" *ngIf="auth.loggedIn">
       <span>{{ authModel.lastName }}, {{ authModel.firstName }}</span>
@@ -23,7 +23,7 @@
       (click)="auth.login()"
       *ngIf="!auth.loggedIn && auth.notLoading"
     >
-      Get Started
+      <span>Get Started</span>
     </li>
     <div *ngIf="!auth.notLoading" class="page-loading">
       <div></div>

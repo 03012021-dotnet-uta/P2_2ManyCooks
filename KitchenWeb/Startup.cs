@@ -39,7 +39,8 @@ namespace KitchenWeb
         {
             services.AddControllers();
             string connectionString = Configuration.GetConnectionString("KitchenDB");
-            services.AddDbContext<InTheKitchenDBContext>(options => { 
+            services.AddDbContext<InTheKitchenDBContext>(options =>
+            {
                 if (!options.IsConfigured)
                 {
                     options.UseSqlServer(connectionString);
@@ -65,6 +66,7 @@ namespace KitchenWeb
                 options.AddPolicy(name: _corsPolicy,
                     builder => builder
                     // .WithOrigins("http://localhost:4200/")
+                    // .WithOrigins("https://inthekitchenfront.azurewebsites.net/")
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { UrlService } from '../url.service';
 import { Recipe } from './recipe';
 
 @Injectable({
@@ -9,13 +10,15 @@ import { Recipe } from './recipe';
 })
 export class RecipeService {
 
-  baseUrl: string = "https://localhost:5001/recipe";
+  baseUrl: string;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
     })
   };
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private urlService: UrlService) {
+    this.baseUrl = urlService.dotnetBaseUrl + "recipe";
+  }
 
   getAllRecipes(): Observable<Recipe[]> {
     console.log("in service");

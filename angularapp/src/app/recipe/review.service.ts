@@ -2,20 +2,23 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Review } from './review';
+import { Review } from '../review';
+import { UrlService } from '../url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReviewService {
 
-  baseUrl: string = "https://localhost:5001/Review";
+  baseUrl: string;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
     })
   };
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private urlService: UrlService) {
+    this.baseUrl = urlService.dotnetBaseUrl + "review";
+  }
 
   getReviewsForRecipe(id: number): Promise<Review[]> {
     console.log("in service");

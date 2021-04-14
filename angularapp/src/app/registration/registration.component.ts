@@ -10,13 +10,20 @@ import { UserService } from '../user-service';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
-  usermodel: AuthModel = new AuthModel();
+  usermodel: AuthModel;
   // firstname: string;
   // lastname: string;
 
-  constructor(private service: UserService, private auth: AuthService, private route: Router) { }
+  constructor(private service: UserService, private auth: AuthService, private route: Router) {
+  }
 
   ngOnInit(): void {
+    this.auth.authModel$.subscribe(reply => {
+      if (reply == null)
+        this.usermodel = new AuthModel();
+      else
+        this.usermodel = reply;
+    });
   }
 
   sendinfo() {
@@ -24,6 +31,9 @@ export class RegistrationComponent implements OnInit {
     // this.usermodel.firstName = this.firstname;
     // this.usermodel.lastName = this.lastname;
     console.log(this.usermodel);
+
+    if (!this.goodModel())
+      return;
     // return;
     this.service.updateUserModel(this.usermodel).subscribe((reply) => {
       console.log("updating user:");
@@ -41,4 +51,13 @@ export class RegistrationComponent implements OnInit {
   logout() {
     this.auth.logout();
   }
+  goodModel(): boolean {
+    if (this.usermodel.firstName.trim() && this.usermodel.lastName.trim()) {
+      console.log("good model");
+      return true;
+    }
+    console.log("bad model");
+    return false;
+  }
 }
+

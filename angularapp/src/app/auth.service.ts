@@ -7,6 +7,7 @@ import { tap, catchError, concatMap, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthModel } from './auth-model';
 import { UserService } from './user-service';
+import { UrlService } from './url.service';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,7 @@ export class AuthService {
     createAuth0Client({
       domain: 'dev-yktazjo3.us.auth0.com',
       client_id: 'DEJH5xmVrKbgDEwq5XmgjZqyftJLGrs5',
-      redirect_uri: `http://localhost:4200/`,
+      redirect_uri: this.urlService.angularBaseUrl,
       audience: 'https://dev-yktazjo3.us.auth0.com/api/v2/'
       // audience: 'https://localhost:5001'
     })
@@ -72,7 +73,7 @@ export class AuthService {
   loggedIn: boolean = null;
   notLoading: boolean = null;
 
-  constructor(private router: Router, private userService: UserService) {
+  constructor(private router: Router, private userService: UserService, private urlService: UrlService) {
 
     // On initial load, check authentication state with authorization server
     // Set up local auth streams if user is already authenticated

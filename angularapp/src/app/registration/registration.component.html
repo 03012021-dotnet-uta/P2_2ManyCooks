@@ -14,14 +14,16 @@
         name="d"
         [(ngModel)]="usermodel.firstName"
         placeholder="First Name"
+        required
       />
       <input
         type="text"
         name="b"
         [(ngModel)]="usermodel.lastName"
         placeholder="Last Name"
+        required
       />
-      <input type="button" (click)="sendinfo()" value="Confirm" />
+      <input type="submit" (click)="sendinfo()" value="Confirm" />
     </form>
   </div>
 </section>
