@@ -7,7 +7,6 @@ trigger:
 - master
 
 pool:
-  # vmImage: ubuntu-latest
   name: default
 
 variables:
@@ -40,7 +39,6 @@ steps:
     cliSources: '$(System.DefaultWorkingDirectory)/angularapp'
     extraProperties:
       sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/lcov.info
-      # sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/AngularTest/coverage/cobertura-coverage.xml
 
 - script: |
     cd "$(System.DefaultWorkingDirectory)/AngularTest"
@@ -76,18 +74,14 @@ steps:
   inputs:
     command: 'custom'
     workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
-    # customCommand: 'run test -- --watch=false --code-coverage --karma-config=karma.config.js'
     customCommand: 'run test -- --watch=false --code-coverage'
-    # --karma-config=karma.conf.ci.js'
-    # customCommand: 'run test -- --watch=false --source-map=false --browsers=ChromeHeadless --code-coverage'
   continueOnError: true
   displayName: 'npm run tests'
 
 - task: PublishCodeCoverageResults@1
   condition: succeededOrFailed()
   inputs:
-    codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(Build.SourcesDirectory)/coverage/cobertura-coverage.xml'
+    summaryFileLocation: './angularapp/coverage/lcov.info'
     pathToSources: '$(System.DefaultWorkingDirectory)/angularapp'
 
 - task: SonarCloudAnalyze@1
