@@ -12,6 +12,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   public loading$ = new BehaviorSubject<boolean>(true);
+  isUserAdmin: boolean;
   title = 'InTheKitchen';
   // userList: any = [];
   authModel: AuthModel = new AuthModel();
@@ -25,6 +26,11 @@ export class AppComponent implements OnInit {
       console.log("app component reply");
       this.authModel = reply;
     });
+    this.auth.isAdmin$.subscribe(reply => {
+      console.log("app component is admin?");
+      console.log(reply);
+      this.isUserAdmin = reply;
+    })
     //* on page start: check the user status
     // this.checkUser();
     // this.loading$.next(false);

@@ -9,7 +9,6 @@
     <li class="nav-title">
       <span class="website-name" routerLink="/">{{ title }}</span>
     </li>
-    <li class="nav-right"></li>
     <li class="nav-right" routerLink="/register" *ngIf="auth.loggedIn">
       <span>{{ authModel.lastName }}, {{ authModel.firstName }}</span>
       <div
@@ -18,6 +17,9 @@
           'background-image': 'url(' + authModel.profileImage + ')'
         }"
       ></div>
+    </li>
+    <li class="nav-right" routerLink="admin" *ngIf="isUserAdmin">
+      <span>Admin Page</span>
     </li>
     <li
       class="nav-right"
