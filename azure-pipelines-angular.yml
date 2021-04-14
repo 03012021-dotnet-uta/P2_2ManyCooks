@@ -38,7 +38,7 @@ steps:
     cliProjectName: 'InTheKitchenApp'
     cliSources: '$(System.DefaultWorkingDirectory)/angularapp'
     extraProperties:
-      sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/lcov.info
+      sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/node_modules/selenium-webdriver/node_modules/tmp/coverage/lcov.info
 
 - script: |
     cd "$(System.DefaultWorkingDirectory)/AngularTest"
@@ -74,14 +74,14 @@ steps:
   inputs:
     command: 'custom'
     workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
-    customCommand: 'run test -- --watch=false --code-coverage'
+    customCommand: 'run test --watch=false --code-coverage'
   continueOnError: true
   displayName: 'npm run tests'
 
 - task: PublishCodeCoverageResults@1
   condition: succeededOrFailed()
   inputs:
-    summaryFileLocation: './angularapp/coverage/lcov.info'
+    summaryFileLocation: './angularapp/node_modules/selenium-webdriver/node_modules/tmp/coverage/lcov.info'
     pathToSources: '$(System.DefaultWorkingDirectory)/angularapp'
 
 - task: SonarCloudAnalyze@1
