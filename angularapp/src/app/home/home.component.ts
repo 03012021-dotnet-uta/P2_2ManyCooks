@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 import { AuthModel } from '../auth-model';
 import { Recipe } from '../recipe/recipe';
 import { RecipeSaver } from '../recipe/recipe-saver';
@@ -30,6 +31,7 @@ export class HomeComponent implements OnInit {
       console.log(reply);
       this.recipeList = reply;
       this.fillTest();
+      take(1);
     });
   }
 

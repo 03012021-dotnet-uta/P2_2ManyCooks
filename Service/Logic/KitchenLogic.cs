@@ -112,6 +112,7 @@ namespace Service.Logic
         public SentRecipe GetRecipeById(int id)
         {
             var recipe = _repo.GetRecipeById(id);
+            System.Console.WriteLine("recipe by id: " + recipe.RecipeName);
             return SentRecipe.GetFromRecipe(recipe);
         }
     }
