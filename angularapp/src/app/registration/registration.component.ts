@@ -30,6 +30,7 @@ export class RegistrationComponent implements OnInit {
       console.log(reply);
       this.usermodel = reply;
       this.route.navigate(["/"]);
+      this.auth.tryRetrieveUser();
     });
   }
 

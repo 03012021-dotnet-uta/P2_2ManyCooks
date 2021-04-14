@@ -148,18 +148,7 @@ export class AuthService {
       console.log("subscribed to token silent");
       console.log(reply);
       console.log("subscribed to token silent");
-      this.userService.checkIfNewUser().then(reply => {
-        this.authModel$.next(reply);
-        if (reply.firstName == null && window.location.pathname != "/register") {
-          console.log("firstname null");
-          this.router.navigate(["register"]);
-          // console.log(window.location.pathname);
-          // console.log(window.location.href);
-        }
-      }).catch(err => {
-        console.error(err);
-        console.log("error getting user data" + err.message);
-      });
+      this.tryRetrieveUser();
     })
     this.auth0Client$.subscribe(reply => {
       console.log("auth0Client$ subscription");
@@ -182,18 +171,7 @@ export class AuthService {
       console.log("in checkAuth$ subscription");
       console.log(reply);
       console.log("in checkAuth$ subscription");
-      this.userService.checkIfNewUser().then(reply => {
-        this.authModel$.next(reply);
-        if (reply.firstName == null && window.location.pathname != "/register") {
-          console.log("firstname null");
-          this.router.navigate(["register"]);
-          // console.log(window.location.pathname);
-          // console.log(window.location.href);
-        }
-      }).catch(err => {
-        console.error(err);
-        console.log("error getting user data" + err.message);
-      });
+      this.tryRetrieveUser();
       // this.loading = false;
       // this.getAuthModel();
     }, () => { }, () => {
@@ -201,6 +179,21 @@ export class AuthService {
       // this.notLoading = true;
     });
   }
+  tryRetrieveUser() {
+    this.userService.checkIfNewUser().then(reply => {
+      this.authModel$.next(reply);
+      if (reply.firstName == null && window.location.pathname != "/register") {
+        console.log("firstname null");
+        this.router.navigate(["register"]);
+        // console.log(window.location.pathname);
+        // console.log(window.location.href);
+      }
+    }).catch(err => {
+      console.error(err);
+      console.log("error getting user data" + err.message);
+    });
+  }
+
   login(redirectPath: string = '/') {
     // A desired redirect path can be passed to login method
     // (e.g., from a route guard)

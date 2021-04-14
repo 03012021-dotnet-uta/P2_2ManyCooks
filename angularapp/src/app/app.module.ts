@@ -12,13 +12,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecipeComponent } from './recipe/recipe.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { RecipeSaver } from './recipe/recipe-saver';
+import { RecipeGuideComponent } from './recipe/recipe-guide/recipe-guide.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegistrationComponent,
     HomeComponent,
-    RecipeComponent
+    RecipeComponent,
+    RecipeGuideComponent
   ],
   imports: [
     BrowserModule,

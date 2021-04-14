@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 #nullable disable
 
@@ -14,6 +15,7 @@ namespace Repository.Models
         public int? RecipeId { get; set; }
         public int? UserId { get; set; }
 
+        [JsonIgnore]
         public virtual Recipe Recipe { get; set; }
         public virtual User User { get; set; }
     }
