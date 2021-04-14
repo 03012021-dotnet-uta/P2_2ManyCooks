@@ -63,6 +63,8 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: '03012021Batch_P2_2ManyCooks'
     projectName: 'P2_2ManyCooks'
+    extraProperties: |
+      sonar.exclusions=KitchenWeb/*.cs
 
 - task: DotNetCoreCLI@2
   displayName: 'building'

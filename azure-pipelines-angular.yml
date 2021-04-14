@@ -76,8 +76,8 @@ steps:
   inputs:
     command: 'custom'
     workingDir: '$(System.DefaultWorkingDirectory)/angularapp'
-    customCommand: 'run test -- --watch=false --code-coverage --karma-config=karma.config.js'
-    # customCommand: 'run test -- --watch=false --code-coverage'
+    # customCommand: 'run test -- --watch=false --code-coverage --karma-config=karma.config.js'
+    customCommand: 'run test -- --watch=false --code-coverage'
     # --karma-config=karma.conf.ci.js'
     # customCommand: 'run test -- --watch=false --source-map=false --browsers=ChromeHeadless --code-coverage'
   continueOnError: true
