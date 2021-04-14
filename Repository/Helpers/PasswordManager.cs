@@ -40,9 +40,7 @@ public class PasswordManager
     public bool ComparePass(string savedHash, string entered)
     {
         /* Extract the bytes */
-        // Console.WriteLine("saved: " + rawSaved);
         byte[] hashBytes = Convert.FromBase64String(savedHash);
-        // lock (hashBytes) ;
         /* Get the salt */
         byte[] salt = new byte[16];
         lock (salt)
