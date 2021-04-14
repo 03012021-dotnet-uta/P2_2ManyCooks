@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { AuthModel } from '../auth-model';
 import { AuthService } from '../auth.service';
 import { Review } from '../review';
@@ -14,7 +16,7 @@ import { RecipeService } from './recipe.service';
   templateUrl: './recipe.component.html',
   styleUrls: ['./recipe.component.css']
 })
-export class RecipeComponent implements OnInit {
+export class RecipeComponent implements OnInit, OnDestroy {
   recipe: Recipe;
   reviews: Review[];
   addingReview: boolean;
@@ -24,8 +26,13 @@ export class RecipeComponent implements OnInit {
   fetchedReviews: boolean;
   averageRating: string = "No rating yet";
   preparing: boolean = false;
+  unsubSubject = new Subject();
+
   constructor(private route: ActivatedRoute,
     private recipeService: RecipeService, private reviewService: ReviewService, private authService: AuthService) { }
+  ngOnDestroy(): void {
+
+  }
 
   ngOnInit(): void {
     // this.route.params.subscribe((reply) => {
@@ -44,8 +51,9 @@ export class RecipeComponent implements OnInit {
       console.log(reply);
       console.log("review current user");
       this.currentUser = reply;
-      this.getRecipeInfo(+this.route.snapshot.paramMap.get("id"));
+      take(1);
     });
+    this.getRecipeInfo(+this.route.snapshot.paramMap.get("id"));
   }
 
   // goToDetail() {
@@ -53,11 +61,13 @@ export class RecipeComponent implements OnInit {
   // }
 
   getRecipeInfo(id: number): void {
+    console.log("getting recipe");
     this.recipeService.getRecipeId(id).then((reply) => {
       console.log("recipe reply");
       console.log(reply);
       console.log("recipe reply");
       this.recipe = reply;
+      console.log("getting reviews");
       this.reviewService.getReviewsForRecipe(this.recipe.recipeId).then((reply) => {
         console.log("reviews");
         console.log(reply);
@@ -68,6 +78,9 @@ export class RecipeComponent implements OnInit {
         console.log("this.fetchedReviews in recipe");
         console.log(this.fetchedReviews);
       });
+    }).catch(err => {
+      console.log("error getting recipes");
+      console.error(err);
     });
   }
 

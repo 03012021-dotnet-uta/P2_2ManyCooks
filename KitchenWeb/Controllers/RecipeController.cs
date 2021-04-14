@@ -49,6 +49,7 @@ namespace KitchenWeb.Controllers
         [HttpGet("good/{id}")]
         public ActionResult<SentRecipe> getGoodById(int id)
         {
+            System.Console.WriteLine("getting recipe by id: " + id);
             return iLogicKitchen.GetRecipeById(id);
         }
 
