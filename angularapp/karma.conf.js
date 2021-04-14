@@ -27,7 +27,7 @@ module.exports = function (config) {
     coverageReporter: {
       dir: require('path').join(__dirname, './coverage/angularapp'),
       subdir: '.',
-      reporters: [
+      reports: [
         { type: 'html' },
         { type: 'text-summary' },
         { type: 'lcov' }
