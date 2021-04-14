@@ -25,14 +25,12 @@ namespace Service.Logic
         {
             this._context = _context;
         }
-
-
-
         public List<Recipe> getAllRecipeByRecipeName(string recipeName)
         {
             if (!existRecipeName(recipeName))
             {
-                return new List<Recipe>() { };
+                //return new List<Recipe>() {};
+                throw new Exception("Not Found");
             }
 
             return _context.Recipes
@@ -85,7 +83,6 @@ namespace Service.Logic
                 return null;
             }
             return tag;
-
         }
         public bool existRecipeName(string recipeName)
         {
@@ -113,6 +110,11 @@ namespace Service.Logic
         {
             var recipe = _repo.GetRecipeById(id);
             return SentRecipe.GetFromRecipe(recipe);
+        }
+
+        public async Task<Recipe> getOneRecipeById(int id)
+        {
+            return await _context.Recipes.Where(r => r.RecipeId == id).FirstOrDefaultAsync();
         }
     }
 }

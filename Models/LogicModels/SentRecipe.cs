@@ -53,7 +53,6 @@ namespace Models.LogicModels
         {
             Recipe recipe = new Recipe();
             throw new NotImplementedException();
-            return recipe;
         }
 
         public static ICollection<SentRecipe> MapMany(ICollection<Recipe> recipes)

@@ -18,7 +18,7 @@ namespace Tests
 
 
         [Fact]
-        public void Test2()
+        public void TestListUser()
         {
             List<User> users = new List<User>();
             users.Add(new User(){UserId=23,Firstname="Anis"});
@@ -43,7 +43,7 @@ namespace Tests
             Assert.Equal(result1,result2);
         }
         [Fact]
-        public async Task Test3Async()
+        public async Task TestListTag()
         {
             var tags = new List<Tag>();
             tags.Add(new Tag(){  TagId = 12, TagName = "Cheese",TagDescription = "Some description"});
@@ -96,7 +96,7 @@ namespace Tests
 
         //}
         [Fact]
-        public async Task Test8Async()
+        public async Task TestIngredient()
         {
             var ingredient = new Ingredient()
             {
@@ -124,7 +124,7 @@ namespace Tests
 
         }
         [Fact]
-        public async Task Test4Async()
+        public async Task TestListIngredient()
         {
             var ingredients = new List<Ingredient>();
             ingredients.Add(new Ingredient(){  IngredientId = 12, IngredientName = "Cheese",IngredientDescription = "Some description"});
@@ -151,7 +151,7 @@ namespace Tests
         }
 
         [Fact]
-        public async Task Test5Async()
+        public async Task TestListReview()
         {
             var reviews = new List<Review>();
             reviews.Add(new Review(){  ReviewId = 12, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some description"});
@@ -181,7 +181,7 @@ namespace Tests
             Assert.Equal(result1,result2);
         }
         [Fact]
-        public async Task Test6Async()
+        public async Task TestListReviewByName()
         {
             var reviews = new List<Review>();
             reviews.Add(new Review(){  ReviewId = 12, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some description",User = new User(){Firstname = "Anis"}});
