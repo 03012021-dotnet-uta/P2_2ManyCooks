@@ -17,7 +17,7 @@ namespace Models.LogicModels
 
         public User GetMappedUser()
         {
-            // var hash = new PasswordManager().Hash(this.Password);
+            
 
             User u1 = new User();
             u1.Username = this.Username;
@@ -26,7 +26,7 @@ namespace Models.LogicModels
             u1.Email = this.Email;
             u1.PasswordHash = "";
             u1.PasswordSalt = "";
-            // u1.DateLastAccessed = TimeManager.GetTimeNow();
+            
             u1.DateLastAccessed = DateTime.Now;
             u1.ImageUrl = this.ProfileImage;
             u1.Auth0 = this.Sub;
