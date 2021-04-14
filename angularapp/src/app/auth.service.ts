@@ -13,8 +13,8 @@ import { UrlService } from './url.service';
   providedIn: 'root'
 })
 export class AuthService {
-  public authModel: AuthModel;
   public authModel$ = new Subject<AuthModel>();
+  public isAdmin$ = new Subject<boolean>();
   public loading$ = new BehaviorSubject<boolean>(true);
   // getAuthModel() {
   //   this.userService.checkIfNewUser().subscribe((reply) => {
@@ -38,11 +38,18 @@ export class AuthService {
   }
   // Create an observable of Auth0 instance of client
   auth0Client$ = (from(
+    // createAuth0Client({
+    //   domain: 'dev-yktazjo3.us.auth0.com',
+    //   client_id: 'DEJH5xmVrKbgDEwq5XmgjZqyftJLGrs5',
+    //   redirect_uri: this.urlService.angularBaseUrl,
+    //   audience: 'https://dev-yktazjo3.us.auth0.com/api/v2/'
+    //   // audience: 'https://localhost:5001'
+    // })
     createAuth0Client({
       domain: 'dev-yktazjo3.us.auth0.com',
       client_id: 'DEJH5xmVrKbgDEwq5XmgjZqyftJLGrs5',
       redirect_uri: this.urlService.angularBaseUrl,
-      audience: 'https://dev-yktazjo3.us.auth0.com/api/v2/'
+      audience: 'https://inthekitchen/'
       // audience: 'https://localhost:5001'
     })
   ) as Observable<Auth0Client>).pipe(
@@ -189,9 +196,25 @@ export class AuthService {
         // console.log(window.location.pathname);
         // console.log(window.location.href);
       }
+      else {
+        this.isUserAdmin();
+      }
     }).catch(err => {
       console.error(err);
       console.log("error getting user data" + err.message);
+      this.isAdmin$.next(false);
+    });
+  }
+
+  isUserAdmin() {
+    this.userService.isUserAdmin().then(reply => {
+      console.log("admin reply");
+      console.log(reply);
+      this.isAdmin$.next(true);
+    }).catch(err => {
+      console.log("error accessing admin");
+      console.error(err);
+      this.isAdmin$.next(false);
     });
   }
 

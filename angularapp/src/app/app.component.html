@@ -9,6 +9,7 @@
     <li class="nav-title">
       <span class="website-name" routerLink="/">{{ title }}</span>
     </li>
+    <li class="nav-right"></li>
     <li class="nav-right" routerLink="/register" *ngIf="auth.loggedIn">
       <span>{{ authModel.lastName }}, {{ authModel.firstName }}</span>
       <div

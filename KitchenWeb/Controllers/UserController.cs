@@ -70,11 +70,32 @@ namespace KitchenWeb.Controllers
             string sub = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             // var tok = this.Request.Headers.Where(h => h.Key == "Authorization").FirstOrDefault();
             // var dictionary = _authenticator.GetUserAuth0Dictionary(tok.Value);
+            this.User.Claims.ToList().ForEach(c =>
+            {
+                System.Console.WriteLine("claim: " + c);
+            });
             var tok = ControllerHelper.GetTokenFromRequest(this.Request);
             var dic = _authenticator.GetUserAuth0Dictionary(tok);
             var model = new AuthModel();
             iUserLogic.CheckIfNewUser(dic, out model);
             return model;
+
+        }
+
+        [HttpGet("isadmin")]
+        [Authorize("update:website")]
+        public ActionResult<Boolean> GetUserAdmin()
+        {
+            System.Console.WriteLine("in getuseradmin");
+            string sub = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // var tok = this.Request.Headers.Where(h => h.Key == "Authorization").FirstOrDefault();
+            // var dictionary = _authenticator.GetUserAuth0Dictionary(tok.Value);
+
+            var tok = ControllerHelper.GetTokenFromRequest(this.Request);
+            var dic = _authenticator.GetUserAuth0Dictionary(tok);
+            // var model = new AuthModel();
+            // iUserLogic.CheckIfNewUser(dic, out model);
+            return true;
 
         }
     }

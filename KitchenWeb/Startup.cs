@@ -1,5 +1,7 @@
 
+using KitchenWeb.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -88,6 +90,12 @@ namespace KitchenWeb
                     NameClaimType = ClaimTypes.NameIdentifier
                 };
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("update:website", policy => policy.Requirements.Add(new HasScopeRequirement("update:website", domain)));
+            });
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
             services.AddSwaggerGen(c =>
             {
