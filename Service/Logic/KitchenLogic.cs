@@ -29,8 +29,8 @@ namespace Service.Logic
         {
             if (!existRecipeName(recipeName))
             {
-                //return new List<Recipe>() {};
-                throw new Exception("Not Found");
+                return new List<Recipe>() {};
+               
             }
 
             return _context.Recipes
@@ -56,18 +56,20 @@ namespace Service.Logic
 
         public async Task<List<Recipe>> getAllRecipeByTags(string tag)
         {
-            var tagg = new Tag();
-            tagg = _context.Tags.FirstOrDefault(t => t.TagName == tag);
-            int tagId = tagg.TagId;
 
-            if (!await existTag(tag))
-            {
-                return await _context.Recipes.ToListAsync();
-            }
+            //var tagg = _context.Tags.FirstOrDefault(t => t.TagName == tag);
+            //int tagId = tagg.TagId;
 
-            return await _context.Recipes.FromSqlRaw($"SELECT * FROM Recipes WHERE RecipeId IN (SELECT RecipeId FROM RecipeTags WHERE TagId = {tagId})").ToListAsync();
+            //if (!await existTag(tag))
+            //{
+            //    return new List<Recipe>(){};
+            //}
+
+            return await _context.Recipes.Include(r => r.RecipeTags).ThenInclude(r => r.Tag).AsQueryable()
+                .ToListAsync();
+            //return await _context.Recipes.FromSqlRaw($"SELECT * FROM Recipes WHERE RecipeId IN (SELECT RecipeId FROM RecipeTags WHERE TagId = {tagId})").ToListAsync();
         }
-
+        
         public async Task<bool> existTag(string name)
         {
             List<Tag> tags = await _context.Tags.ToListAsync();

@@ -7,11 +7,14 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using KitchenWeb;
+using KitchenWeb.Controllers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Repository.Models;
+using Service.Interfaces;
+using Service.Logic;
 using Xunit;
 
 
@@ -73,11 +76,25 @@ namespace Tests
             var response = testServer.CreateRequest("/recipe/good").SendAsync("GET");
             Assert.Equal(HttpStatusCode.OK,response.Result.StatusCode);
         }
+        [Fact]
+        public async Task TestDeleteRecipeGoodById()
+        {
+            var response = await testServer.CreateRequest("/recipe/2").SendAsync("DELETE");
+            Assert.Equal(HttpStatusCode.NoContent,response.StatusCode);
+        }
+
+        [Fact]
+        public void TestRecipeAll()
+        {
+            var response = testServer.CreateRequest("/recipe").SendAsync("GET");
+            Assert.Equal(HttpStatusCode.OK,response.Result.StatusCode);
+        }
+
         //[Fact]
         //public void TestRecipeGoodById()
         //{
         //    var response = testServer.CreateRequest("/recipe/good/1").SendAsync("GET");
-        //    Assert.Equal(HttpStatusCode.OK,response.Result.StatusCode);
+        //    Assert.Equal(HttpStatusCode.OK, response.Result.StatusCode);
         //}
 
         [Fact]

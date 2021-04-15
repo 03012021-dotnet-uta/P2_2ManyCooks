@@ -429,5 +429,17 @@ namespace Tests
             Assert.Empty(tagList);
 
         }
+
+        [Fact]
+        public void TestHistoryModel()
+        {
+            var history = new HistoryModel()
+            {
+                recipeId = 3,
+                sub = "Anis"
+            };
+
+            Assert.Equal("Anis",history.sub);
+        }
     }
 }

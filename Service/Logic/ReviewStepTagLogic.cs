@@ -63,7 +63,7 @@ namespace Service.Logic
         {
             if (await _context.Ingredients.FindAsync(id) == null)
             {
-                throw new Exception("No Ingredient Matching this ID: " + id);
+                return new Ingredient(){};
             }
 
             return await _context.Ingredients.FindAsync(id);
