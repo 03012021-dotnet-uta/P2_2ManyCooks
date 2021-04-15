@@ -126,5 +126,12 @@ namespace Service.Logic
             }
             return null;
         }
+
+        public async Task<SentRecipe> SaveRecipePrepare(HistoryModel historyModel)
+        {
+            Recipe recipe = await _repo.AddNewPrepare(historyModel.recipeId, historyModel.sub);
+            if (recipe == null) return null;
+            return SentRecipe.GetFromRecipe(recipe);
+        }
     }
 }

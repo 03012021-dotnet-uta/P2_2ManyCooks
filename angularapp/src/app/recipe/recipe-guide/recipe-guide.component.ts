@@ -18,7 +18,7 @@ export class RecipeGuideComponent implements OnInit {
       for (let index = 1; index < this.recipe.steps.length; index++) {
         this.recipe.steps[index - 1].nextStep = this.recipe.steps[index];
       }
-      this.currentStepId = this.recipe.steps[0].recipeId;
+      this.currentStepId = this.recipe.steps[0].stepId;
       setTimeout(() => {
         const top = document.querySelector(".selected");
         top.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });

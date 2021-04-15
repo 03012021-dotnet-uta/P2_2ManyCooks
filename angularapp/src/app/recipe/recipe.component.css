@@ -16,11 +16,11 @@
   height: 44vh;
 }
 
-.img:hover + .img-buffer,
+/* .img:hover + .img-buffer,
 img:hover {
   background-size: cover;
   height: 55vh;
-}
+} */
 
 .recipe-card {
   position: relative;
@@ -31,4 +31,19 @@ img:hover {
 
 input[type="button"]:disabled {
   background-color: grey;
+}
+
+.add-review-card {
+  background-color: lightblue;
+  margin: 8pt;
+  border-radius: 5pt;
+  padding: 16pt;
+}
+
+textarea {
+  width: 100%;
+  padding: 5pt;
+}
+input[type="button"].cancel {
+  background-color: red;
 }

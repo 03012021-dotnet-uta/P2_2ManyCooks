@@ -87,7 +87,7 @@ namespace Service.Logic
 
         public async Task<List<Review>> DeleteReview(int id)
         {
-            if (await _repo.DeleteRecipe(id))
+            if (await _repo.DeleteReview(id))
             {
                 return GetAllReviews();
             }

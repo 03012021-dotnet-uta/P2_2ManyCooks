@@ -10,6 +10,7 @@ import { Recipe } from './recipe';
 import { RecipeSaver } from './recipe-saver';
 import { RecipeEnum, RecipeViewType } from './recipe-view-type';
 import { RecipeService } from './recipe.service';
+import { UserService } from '../user-service';
 
 @Component({
   selector: 'app-recipe',
@@ -20,7 +21,7 @@ export class RecipeComponent implements OnInit, OnDestroy {
   recipe: Recipe;
   reviews: Review[];
   addingReview: boolean;
-  addRating: number;
+  addRating: number = 5;
   addDescription: string;
   currentUser: AuthModel;
   fetchedReviews: boolean;
@@ -29,7 +30,11 @@ export class RecipeComponent implements OnInit, OnDestroy {
   unsubSubject = new Subject();
 
   constructor(private route: ActivatedRoute,
-    private recipeService: RecipeService, private reviewService: ReviewService, private authService: AuthService) { }
+    private recipeService: RecipeService,
+    private reviewService: ReviewService,
+    private authService: AuthService,
+    private userService: UserService
+  ) { }
   ngOnDestroy(): void {
 
   }
@@ -53,6 +58,9 @@ export class RecipeComponent implements OnInit, OnDestroy {
       this.currentUser = reply;
       take(1);
     });
+    if (this.currentUser == null || this.currentUser == undefined) {
+      this.currentUser = this.authService.authModel;
+    }
     this.getRecipeInfo(+this.route.snapshot.paramMap.get("id"));
   }
 
@@ -82,6 +90,19 @@ export class RecipeComponent implements OnInit, OnDestroy {
       console.log("error getting recipes");
       console.error(err);
     });
+  }
+
+
+  saveRecipePrepare() {
+    if (this.authService.loggedIn && this.currentUser != null && this.currentUser != undefined) {
+      this.recipeService.saveUserHistory(JSON.stringify({ recipeId: this.recipe.recipeId, sub: this.currentUser.sub })).then(reply => {
+        console.log("save reipce prepare:");
+        console.log(reply);
+        if (reply != null && reply != undefined && reply.recipeId != null) {
+          this.recipe = reply;
+        }
+      });
+    }
   }
 
   startAddReview() {
@@ -138,6 +159,7 @@ export class RecipeComponent implements OnInit, OnDestroy {
       newReview.reviewRating = this.addRating;
       newReview.reviewDescription = this.addDescription;
       newReview.recipeId = this.recipe.recipeId;
+      this.cancelAddReview();
       this.reviewService.sendReviewGetNewReviews(newReview).then(reply => {
         this.addingReview = false;
         console.log("new reviews:");
@@ -159,6 +181,7 @@ export class RecipeComponent implements OnInit, OnDestroy {
   }
 
   startPrepare() {
+    this.saveRecipePrepare();
     this.preparing = true;
   }
 

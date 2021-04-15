@@ -1,6 +1,9 @@
 .step-card {
   transition: 0.5s;
   /* height: 50vw; */
+  border: 2px solid lightblue;
+  border-radius: 8pt;
+  padding: 20pt;
 }
 
 .step-card:not(.selected) {
@@ -12,5 +15,19 @@
   padding-top: 50vh;
   /* margin-bottom: 50vh; */
   /* height: 100vh; */
-  background-color: green;
+  /* background-color: green; */
+}
+
+.step-card.selected div {
+  font-size: 30pt;
+  line-height: 1.5;
+}
+
+.step-card div {
+  transition: 0.5s;
+}
+
+.step-card.selected .r-step {
+  /* background-color: green; */
+  padding-bottom: 20pt;
 }
