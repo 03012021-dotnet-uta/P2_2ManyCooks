@@ -48,6 +48,10 @@ namespace Service.Logic
             });
             return models;
         }
+        public List<User> getAllUsers()
+        {
+            return _context.Users.FromSqlRaw("Select * From Users").ToList();
+        }
 
         public AuthModel UpdateUser(AuthModel authModel, Dictionary<string, string> userDictionary)
         {

@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using KitchenWeb.Helpers;
+using Service.Helpers;
 
 namespace KitchenWeb
 {
@@ -47,6 +48,7 @@ namespace KitchenWeb
             services.AddScoped<ILogicKitchen, KitchenLogic>();
             services.AddScoped<IReviewStepTagLogic, ReviewStepTagLogic>();
             services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<Auth0HttpRequestHandler>();
             services.AddScoped<IAuthenticator, Authenticator>();
             services.AddScoped<KitchenRepository>();
             string domain = $"https://{Configuration["Auth0:Domain"]}/";
