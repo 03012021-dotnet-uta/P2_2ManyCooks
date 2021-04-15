@@ -38,7 +38,7 @@ steps:
     cliProjectName: 'InTheKitchenApp'
     cliSources: '$(System.DefaultWorkingDirectory)/angularapp'
     extraProperties:
-      sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/cobertura-coverage.xml
+      sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/inthekitchen/cobertura-coverage.xml
       # sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/**/coverage/lcov.info
 
 
@@ -84,7 +84,7 @@ steps:
   condition: succeededOrFailed()
   inputs:
     codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/angularapp/coverage/cobertura-coverage.xml'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/angularapp/coverage/inthekitchen/cobertura-coverage.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)/angularapp'
 
 # - task: PublishCodeCoverageResults@1
