@@ -82,7 +82,7 @@ namespace Repository.Repositories
             var dbUser = _context.Users.Where(u => u.Auth0 == sub).FirstOrDefault();
             if (_context.Reviews.Any(r => r.UserId == dbUser.UserId && r.RecipeId == review.RecipeId))
             {
-                return null;
+                return Task.FromResult<List<Review>>(null);
             }
             review.ReviewDate = DateTime.Now;
             review.User = dbUser;
