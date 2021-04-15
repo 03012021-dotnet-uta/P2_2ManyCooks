@@ -11,6 +11,7 @@ namespace Service.Logic
 {
     public interface IUserLogic
     {
+        List<User> getAllUsers();
         Task<List<AuthModel>> GetAllUsers();
         // User GetUserData(string sub);
 
