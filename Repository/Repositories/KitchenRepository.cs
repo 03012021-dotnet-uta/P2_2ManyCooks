@@ -36,7 +36,7 @@ namespace Repository.Repositories
             // * "updated_at":"2021-04-08T13:21:23.390Z",
             // * "email":"noureldinashraf6@gmail.com",
             // * "email_verified":false}
-            var dbUser = _context.Users.Where(u => u.Auth0 == user.Auth0).FirstOrDefault();
+            var dbUser = _context.Users.FirstOrDefault(u => u.Auth0 == user.Auth0);
 
             dbUser.Email = user.Email;
             dbUser.ImageUrl = user.ImageUrl;
@@ -79,7 +79,7 @@ namespace Repository.Repositories
 
         public Task<List<Review>> AddNewReview(string sub, Review review)
         {
-            var dbUser = _context.Users.Where(u => u.Auth0 == sub).FirstOrDefault();
+            var dbUser = _context.Users.FirstOrDefault(u => u.Auth0 == sub);
             if (_context.Reviews.Any(r => r.UserId == dbUser.UserId && r.RecipeId == review.RecipeId))
             {
                 return null;
@@ -101,12 +101,12 @@ namespace Repository.Repositories
 
         public User GetUserDataById(int id)
         {
-            return _context.Users.Where(u => u.UserId == id).FirstOrDefault();
+            return _context.Users.FirstOrDefault(u => u.UserId == id);
         }
 
         public User GetUserDataBySub(string sub)
         {
-            return _context.Users.Where(u => u.Auth0 == sub).FirstOrDefault();
+            return _context.Users.FirstOrDefault(u => u.Auth0 == sub);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Repository.Repositories
             _context.Users.Add(user);
             bool success = _context.SaveChanges() > 0;
 
-            newUser = _context.Users.Where(u => u.Auth0 == user.Auth0).FirstOrDefault();
+            newUser = _context.Users.FirstOrDefault(u => u.Auth0 == user.Auth0);
             return success;
         }
 

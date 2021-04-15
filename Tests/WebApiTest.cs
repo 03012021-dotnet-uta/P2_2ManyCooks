@@ -17,10 +17,10 @@ using Xunit;
 
 namespace Tests
 {
-
     public class WebApiTest :IDisposable
     {
         protected TestServer testServer;
+
         DbContextOptions<InTheKitchenDBContext> testOptions = new DbContextOptionsBuilder<InTheKitchenDBContext>()
             .UseInMemoryDatabase(databaseName: "TestDb")
             .Options;
@@ -67,18 +67,30 @@ namespace Tests
             Assert.Equal(HttpStatusCode.OK,response.StatusCode);
         }
 
+        [Fact]
+        public void TestRecipeGood()
+        {
+            var response = testServer.CreateRequest("/recipe/good").SendAsync("GET");
+            Assert.Equal(HttpStatusCode.OK,response.Result.StatusCode);
+        }
         //[Fact]
-        //public async Task TestReadRecipeById()
+        //public void TestRecipeGoodById()
         //{
-        //    var response = await testServer.CreateRequest("/Recipe/recipeById/3").SendAsync("GET");
-        //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    //}
+        //    var response = testServer.CreateRequest("/recipe/good/1").SendAsync("GET");
+        //    Assert.Equal(HttpStatusCode.OK,response.Result.StatusCode);
+        //}
+
+        [Fact]
+        public async Task TestReadRecipeById()
+        {
+            var response = await testServer.CreateRequest("/Recipe/recipeById/3").SendAsync("GET");
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
         //[Fact]
         //public async Task TestReadRecipeByTag()
         //{
         //    var response = await testServer.CreateRequest("/tag/Spicy").SendAsync("GET");
         //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
         //}
         [Fact]
         public async Task TestReadRecipeApi()
@@ -120,6 +132,29 @@ namespace Tests
             
         }
 
-
+        [Fact]
+        public void TestUser()
+        {
+            var response = testServer.CreateRequest("/user").SendAsync("GET");
+            Assert.Equal(HttpStatusCode.Unauthorized,response.Result.StatusCode);
+        }
+        [Fact]
+        public void TestUserInfo()
+        {
+            var response = testServer.CreateRequest("/user/myinfo").SendAsync("GET");
+            Assert.Equal(HttpStatusCode.Unauthorized,response.Result.StatusCode);
+        }
+        [Fact]
+        public void TestUserAdmin()
+        {
+            var response = testServer.CreateRequest("/user/isAdmin").SendAsync("GET");
+            Assert.Equal(HttpStatusCode.Unauthorized,response.Result.StatusCode);
+        }
+        [Fact]
+        public void TestUserPUT()
+        {
+            var response = testServer.CreateRequest("/user").SendAsync("PUT");
+            Assert.Equal(HttpStatusCode.Unauthorized,response.Result.StatusCode);
+        }
     }
 }
