@@ -6,6 +6,7 @@ import { Recipe } from '../recipe/recipe';
 import { RecipeSaver } from '../recipe/recipe-saver';
 import { RecipeViewType, RecipeEnum } from '../recipe/recipe-view-type';
 import { RecipeService } from '../recipe/recipe.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-home',

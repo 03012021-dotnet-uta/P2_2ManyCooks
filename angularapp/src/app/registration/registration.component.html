@@ -8,7 +8,7 @@
 <section class="section">
   <div (click)="logout()" class="logout" routerLink="/">Logout</div>
   <div class="fancy-container-shadow-border">
-    <form action="">
+    <form action="" *ngIf="usermodel">
       <input
         type="text"
         name="d"
