@@ -1,42 +1,19 @@
-// import { HttpClient } from '@angular/common/http';
-// import { async, TestBed } from '@angular/core/testing';
-// import { Router, RouterModule } from '@angular/router';
+import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { AuthService } from './auth.service';
 
-// import { AuthService } from './auth.service';
-// import { UrlService } from './url.service';
-// import { UserService } from './user-service';
+describe('AuthService', () => {
+  let service: AuthService;
 
-// class MockAuthService extends AuthService {
-//   constructor() {
-//     let r: Router;
-//     let s: UserService;
-//     let u: UrlService;
-//     super(r, s, u);
-//   }
-// }
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, HttpClientTestingModule]
+    });
+    service = TestBed.inject(AuthService);
+  });
 
-// describe('AuthService', () => {
-//   let service: MockAuthService;
-
-
-//   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
-//       imports: [Router],
-//       providers: [{
-//         provide: AuthService,
-//         useClass: MockAuthService
-//       }]
-//     })
-//       .compileComponents();
-//   }));
-
-
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({});
-//     service = TestBed.inject(AuthService);
-//   });
-
-//   it('should be created', () => {
-//     expect(service).toBeTruthy();
-//   });
-// });
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

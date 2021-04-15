@@ -14,14 +14,16 @@ export class RecipeGuideComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    for (let index = 1; index < this.recipe.steps.length; index++) {
-      this.recipe.steps[index - 1].nextStep = this.recipe.steps[index];
+    if (this.recipe !== undefined) {
+      for (let index = 1; index < this.recipe.steps.length; index++) {
+        this.recipe.steps[index - 1].nextStep = this.recipe.steps[index];
+      }
+      this.currentStepId = this.recipe.steps[0].recipeId;
+      setTimeout(() => {
+        const top = document.querySelector(".selected");
+        top.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+      }, 200);
     }
-    this.currentStepId = this.recipe.steps[0].recipeId;
-    setTimeout(() => {
-      const top = document.querySelector(".selected");
-      top.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
-    }, 200);
   }
 
   scrollToElement(step) {

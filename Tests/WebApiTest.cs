@@ -50,9 +50,6 @@ namespace Tests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         }
-
-      
-
         [Fact]
         public async Task TestAddRecipe()
         {
@@ -122,6 +119,7 @@ namespace Tests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             
         }
+
 
     }
 }
