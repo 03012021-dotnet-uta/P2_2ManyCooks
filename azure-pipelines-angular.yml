@@ -36,19 +36,19 @@ steps:
     configMode: 'manual'
     cliProjectKey: '2ManyCooksInTheKitchen_InTheKitchenApp'
     cliProjectName: 'InTheKitchenApp'
-    cliSources: '$(System.DefaultWorkingDirectory)/angularapp'
-    extraProperties:
-      sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/inthekitchen/cobertura-coverage.xml
+    cliSources: '$(System.DefaultWorkingDirectory)/angularapp/src'
+    extraProperties: 'sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/inthekitchen/lcov.info'
+      # sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/inthekitchen/cobertura-coverage.xml
       # sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/**/coverage/lcov.info
 
 
-- script: |
-    cd "$(System.DefaultWorkingDirectory)/AngularTest"
-    npm install -g @angular/cli
-    npm install --save-dev @angular-devkit/build-angular
-    npm install
-    ng build --prod --verbose
-  displayName: 'npm install and build'
+# - script: |
+#     cd "$(System.DefaultWorkingDirectory)/AngularTest"
+#     npm install -g @angular/cli
+#     npm install --save-dev @angular-devkit/build-angular
+#     npm install
+#     ng build --prod --verbose
+#   displayName: 'npm install and build'
 
 - task: Npm@1
   inputs:
@@ -86,13 +86,6 @@ steps:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/angularapp/coverage/inthekitchen/cobertura-coverage.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)/angularapp'
-
-# - task: PublishCodeCoverageResults@1
-#   inputs:
-#     codeCoverageTool: 'Cobertura'
-#     summaryFileLocation: '$(System.DefaultWorkingDirectory)/angularapp/**/coverage/lcov.info'
-#     pathToSources: '$(System.DefaultWorkingDirectory)/angularapp'
-#     reportDirectory: '$(System.DefaultWorkingDirectory)/angularapp/**/coverage'
 
 - task: SonarCloudAnalyze@1
 
