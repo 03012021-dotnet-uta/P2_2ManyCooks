@@ -67,34 +67,32 @@ namespace Tests
             }
             Assert.Equal(result1,result2);
         }
-        //[Fact]
-        //public async Task Test7Async()
-        //{
-        //    var ingredient = new Ingredient()
-        //    {
-        //        IngredientId = 34,
-        //        IngredientName = "Cheese"
-        //    };
-        //    var result1 = new Ingredient();
-        //    var result2 = new Ingredient();
+        [Fact]
+        public async Task TestSingleIngredient()
+        {
+            var ingredient = new Ingredient()
+            {
+                IngredientId = 3,
+                IngredientName = "Cheese",
+                IngredientDescription = "svsvsvs",
+                IngredientImage = "Some Image",
+                RecipeIngredients = new List<RecipeIngredient>(),
+                ThirdPartyApiId = "Google",
+            };
+            var result1 = new Ingredient();
+            
+            await using (var context = new InTheKitchenDBContext(testOptions))
+            {
+                await context.Database.EnsureDeletedAsync();
+                await context.Database.EnsureCreatedAsync();
+                var msr = new ReviewStepTagLogic(context);
 
-        //    await using(var context = new InTheKitchenDBContext(testOptions))
-        //    {
-        //        await context.Database.EnsureDeletedAsync();
-        //        await context.Database.EnsureCreatedAsync();
-        //        var msr = new ReviewStepTagLogic(context);
+                result1 = await msr.getOneIngredientById(ingredient.IngredientId);
+            }
 
-        //        result1 = await msr.getOneIngredientById(ingredient.IngredientId);
-        //    }
+            Assert.NotNull(result1);
 
-        //    await using(var context = new InTheKitchenDBContext(testOptions))
-        //    {
-        //        await context.Database.EnsureCreatedAsync();
-        //        result2 = await context.Ingredients.FindAsync(ingredient.IngredientId);
-        //    }
-        //    Assert.Equal(result1,result2);
-
-        //}
+        }
         [Fact]
         public async Task TestIngredient()
         {
@@ -211,5 +209,35 @@ namespace Tests
             Assert.Equal(result1,result2);
         }
 
+        [Fact]
+        public async Task TestSingleTag()
+        {
+            {
+                var tag = new Tag()
+                {
+                    TagId = 4,
+                    TagName = "Chee",
+                    TagDescription = "SomeSTuff",
+                    RecipeTags = new List<RecipeTag>() { }
+                };
+                var result1 = new Tag();
+                var result2 = new Tag();
+
+                await using (var context = new InTheKitchenDBContext(testOptions))
+                {
+                    await context.Database.EnsureDeletedAsync();
+                    await context.Database.EnsureCreatedAsync();
+                    var msr = new KitchenLogic(context);
+                    result1 = await msr.getOneTag(tag.TagName);
+
+                }
+                await using(var context2 = new InTheKitchenDBContext(testOptions))
+                {
+                    await context2.Database.EnsureCreatedAsync();
+                    result2 = await context2.Tags.FirstOrDefaultAsync(t => t.TagName == tag.TagName);
+                }
+                Assert.Equal(result1,result2);
+            }
+        }
     }
 }
