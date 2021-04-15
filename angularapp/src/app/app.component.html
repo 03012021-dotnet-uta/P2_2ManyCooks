@@ -18,6 +18,9 @@
         }"
       ></div>
     </li>
+    <li class="nav-right" routerLink="admin" *ngIf="isUserAdmin">
+      <span>Admin Page</span>
+    </li>
     <li
       class="nav-right"
       (click)="auth.login()"

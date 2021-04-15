@@ -323,6 +323,7 @@ body {
   margin: 0;
   /* font-family: Roboto, "Helvetica Neue", sans-serif; */
 }
+/* from: https://loading.io/css/ */
 
 .page-loading {
   /* float: right; */
@@ -342,7 +343,6 @@ body {
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
   /* transition: 0.5s ease-out; */
 }
-
 .page-loading,
 .page-loading * {
   padding: 0;

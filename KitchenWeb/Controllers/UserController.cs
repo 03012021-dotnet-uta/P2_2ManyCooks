@@ -21,10 +21,9 @@ namespace KitchenWeb.Controllers
     {
         public readonly IUserLogic iUserLogic;
         private readonly IAuthenticator _authenticator;
-        private readonly ILogger<UserController> _logger;
-        public UserController(ILogger<UserController> logger, IUserLogic iUserLogic, IAuthenticator _authenticator)
+
+        public UserController(IUserLogic iUserLogic, IAuthenticator _authenticator)
         {
-            _logger = logger;
             this.iUserLogic = iUserLogic;
             this._authenticator = _authenticator;
         }
@@ -40,7 +39,6 @@ namespace KitchenWeb.Controllers
             // System.Console.WriteLine("whwat is this?");
             // System.Console.WriteLine(x);
             return iUserLogic.getAllUsers();
-            // return true;
         }
 
         // [HttpGet("{id}")]
@@ -70,11 +68,32 @@ namespace KitchenWeb.Controllers
             string sub = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             // var tok = this.Request.Headers.Where(h => h.Key == "Authorization").FirstOrDefault();
             // var dictionary = _authenticator.GetUserAuth0Dictionary(tok.Value);
+            this.User.Claims.ToList().ForEach(c =>
+            {
+                System.Console.WriteLine("claim: " + c);
+            });
             var tok = ControllerHelper.GetTokenFromRequest(this.Request);
             var dic = _authenticator.GetUserAuth0Dictionary(tok);
             var model = new AuthModel();
             iUserLogic.CheckIfNewUser(dic, out model);
             return model;
+
+        }
+
+        [HttpGet("isadmin")]
+        [Authorize("update:website")]
+        public ActionResult<Boolean> GetUserAdmin()
+        {
+            System.Console.WriteLine("in getuseradmin");
+            string sub = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // var tok = this.Request.Headers.Where(h => h.Key == "Authorization").FirstOrDefault();
+            // var dictionary = _authenticator.GetUserAuth0Dictionary(tok.Value);
+
+            var tok = ControllerHelper.GetTokenFromRequest(this.Request);
+            var dic = _authenticator.GetUserAuth0Dictionary(tok);
+            // var model = new AuthModel();
+            // iUserLogic.CheckIfNewUser(dic, out model);
+            return true;
 
         }
     }

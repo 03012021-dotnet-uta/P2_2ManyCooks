@@ -11,11 +11,14 @@ describe('AppComponent', () => {
     }).compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+// class MockAppComponent extends AppComponent {
+//     constructor() {
+//         let a: AuthService;
+//         let h: HttpClient;
+//         let u: UserService;
+//         super(a, h, u);
+//     }
+// }
 
   it(`should have as title 'angularapp'`, () => {
     const fixture = TestBed.createComponent(AppComponent);

@@ -1,5 +1,7 @@
 
+using KitchenWeb.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -52,15 +54,6 @@ namespace KitchenWeb
             services.AddScoped<IUserLogic, UserLogic>();
             services.AddScoped<IAuthenticator, Authenticator>();
             services.AddScoped<KitchenRepository>();
-            services.AddScoped<TestLogic>();
-            // services.AddCors(options =>
-            // {
-            //     options.AddPolicy("CorsPolicy",
-            //         builder => builder.AllowAnyOrigin()
-            //         .AllowAnyMethod()
-            //         .AllowAnyHeader()
-            //         .AllowCredentials());
-            // });
             services.AddCors(options =>
             {
                 options.AddPolicy(name: _corsPolicy,
@@ -89,6 +82,12 @@ namespace KitchenWeb
                 };
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("update:website", policy => policy.Requirements.Add(new HasScopeRequirement("update:website", domain)));
+            });
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KitchenWeb", Version = "v1" });
@@ -98,12 +97,11 @@ namespace KitchenWeb
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
+           
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "KitchenWeb v1"));
-            //}
+            
 
             app.UseHttpsRedirection();
 
