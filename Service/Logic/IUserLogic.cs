@@ -16,6 +16,7 @@ namespace Service.Logic
         // User GetUserData(string sub);
 
 
+
         /// <summary>
         /// Takes in a new authmodel, and Dictionary from Auth0 <br/>
         /// Saves the changes and returns the new model. <br/>
@@ -72,6 +73,7 @@ namespace Service.Logic
         /// </summary>
         /// <returns>a new list of users</returns>
         Task<List<AuthModel>> DeleteUser(string token, string sub);
+
     }
 }
 
