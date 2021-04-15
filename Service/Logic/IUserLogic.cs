@@ -11,7 +11,7 @@ namespace Service.Logic
 {
     public interface IUserLogic
     {
-        List<User> getAllUsers();
+        Task<List<AuthModel>> GetAllUsers();
         // User GetUserData(string sub);
 
 
@@ -65,6 +65,12 @@ namespace Service.Logic
         /// <param name="newModel"></param>
         /// <returns>AuthModel of new User</returns>
         bool UpdateUserData(AuthModel authModel, Dictionary<string, string> userDictionary, out AuthModel newModel, bool isNewUser);
+
+        /// <summary>
+        /// Delete user from website
+        /// </summary>
+        /// <returns>a new list of users</returns>
+        Task<List<AuthModel>> DeleteUser(string token, string sub);
     }
 }
 

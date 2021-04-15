@@ -36,4 +36,12 @@ export class UserService {
   isUserAdmin(): Promise<boolean> {
     return this.http.get<boolean>(`${this.baseUrl}/isadmin`, this.httpOptions).toPromise();
   }
+
+  getAllUsers(): Promise<AuthModel[]> {
+    return this.http.get<AuthModel[]>(`${this.baseUrl}`, this.httpOptions).toPromise();
+  }
+
+  deleteUser(sub: string): Promise<AuthModel[]> {
+    return this.http.delete<AuthModel[]>(`${this.baseUrl}/${sub}`, this.httpOptions).toPromise();
+  }
 }

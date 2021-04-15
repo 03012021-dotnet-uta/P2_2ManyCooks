@@ -29,17 +29,6 @@ namespace KitchenWeb.Controllers
         }
 
 
-        [HttpGet]
-        [Authorize]
-        public List<User> getList()
-        {
-            // System.Console.WriteLine("the request headers:");
-            // System.Console.WriteLine(tok.Value);
-            // var x = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            // System.Console.WriteLine("whwat is this?");
-            // System.Console.WriteLine(x);
-            return iUserLogic.getAllUsers();
-        }
 
         // [HttpGet("{id}")]
         // [Authorize]
@@ -50,20 +39,20 @@ namespace KitchenWeb.Controllers
 
         [HttpPut]
         [Authorize]
-        public ActionResult<AuthModel> UpdateUser(AuthModel model)
+        public async Task<ActionResult<AuthModel>> UpdateUser(AuthModel model)
         {
             System.Console.WriteLine("authmodel recieved in controller:");
             System.Console.WriteLine(model.FirstName);
             System.Console.WriteLine(model.LastName);
             // var tok = this.Request.Headers.Where(h => h.Key == "Authorization").FirstOrDefault();
             var tok = ControllerHelper.GetTokenFromRequest(this.Request);
-            var dic = _authenticator.GetUserAuth0Dictionary(tok);
+            var dic = await _authenticator.GetUserAuth0Dictionary(tok);
             return iUserLogic.UpdateUser(model, dic);
         }
 
         [HttpGet("myinfo")]
         [Authorize]
-        public ActionResult<AuthModel> GetCurrentUser()
+        public async Task<ActionResult<AuthModel>> GetCurrentUser()
         {
             string sub = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             // var tok = this.Request.Headers.Where(h => h.Key == "Authorization").FirstOrDefault();
@@ -73,7 +62,7 @@ namespace KitchenWeb.Controllers
                 System.Console.WriteLine("claim: " + c);
             });
             var tok = ControllerHelper.GetTokenFromRequest(this.Request);
-            var dic = _authenticator.GetUserAuth0Dictionary(tok);
+            var dic = await _authenticator.GetUserAuth0Dictionary(tok);
             var model = new AuthModel();
             iUserLogic.CheckIfNewUser(dic, out model);
             return model;
@@ -82,7 +71,8 @@ namespace KitchenWeb.Controllers
 
         [HttpGet("isadmin")]
         [Authorize("update:website")]
-        public ActionResult<Boolean> GetUserAdmin()
+        // [Authorize]
+        public async Task<ActionResult<Boolean>> GetUserAdmin()
         {
             System.Console.WriteLine("in getuseradmin");
             string sub = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -90,11 +80,29 @@ namespace KitchenWeb.Controllers
             // var dictionary = _authenticator.GetUserAuth0Dictionary(tok.Value);
 
             var tok = ControllerHelper.GetTokenFromRequest(this.Request);
-            var dic = _authenticator.GetUserAuth0Dictionary(tok);
+            var dic = await _authenticator.GetUserAuth0Dictionary(tok);
             // var model = new AuthModel();
             // iUserLogic.CheckIfNewUser(dic, out model);
             return true;
 
+        }
+
+        [HttpGet]
+        [Authorize("update:website")]
+        // [Authorize]
+        public async Task<List<AuthModel>> getList()
+        {
+            return await iUserLogic.GetAllUsers();
+        }
+
+
+        [HttpDelete("{sub}")]
+        [Authorize("update:website")]
+        // [Authorize]
+        public async Task<List<AuthModel>> DeleteUser(string sub)
+        {
+            var token = ControllerHelper.GetTokenFromRequest(this.Request);
+            return await iUserLogic.DeleteUser(token, sub);
         }
     }
 }

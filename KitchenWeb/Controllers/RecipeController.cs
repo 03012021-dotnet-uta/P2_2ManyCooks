@@ -53,6 +53,12 @@ namespace KitchenWeb.Controllers
             return iLogicKitchen.GetRecipeById(id);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ICollection<SentRecipe>> DeleteRecipe(int id)
+        {
+            return await iLogicKitchen.DeleteRecipe(id);
+        }
+
         [HttpGet("recipeById/{id}")]
         public async Task<Recipe> getOne(int id)
         {

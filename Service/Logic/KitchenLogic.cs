@@ -117,5 +117,14 @@ namespace Service.Logic
         {
             return await _context.Recipes.Where(r => r.RecipeId == id).FirstOrDefaultAsync();
         }
+
+        public async Task<ICollection<SentRecipe>> DeleteRecipe(int id)
+        {
+            if (await _repo.DeleteRecipe(id))
+            {
+                return await getAllSentRecipe();
+            }
+            return null;
+        }
     }
 }

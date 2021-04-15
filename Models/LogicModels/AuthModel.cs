@@ -1,6 +1,5 @@
 using System;
 using System.Security.Cryptography;
-using Repository.Helpers;
 using Repository.Models;
 
 namespace Models.LogicModels
@@ -17,7 +16,7 @@ namespace Models.LogicModels
 
         public User GetMappedUser()
         {
-            
+
 
             User u1 = new User();
             u1.Username = this.Username;
@@ -26,16 +25,11 @@ namespace Models.LogicModels
             u1.Email = this.Email;
             u1.PasswordHash = "";
             u1.PasswordSalt = "";
-            
+
             u1.DateLastAccessed = DateTime.Now;
             u1.ImageUrl = this.ProfileImage;
             u1.Auth0 = this.Sub;
             return u1;
-        }
-
-        public bool HasSamePassword(string dbHashedPass)
-        {
-            return new PasswordManager().ComparePass(dbHashedPass, this.Password);
         }
 
         public static AuthModel GetFromUser(User user)
@@ -51,7 +45,6 @@ namespace Models.LogicModels
                 Sub = user.Auth0,
             };
         }
-
     }
 
 }

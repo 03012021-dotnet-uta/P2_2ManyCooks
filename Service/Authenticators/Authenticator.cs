@@ -8,6 +8,8 @@ using Repository.Repositories;
 using Repository.Models;
 using Models.LogicModels;
 using System.Linq;
+using Service.Helpers;
+using System.Threading.Tasks;
 
 namespace Service.Authenticators
 {
@@ -15,38 +17,25 @@ namespace Service.Authenticators
     {
         private readonly IConfiguration _configuration;
         private readonly KitchenRepository _repo;
+        private readonly Auth0HttpRequestHandler _handler;
 
-        public Authenticator(IConfiguration _configuration, KitchenRepository _repo)
+        public Authenticator(IConfiguration _configuration, KitchenRepository _repo, Auth0HttpRequestHandler _handler)
         {
             this._configuration = _configuration;
             this._repo = _repo;
+            this._handler = _handler;
         }
 
-        public Dictionary<string, string> GetUserAuth0Dictionary(string token)
+
+        public async Task<Dictionary<string, string>> GetUserAuth0Dictionary(string token)
         {
             var success = false;
-            // System.Console.WriteLine("token");
-            // System.Console.WriteLine(token);
-
-            //* Get the data from Auth0
-            string url = $"https://{_configuration["Auth0:Domain"]}/userinfo";
-
-            var client = new RestClient(url);
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("Authorization", token);
-            IRestResponse response = client.Execute(request);
-            // System.Console.WriteLine("status: " + response.ResponseStatus);
+            IRestResponse response = await _handler.Sendrequest("/userinfo", Method.GET, token);
             System.Console.WriteLine("user data:");
             Console.WriteLine(response.Content);
             System.Console.WriteLine("response status");
             Console.WriteLine(response.StatusCode);
             Console.WriteLine(response.IsSuccessful);
-            // Console.WriteLine(response.ResponseStatus);
-
-            // success = response.ResponseStatus.Equals("True");
-            // System.Console.WriteLine("succes: " + success);
             return JsonConvert.DeserializeObject<Dictionary<string, string>>(response.Content);
         }
     }

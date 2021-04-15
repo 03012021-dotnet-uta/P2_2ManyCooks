@@ -44,7 +44,7 @@ namespace KitchenWeb.Controllers
         public async Task<List<Review>> AddNewReview([FromBody] Review review)
         {
             var tok = ControllerHelper.GetTokenFromRequest(this.Request);
-            var dic = _authenticator.GetUserAuth0Dictionary(tok);
+            var dic = await _authenticator.GetUserAuth0Dictionary(tok);
             return await iReviewStepTagLogic.addReview(dic["sub"], review);
         }
 
@@ -52,6 +52,13 @@ namespace KitchenWeb.Controllers
         public async Task<List<Review>> getAllTheReviewByUser(string user)
         {
             return await iReviewStepTagLogic.getReviewByUser(user);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize("update:website")]
+        public async Task<List<Review>> DeleteReview(int id)
+        {
+            return await iReviewStepTagLogic.DeleteReview(id);
         }
 
     }

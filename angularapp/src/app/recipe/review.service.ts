@@ -26,6 +26,10 @@ export class ReviewService {
   }
 
 
+  deleteReview(reviewId: number): Promise<any> {
+    return this.http.delete<Review[]>(`${this.baseUrl}/${reviewId}`, this.httpOptions).toPromise();
+  }
+
   sendReviewGetNewReviews(review: Review): Promise<Review[]> {
     console.log("in service posting");
     return this.http.post<Review[]>(`${this.baseUrl}`, review, this.httpOptions).toPromise();

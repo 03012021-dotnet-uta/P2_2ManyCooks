@@ -16,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using Repository.Models;
 using Repository.Repositories;
 using Service.Authenticators;
+using Service.Helpers;
 using Service.Interfaces;
 using Service.Logic;
 using System;
@@ -52,6 +53,7 @@ namespace KitchenWeb
             services.AddScoped<ILogicKitchen, KitchenLogic>();
             services.AddScoped<IReviewStepTagLogic, ReviewStepTagLogic>();
             services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<Auth0HttpRequestHandler>();
             services.AddScoped<IAuthenticator, Authenticator>();
             services.AddScoped<KitchenRepository>();
             services.AddCors(options =>
@@ -76,6 +78,7 @@ namespace KitchenWeb
             {
                 options.Authority = domain;
                 options.Audience = Configuration["Auth0:Audience"];
+                // options.Audience = "https://inthekitchen/";
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     NameClaimType = ClaimTypes.NameIdentifier
@@ -97,11 +100,11 @@ namespace KitchenWeb
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-           
+
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "KitchenWeb v1"));
-            
+
 
             app.UseHttpsRedirection();
 

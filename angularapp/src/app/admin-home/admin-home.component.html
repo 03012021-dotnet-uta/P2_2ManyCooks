@@ -1,1 +1,103 @@
-<p>admin-home works!</p>
+<section class="section">
+  <div class="">
+    <h1>Website Users</h1>
+    <table class="user-list">
+      <tr class="user-card">
+        <th>ID</th>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Action</th>
+      </tr>
+      <tr class="user-card" *ngFor="let model of userList">
+        <td>{{ model.sub }}</td>
+        <td>{{ model.email }}</td>
+        <td>{{ model.firstName }} {{ model.lastName }}</td>
+        <td><button (click)="deleteUser(model)">Delete</button></td>
+      </tr>
+    </table>
+    <h1>Website Recipes</h1>
+    <table class="user-list">
+      <colgroup>
+        <col span="1" style="width: 15%" />
+        <col span="1" style="width: 55%" />
+        <col span="1" style="width: 10%" />
+        <col span="1" style="width: 10%" />
+        <col span="1" style="width: 10%" />
+      </colgroup>
+      <tbody>
+        <tr class="recipe-row">
+          <th>ID</th>
+          <th>Recipe Name</th>
+          <th>Date Created</th>
+          <th>Prepared</th>
+          <th>Action</th>
+        </tr>
+      </tbody>
+      <!-- </tr> -->
+      <!-- <table > -->
+      <!-- </table> -->
+    </table>
+    <table class="user-list" *ngFor="let recipe of recipeList">
+      <colgroup>
+        <col span="1" style="width: 15%" />
+        <col span="1" style="width: 55%" />
+        <col span="1" style="width: 10%" />
+        <col span="1" style="width: 10%" />
+        <col span="1" style="width: 10%" />
+      </colgroup>
+      <tbody>
+        <tr class="recipe-row">
+          <td>{{ recipe.recipeId }}</td>
+          <td>{{ recipe.recipeName }}</td>
+          <td>{{ recipe.dateCreated }}</td>
+          <td>{{ recipe.numTimesPrepared }}</td>
+          <td><button (click)="deleteRecipe(recipe)">Delete</button></td>
+        </tr>
+      </tbody>
+      <!-- </tr> -->
+      <!-- <table > -->
+      <!-- </table> -->
+    </table>
+    <h1>Website Reviews</h1>
+    <table>
+      <colgroup>
+        <col span="1" style="width: 15%" />
+        <col span="1" style="width: 55%" />
+        <col span="1" style="width: 10%" />
+        <col span="1" style="width: 10%" />
+        <col span="1" style="width: 10%" />
+      </colgroup>
+      <tbody>
+        <tr class="review-title">
+          <th>ID</th>
+          <th>Description</th>
+          <th>Rating</th>
+          <th>Recipe ID</th>
+          <!-- <th>User</th> -->
+          <th>Action</th>
+        </tr>
+      </tbody>
+    </table>
+
+    <table *ngFor="let recipe of recipeList">
+      <colgroup>
+        <col span="1" style="width: 15%" />
+        <col span="1" style="width: 55%" />
+        <col span="1" style="width: 10%" />
+        <col span="1" style="width: 10%" />
+        <col span="1" style="width: 10%" />
+      </colgroup>
+      <tbody>
+        <tr class="user-card" *ngFor="let review of recipe.reviews">
+          <td>{{ review.reviewId }}</td>
+          <td>{{ review.reviewDescription }}</td>
+          <td>{{ review.reviewRating }}</td>
+          <td>{{ review.recipeId }}</td>
+          <!-- <td>{{ review.reviewRating }}</td> -->
+          <!-- <td>{{ review.user.firstName }}</td> -->
+          <td><button (click)="deleteReview(review)">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
