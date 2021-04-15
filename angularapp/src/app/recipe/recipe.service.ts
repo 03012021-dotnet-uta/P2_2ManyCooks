@@ -30,6 +30,10 @@ export class RecipeService {
 
   }
 
+  deleteRecipe(recipeId: number): Promise<Recipe[]> {
+    return this.http.delete<Recipe[]>(`${this.baseUrl}/${recipeId}`, this.httpOptions).toPromise();
+  }
+
   handleError<T>(text, result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

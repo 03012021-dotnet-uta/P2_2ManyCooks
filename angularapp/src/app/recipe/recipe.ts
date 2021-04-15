@@ -14,4 +14,5 @@ export class Recipe {
     ingredients: any[];
     tags: any[];
     steps: any[];
+    reviews: any[];
 }

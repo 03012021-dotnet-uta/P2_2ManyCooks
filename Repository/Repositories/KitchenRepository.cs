@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Repository.Helpers;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -45,6 +44,12 @@ namespace Repository.Repositories
             _context.SaveChanges();
             return true;
         }
+
+        public Task<List<User>> GetAllUsers()
+        {
+            return _context.Users.ToListAsync();
+        }
+
 
         /// <summary>
         /// only updates the following:
@@ -92,6 +97,11 @@ namespace Repository.Repositories
             return _context.Reviews.Where(r => r.RecipeId == review.RecipeId).Include(r => r.User).ToListAsync();
         }
 
+        public List<Review> GetAllReviews()
+        {
+            return _context.Reviews.ToList();
+        }
+
         public Task<List<Review>> GetReviewsByRecipeId(int recipeId)
         {
             return _context.Reviews.Where(r => r.RecipeId == recipeId)
@@ -132,6 +142,7 @@ namespace Repository.Repositories
             .Include(r => r.RecipeTags)
             .ThenInclude(rt => rt.Tag)
             .Include(r => r.Steps)
+            .Include(r => r.Reviews)
             .ToList();
         }
 
@@ -145,6 +156,33 @@ namespace Repository.Repositories
             .Include(r => r.Steps)
             .Include(r => r.Reviews)
             .FirstOrDefault();
+        }
+
+        public async Task<bool> DeleteUser(string sub)
+        {
+            var dbuser = await _context.Users.Where(u => u.Auth0 == sub).FirstOrDefaultAsync();
+            if (dbuser == null) return false;
+
+            _context.Users.Remove(dbuser);
+            return _context.SaveChanges() > 0;
+        }
+
+        public async Task<bool> DeleteRecipe(int id)
+        {
+            var dbRecipe = await _context.Recipes.Where(u => u.RecipeId == id).FirstOrDefaultAsync();
+            if (dbRecipe == null) return false;
+
+            _context.Recipes.Remove(dbRecipe);
+            return _context.SaveChanges() > 0;
+        }
+
+        public async Task<bool> DeleteReview(int id)
+        {
+            var dbReview = await _context.Reviews.Where(u => u.ReviewId == id).FirstOrDefaultAsync();
+            if (dbReview == null) return false;
+
+            _context.Reviews.Remove(dbReview);
+            return _context.SaveChanges() > 0;
         }
     }
 }

@@ -18,14 +18,22 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setUserModel(this.auth.authModel);
     this.auth.authModel$.subscribe(reply => {
       console.log("reply for register model");
       console.log(reply);
-      if (reply == undefined || reply.username == null || reply.firstName == null)
-        this.usermodel = new AuthModel();
-      else
-        this.usermodel = reply;
+      this.setUserModel(this.auth.authModel);
     });
+  }
+
+  private setUserModel(reply: AuthModel) {
+    if (reply == undefined || reply.username == null || reply.firstName == null) {
+      console.log("setting an empty one");
+      this.usermodel = new AuthModel();
+    }
+
+    else
+      this.usermodel = reply;
   }
 
   sendinfo() {

@@ -26,5 +26,8 @@ namespace Service.Logic
         /// <param name="review"></param>
         /// <returns></returns>
         Task<List<Review>> addReview(string sub, Review review);
+        Task<List<Review>> DeleteReview(int id);
+
+        List<Review> GetAllReviews();
     }
 }

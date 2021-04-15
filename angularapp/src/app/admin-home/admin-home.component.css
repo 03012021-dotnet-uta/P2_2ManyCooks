@@ -1,0 +1,43 @@
+.user-card {
+  /* display: grid;
+  grid: auto/ repeat(4, 1fr);
+  gap: 8pt; */
+
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.user-list {
+  overflow-x: scroll;
+}
+
+.user-list tr:nth-child(even) {
+  background-color: lightblue;
+}
+tr {
+  text-align: center;
+}
+
+td {
+  padding: 0 8pt;
+  color: black;
+}
+
+table {
+  width: 100%;
+}
+
+.recipe-row {
+  height: 10pt;
+  margin-top: 30pt;
+}
+
+.review-title {
+  height: 30pt;
+}
+/* @media screen and (max-width: 1200px) {
+  .user-card {
+    display: grid;
+    grid: auto/ auto;
+  }
+} */

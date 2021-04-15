@@ -12,6 +12,8 @@ using RestSharp;
 using Microsoft.Extensions.Configuration;
 using Repository.Repositories;
 using Models.LogicModels;
+using Service.Interfaces;
+using Service.Helpers;
 
 namespace Service.Logic
 {
@@ -20,10 +22,12 @@ namespace Service.Logic
 
         private InTheKitchenDBContext _context;
         private readonly KitchenRepository _repo;
-        public UserLogic(InTheKitchenDBContext _context, KitchenRepository _repo)
+        private readonly Auth0HttpRequestHandler _handler;
+        public UserLogic(InTheKitchenDBContext _context, KitchenRepository _repo, Auth0HttpRequestHandler _handler)
         {
             this._context = _context;
             this._repo = _repo;
+            this._handler = _handler;
         }
 
         // for test purpose
@@ -34,10 +38,15 @@ namespace Service.Logic
 
 
 
-        public List<User> getAllUsers()
+        public async Task<List<AuthModel>> GetAllUsers()
         {
-            // System.Web.HttpUtility..GetTokenAsync("Bearer", "access_token");
-            return _context.Users.FromSqlRaw("Select * From Users").ToList();
+            List<User> users = await _repo.GetAllUsers();
+            List<AuthModel> models = new List<AuthModel>();
+            users.ForEach(u =>
+            {
+                models.Add(AuthModel.GetFromUser(u));
+            });
+            return models;
         }
 
         public AuthModel UpdateUser(AuthModel authModel, Dictionary<string, string> userDictionary)
@@ -273,6 +282,37 @@ namespace Service.Logic
         public AuthModel GetCurrentUserData(string sub)
         {
             return AuthModel.GetFromUser(_repo.GetUserDataBySub(sub));
+        }
+
+        public async Task<List<AuthModel>> DeleteUser(string token, string sub)
+        {
+            // sub = sub.Replace("|", "%");
+            // sub = sub.Split("|")[1];
+            // IRestResponse response = await _handler.Sendrequest($"/api/v2/users/{sub}", Method.DELETE, token);
+            // var client = new RestClient("https://dev-yktazjo3.us.auth0.com/oauth/token");
+            // var request = new RestRequest(Method.POST);
+            // request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            // request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&client_id=%24%7Baccount.clientId%7D&client_secret=DEJH5xmVrKbgDEwq5XmgjZqyftJLGrs5&audience=https%3A%2F%2F%24%7Baccount.namespace%7D%2Fapi%2Fv2%2F", ParameterType.RequestBody);
+            // IRestResponse response1 = client.Execute(request);
+            // System.Console.WriteLine(response1.Content);
+            // System.Console.WriteLine(response1.IsSuccessful);
+
+            IRestResponse response = await _handler.Sendrequest($"/api/v2/users", Method.GET, token);
+            Console.WriteLine(response.IsSuccessful);
+            // if (response.IsSuccessful)
+            // {
+            if (await _repo.DeleteUser(sub))
+            {
+                return await GetAllUsers();
+            }
+            // https://dev-yktazjo3.us.auth0.com/api/v2/users/auth0|60775937bc331e006ee50b9f
+            // https://dev-yktazjo3.us.auth0.com/api/v2/users/auth0%7C60775937bc331e006ee50b9f
+            // https://dev-yktazjo3.us.auth0.com/api/v2/users/auth0%60775d8d2ce19d006dfaf2d1
+            // https://dev-yktazjo3.us.auth0.com/api/v2/users
+            // https://dev-yktazjo3.us.auth0.com/api/v2/users
+
+            // }
+            return null;
         }
     }
 }

@@ -84,5 +84,19 @@ namespace Service.Logic
         {
             return _repo.AddNewReview(sub, review);
         }
+
+        public async Task<List<Review>> DeleteReview(int id)
+        {
+            if (await _repo.DeleteRecipe(id))
+            {
+                return GetAllReviews();
+            }
+            return null;
+        }
+
+        public List<Review> GetAllReviews()
+        {
+            return _repo.GetAllReviews();
+        }
     }
 }

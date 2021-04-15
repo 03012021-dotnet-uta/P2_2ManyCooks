@@ -14,6 +14,7 @@ import { UrlService } from './url.service';
 })
 export class AuthService {
   public authModel$ = new Subject<AuthModel>();
+  public authModel = new AuthModel();
   public isAdmin$ = new Subject<boolean>();
   public loading$ = new BehaviorSubject<boolean>(true);
   // getAuthModel() {
@@ -158,23 +159,23 @@ export class AuthService {
       console.log("subscribed to token silent");
       this.tryRetrieveUser();
     })
-    this.auth0Client$.subscribe(reply => {
-      console.log("auth0Client$ subscription");
-      console.log(reply);
-      console.log("auth0Client$ subscription");
-    })
-    this.userProfile$.subscribe(reply => {
-      console.log("this is user profile");
-      console.log(reply);
-      console.log("this is user profile");
-    });
-    this.userProfileSubject$.subscribe(reply => {
-      console.log("userprofile");
-      console.log(reply);
+    // this.auth0Client$.subscribe(reply => {
+    //   console.log("auth0Client$ subscription");
+    //   console.log(reply);
+    //   console.log("auth0Client$ subscription");
+    // })
+    // this.userProfile$.subscribe(reply => {
+    //   console.log("this is user profile");
+    //   console.log(reply);
+    //   console.log("this is user profile");
+    // });
+    // this.userProfileSubject$.subscribe(reply => {
+    //   console.log("userprofile");
+    //   console.log(reply);
 
-      console.log("user profile");
+    //   console.log("user profile");
 
-    });
+    // });
     checkAuth$.subscribe((reply) => {
       console.log("in checkAuth$ subscription");
       console.log(reply);
@@ -185,6 +186,10 @@ export class AuthService {
     }, () => { }, () => {
       // this.loading$.next(false);
       // this.notLoading = true;
+    });
+
+    this.authModel$.subscribe(reply => {
+      this.authModel = reply;
     });
   }
   tryRetrieveUser() {

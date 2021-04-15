@@ -11,7 +11,7 @@ namespace Service.Interfaces
     public interface IAuthenticator
     {
         // bool CheckIfNewUser(string token);
-        Dictionary<string, string> GetUserAuth0Dictionary(string sub);
+        Task<Dictionary<string, string>> GetUserAuth0Dictionary(string token);
 
         // AuthModel GetCurrentUserData(string sub);
 
