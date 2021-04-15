@@ -8,6 +8,8 @@ using Repository.Models;
 using Service.Helpers;
 using Service.Logic;
 using Models.LogicModels;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KitchenWeb.Controllers
 {
@@ -81,6 +83,17 @@ namespace KitchenWeb.Controllers
         public async Task<RecipeModel> getInfo(string search)
         {
             return await RecipeProcessor.LoadRecipe(search);
+        }
+
+
+        [HttpPost("history")]
+        [Authorize]
+        public async Task<ActionResult<SentRecipe>> savePrepare([FromBody] HistoryModel historyModel)
+        {
+            // System.Console.WriteLine(body);
+            System.Console.WriteLine("id: " + historyModel.recipeId + " sub: " + historyModel.sub);
+            SentRecipe recipe = await this.iLogicKitchen.SaveRecipePrepare(historyModel);
+            return recipe;
         }
     }
 }

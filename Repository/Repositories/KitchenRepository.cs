@@ -158,13 +158,64 @@ namespace Repository.Repositories
             .FirstOrDefault();
         }
 
+        public async Task<Recipe> AddNewPrepare(int recipeId, string sub)
+        {
+
+            var dbrecipe = await _context.Recipes.Where(r => r.RecipeId == recipeId).FirstOrDefaultAsync();
+            if (dbrecipe == null) return null;
+
+            var dbuser = await _context.Users.Where(u => u.Auth0 == sub)
+            .Include(u => u.UserSearchHistories)
+            .FirstOrDefaultAsync();
+            if (dbuser == null) return null;
+
+            if (await _context.UserViewHistories.AnyAsync(h => h.RecipeId == recipeId && dbuser.Auth0 == sub))
+            {
+                System.Console.WriteLine("user viewed before");
+                return null;
+            }
+
+            dbrecipe.NumTimesPrepared++;
+            if (_context.SaveChanges() <= 0)
+            {
+                System.Console.WriteLine("couldn't save prepare");
+                return null;
+            }
+
+            var history = new UserViewHistory();
+            history.ViewDate = DateTime.Now;
+            history.RecipeId = dbrecipe.RecipeId;
+            history.UserId = dbuser.UserId;
+            _context.UserViewHistories.Add(history);
+            if (_context.SaveChanges() <= 0)
+            {
+                System.Console.WriteLine("couldn't save view history");
+                return null;
+            }
+            return dbrecipe;
+        }
+
+
         public async Task<bool> DeleteUser(string sub)
         {
-            var dbuser = await _context.Users.Where(u => u.Auth0 == sub).FirstOrDefaultAsync();
+            var dbuser = await _context.Users.Where(u => u.Auth0 == sub)
+            .Include(u => u.Permission)
+            .Include(u => u.RecipeAuthors)
+            .Include(u => u.Reviews)
+            .FirstOrDefaultAsync();
             if (dbuser == null) return false;
 
-            _context.Users.Remove(dbuser);
-            return _context.SaveChanges() > 0;
+            dbuser.Reviews = null;
+            dbuser.Permission = null;
+            dbuser.PermissionId = null;
+            dbuser.RecipeAuthors = null;
+
+            if (_context.SaveChanges() > 0)
+            {
+                _context.Users.Remove(dbuser);
+                return _context.SaveChanges() > 0;
+            }
+            return false;
         }
 
         public async Task<bool> DeleteRecipe(int id)
@@ -178,11 +229,19 @@ namespace Repository.Repositories
 
         public async Task<bool> DeleteReview(int id)
         {
+            System.Console.WriteLine("in repo review deleting");
             var dbReview = await _context.Reviews.Where(u => u.ReviewId == id).FirstOrDefaultAsync();
             if (dbReview == null) return false;
 
-            _context.Reviews.Remove(dbReview);
-            return _context.SaveChanges() > 0;
+            dbReview.UserId = null;
+            dbReview.RecipeId = null;
+            if (_context.SaveChanges() > 0)
+            {
+                _context.Reviews.Remove(dbReview);
+                return _context.SaveChanges() > 0;
+            }
+            System.Console.WriteLine("false");
+            return false;
         }
     }
 }

@@ -31,7 +31,8 @@ export class HomeComponent implements OnInit {
     this.service.getAllRecipes().subscribe((reply) => {
       console.log(reply);
       this.recipeList = reply;
-      this.fillTest();
+      this.testOnly = this.recipeList;
+      // this.fillTest();
       take(1);
     });
   }

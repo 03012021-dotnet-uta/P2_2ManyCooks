@@ -6,7 +6,7 @@
       <div></div>
       <div></div>
     </div>
-    <div *ngIf="recipe" class="recipe-card">
+    <div *ngIf="recipe" class="fancy-container-shadow-border">
       <div
         class="img"
         [ngStyle]="{
@@ -14,18 +14,22 @@
         }"
       ></div>
       <div class="img-buffer"></div>
-      <div>{{ recipe.recipeId }}</div>
-      <div>{{ recipe.recipeName }}</div>
-      <div>{{ recipe.recipeDescription }}</div>
-      <div>{{ recipe.recipeImage }}</div>
-      <div>{{ recipe.recipeAuthor }}</div>
-      <div>{{ recipe.dateCreated }}</div>
-      <div>{{ recipe.dateLastPrepared }}</div>
-      <div>{{ recipe.numTimesPrepared }}</div>
+      <div>Name: {{ recipe.recipeName }}</div>
+      <div>
+        Description: <br />
+        {{ recipe.recipeDescription }}
+      </div>
+      <div>Recipe Author: {{ recipe.recipeAuthor }}</div>
+      <div>Date Created: {{ recipe.dateCreated }}</div>
+      <div>Last time prepared: {{ recipe.dateLastPrepared }}</div>
+      <div>Number of times prepared: {{ recipe.numTimesPrepared }}</div>
       <div>{{ recipe.recipeAuthors }}</div>
-      <div>{{ recipe.ingredients }}</div>
-      <div>{{ recipe.tags }}</div>
-      <div>{{ recipe.steps }}</div>
+      <br /><br />
+      <div class="rating">
+        Average Rating: {{ averageRating | number: "1.2-2" }}
+      </div>
+      <br /><br />
+
       <input type="button" (click)="startPrepare()" value="Start Preparing" />
 
       <div class="add-rev-card">
@@ -35,25 +39,32 @@
           [disabled]="!canReview()"
           value="Review"
         />
-        <div *ngIf="addingReview" class="add-rev-form">
+        <div *ngIf="addingReview" class="add-review-card">
           <form *ngIf="addingReview" #reviewForm="ngForm" action="">
+            <label for="review_rating">Your Rating</label><br />
             <input
+              id="review_rating"
               type="range"
               min="1"
               max="5"
               name="rate"
               [(ngModel)]="addRating"
-            />
+            />{{ addRating }}<br /><br /><br />
+            <label for="review_desc">Your Opinion</label> <br /><br />
             <textarea
+              id="review_desc"
               name="desc"
               [(ngModel)]="addDescription"
               id=""
               cols="30"
-              rows="10"
+              rows="5"
             ></textarea>
+            <br />
+            <br />
             <input type="button" (click)="submitReview()" value="Confirm" />
           </form>
           <input
+            class="cancel"
             type="button"
             (click)="cancelAddReview()"
             value="Cancel review"
@@ -61,15 +72,14 @@
         </div>
       </div>
 
-      <div class="rating">Rating: {{ averageRating }}</div>
-
       <div class="reviews">
         <div class="rev-card" *ngFor="let review of reviews">
           <div class="user">
             {{ review.user.firstname }} {{ review.user.lastname }}
           </div>
-          <div class="rev-rating">{{ review.reviewRating }}</div>
-          <div class="rev-date">{{ review.reviewDate }}</div>
+          <div class="rev-rating">Rating: {{ review.reviewRating }}</div>
+          <div class="rev-date">Review time: {{ review.reviewDate }}</div>
+          <div>Description:</div>
           <div class="rev-desc">{{ review.reviewDescription }}</div>
         </div>
       </div>

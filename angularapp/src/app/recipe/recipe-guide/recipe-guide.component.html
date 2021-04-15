@@ -15,7 +15,11 @@
     *ngFor="let step of recipe.steps"
   >
     <div class="r-step">
-      {{ step | json }}
+      <!-- {{ step | json }} -->
+      <div class="step-no">Step: {{ step.recipeStepNo }}</div>
+      <div class="step-desc">
+        {{ step.stepDescription }}
+      </div>
     </div>
     <input
       type="button"
