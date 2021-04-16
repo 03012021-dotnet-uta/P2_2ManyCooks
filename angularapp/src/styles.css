@@ -70,6 +70,7 @@ input[type="reset"]:active {
 
 input[type="text"],
 input[type="username"],
+input[type="number"],
 input[type="password"] {
   background-color: #f6f6f6;
   border: none;
@@ -88,6 +89,7 @@ input[type="password"] {
 
 input[type="text"]:focus,
 input[type="username"]:focus,
+input[type="number"]:focus,
 input[type="password"]:focus {
   background-color: #fff;
   border-bottom: 2px solid #5fbae9;
@@ -95,6 +97,7 @@ input[type="password"]:focus {
 
 input[type="text"]:placeholder,
 input[type="username"]:placeholder,
+input[type="number"]:placeholder,
 input[type="password"]:placeholder {
   color: #cccccc;
 }

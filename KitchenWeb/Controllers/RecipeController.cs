@@ -10,18 +10,22 @@ using Service.Logic;
 using Models.LogicModels;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using Service.Interfaces;
+using KitchenWeb.Helpers;
 
 namespace KitchenWeb.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RecipeController
+    public class RecipeController : ControllerBase
     {
         public readonly ILogicKitchen iLogicKitchen;
+        public readonly IAuthenticator _auth;
 
-        public RecipeController(ILogicKitchen iLogicKitchen)
+        public RecipeController(ILogicKitchen iLogicKitchen, IAuthenticator _auth)
         {
             this.iLogicKitchen = iLogicKitchen;
+            this._auth = _auth;
         }
 
         [HttpPost]
@@ -93,6 +97,17 @@ namespace KitchenWeb.Controllers
             // System.Console.WriteLine(body);
             System.Console.WriteLine("id: " + historyModel.recipeId + " sub: " + historyModel.sub);
             SentRecipe recipe = await this.iLogicKitchen.SaveRecipePrepare(historyModel);
+            return recipe;
+        }
+
+
+        [HttpPut()]
+        [Authorize]
+        public async Task<ActionResult<SentRecipe>> saveRecipe([FromBody] SentRecipe sentRecipe)
+        {
+            var token = ControllerHelper.GetTokenFromRequest(this.Request);
+            var userDictionary = await _auth.GetUserAuth0Dictionary(token);
+            SentRecipe recipe = await this.iLogicKitchen.saveRecipe(sentRecipe, userDictionary["sub"]);
             return recipe;
         }
     }

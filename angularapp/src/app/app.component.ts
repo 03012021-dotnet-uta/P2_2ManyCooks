@@ -30,33 +30,15 @@ export class AppComponent implements OnInit {
       console.log("app component is admin?");
       console.log(reply);
       this.isUserAdmin = reply;
-    })
-    //* on page start: check the user status
-    // this.checkUser();
-    // this.loading$.next(false);
-    // this.loading$ = this.auth.getLoading$();
-    // this.loading$.next(true);
-    // this.auth.initialize();
+    });
+    console.log(window.location.pathname);
   }
 
-  // getUsers() {
-  //   this.http.get('https://localhost:5001/User', this.httpOptions).subscribe((reply)=> {
-  //     this.userList = reply;
-  //     console.log(this.userList);
-  //   });
-  // }
+  showAddRecipe() {
+    if (window.location.pathname == "/" || window.location.pathname == "/register")
+      if (this.auth.loggedIn)
+        return true;
 
-  // checkUser() {
-  //   // * check if user is logged in
-  //   if (this.auth.loggedIn) {
-  //     this.userService.checkIfNewUser().subscribe((reply) => {
-  //       // * if logged in, check if new user
-  //       console.log(reply);
-  //       if (reply == null) {
-  //         // * if new user, redirect to reg form
-  //         window.location.href = "register"
-  //       }
-  //     });
-  //   }
-  // }
+      else return false;
+  }
 }

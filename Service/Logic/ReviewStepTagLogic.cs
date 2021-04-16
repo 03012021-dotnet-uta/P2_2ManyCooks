@@ -27,12 +27,12 @@ namespace Service.Logic
 
         public async Task<List<Tag>> geTags()
         {
-            return await _context.Tags.ToListAsync();
+            return await _context.Tags.Include(t => t.RecipeTags).ToListAsync();
         }
 
         public async Task<List<Ingredient>> getIngredients()
         {
-            return await _context.Ingredients.ToListAsync();
+            return await _context.Ingredients.Include(t => t.RecipeIngredients).ToListAsync();
         }
 
         public async Task<List<Review>> getReviewsByRecipeName(string recipeName)

@@ -22,5 +22,6 @@ namespace Service.Logic
         Task<Recipe> getOneRecipeById(int id);
         Task<ICollection<SentRecipe>> DeleteRecipe(int id);
         Task<SentRecipe> SaveRecipePrepare(HistoryModel historyModel);
+        Task<SentRecipe> saveRecipe(SentRecipe sentRecipe, string sub);
     }
 }

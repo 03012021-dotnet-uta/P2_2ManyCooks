@@ -34,6 +34,11 @@ export class RecipeService {
     return this.http.delete<Recipe[]>(`${this.baseUrl}/${recipeId}`, this.httpOptions).toPromise();
   }
 
+
+  saveRecipe(recipe: Recipe): Promise<any> {
+    return this.http.put<any>(`${this.baseUrl}`, recipe, this.httpOptions).toPromise();
+  }
+
   saveUserHistory(body: any): Promise<Recipe> {
     return this.http.post<Recipe>(`${this.baseUrl}/history`, body, this.httpOptions).toPromise();
   }

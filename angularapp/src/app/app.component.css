@@ -68,3 +68,14 @@
   padding: 8pt 5pt;
   margin-top: 4pt;
 }
+
+.add-recipe {
+  position: fixed;
+  bottom: 5pt;
+  right: 5pt;
+  color: white;
+  padding: 10pt;
+  background-color: #56baec;
+  cursor: pointer;
+  border-radius: 5pt;
+}

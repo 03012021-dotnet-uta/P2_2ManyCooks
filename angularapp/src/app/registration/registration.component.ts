@@ -24,6 +24,7 @@ export class RegistrationComponent implements OnInit {
       console.log(reply);
       this.setUserModel(this.auth.authModel);
     });
+    console.log(window.location.pathname);
   }
 
   private setUserModel(reply: AuthModel) {
