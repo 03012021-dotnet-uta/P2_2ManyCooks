@@ -290,8 +290,6 @@ namespace Service.Logic
 
         public async Task<List<AuthModel>> DeleteUser(string token, string sub)
         {
-
-            // IRestResponse response = await _handler.Sendrequest($"/api/v2/users", Method.GET, token);
             if (await _repo.DeleteUser(sub))
             {
                 return await GetAllUsers();

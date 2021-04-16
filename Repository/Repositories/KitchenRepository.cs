@@ -306,13 +306,9 @@ namespace Repository.Repositories
             dbuser.Permission = null;
             dbuser.PermissionId = null;
             dbuser.RecipeAuthors = null;
-
-            if (_context.SaveChanges() > 0)
-            {
-                _context.Users.Remove(dbuser);
-                return _context.SaveChanges() > 0;
-            }
-            return false;
+            _context.SaveChanges();
+            _context.Users.Remove(dbuser);
+            return _context.SaveChanges() > 0;
         }
 
         public async Task<bool> DeleteRecipe(int id)
