@@ -37,9 +37,9 @@ steps:
     cliProjectKey: '2ManyCooksInTheKitchen_InTheKitchenApp'
     cliProjectName: 'InTheKitchenApp'
     cliSources: '$(System.DefaultWorkingDirectory)/angularapp/src'
-    extraProperties: 'sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/inthekitchen/lcov.info'
-      # sonar.flex.cobertura.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/inthekitchen/cobertura-coverage.xml
-      # sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/**/coverage/lcov.info
+    extraProperties:  |
+      sonar.exclusions=**/*.spec.ts,**/e2e/**
+      'sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/inthekitchen/lcov.info'
 
 
 # - script: |
