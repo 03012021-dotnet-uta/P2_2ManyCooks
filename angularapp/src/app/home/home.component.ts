@@ -134,52 +134,6 @@ export class HomeComponent implements OnInit {
     };
   }
 
-  fillTest() {
-    // this.testOnly = this.recipeList;
-    this.testOnly = Array(10).fill(this.recipeList[0]).map((x, i) => {
-      let r = new Recipe();
-      r.recipeName = x.recipeName + i;
-      r.recipeId = x.recipeId;
-      r.numTimesPrepared = x.numTimesPrepared;
-      r.tags = x.tags;
-      r.recipeImage = x.recipeImage;
-      r.ingredients = x.ingredients
-      return r;
-    });
-    this.testOnly = this.testOnly.concat(Array(5).fill(this.recipeList[1]).map((x, i) => {
-      let r = new Recipe();
-      r.recipeName = x.recipeName + i;
-      r.recipeId = x.recipeId;
-      r.numTimesPrepared = x.numTimesPrepared;
-      r.tags = x.tags;
-      r.recipeImage = x.recipeImage;
-      r.ingredients = x.ingredients
-      return r;
-    }));
-    this.testOnly = this.testOnly.concat(Array(5).fill(this.recipeList[2]).map((x, i) => {
-      let r = new Recipe();
-      r.recipeName = x.recipeName + i;
-      r.recipeId = x.recipeId;
-      r.numTimesPrepared = x.numTimesPrepared;
-      r.tags = x.tags;
-      r.recipeImage = x.recipeImage;
-      r.ingredients = x.ingredients
-      return r;
-    }));
-    this.testOnly = this.testOnly.concat(Array(5).fill(this.recipeList[3]).map((x, i) => {
-      let r = new Recipe();
-      r.recipeName = x.recipeName + i;
-      r.recipeId = x.recipeId;
-      r.numTimesPrepared = x.numTimesPrepared;
-      r.tags = x.tags;
-      r.recipeImage = x.recipeImage;
-      r.ingredients = x.ingredients
-      return r;
-    }));
-    console.log("this.testOnly");
-    console.log(this.testOnly);
-  }
-
   goToDetail(recipe: Recipe) {
     this.router.navigate([`recipeDetail/${+recipe.recipeId}`]);
   }

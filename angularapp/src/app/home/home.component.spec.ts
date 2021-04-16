@@ -27,4 +27,8 @@ describe('HomeComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should be undefined', () => {
+    expect(component.getAllRecipes()).toBeUndefined();
+  });
 });
