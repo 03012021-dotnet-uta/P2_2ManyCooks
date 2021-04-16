@@ -39,7 +39,7 @@ steps:
     cliSources: '$(System.DefaultWorkingDirectory)/angularapp/src'
     extraProperties:  |
       sonar.exclusions=**/*.spec.ts,**/e2e/**
-      'sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/inthekitchen/lcov.info'
+      sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/angularapp/coverage/inthekitchen/lcov.info
 
 
 # - script: |
