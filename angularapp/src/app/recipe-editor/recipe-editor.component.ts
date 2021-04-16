@@ -203,6 +203,7 @@ export class RecipeEditorComponent implements OnInit {
       this.recipe.ingredients = [];
       this.recipe.tags = [];
       this.recipe.reviews = [];
+      return;
     }
     console.log("getting recipe");
     this.recipeService.getRecipeId(id).then((reply) => {
