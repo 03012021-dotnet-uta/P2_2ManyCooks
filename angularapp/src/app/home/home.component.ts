@@ -93,11 +93,11 @@ export class HomeComponent implements OnInit {
   }
 
   sortByPopularity() {
-    this.testOnly = this.testOnly.sort((b, a) => a.numTimesPrepared - b.numTimesPrepared);
+    this.pagesRecipes[this.currentPage - 1] = this.pagesRecipes[this.currentPage - 1].sort((b, a) => a.numTimesPrepared - b.numTimesPrepared);
   }
 
   sortByDefault() {
-    this.testOnly = this.testOnly.sort((a, b) => a.recipeId - b.recipeId);
+    this.pagesRecipes[this.currentPage - 1] = this.pagesRecipes[this.currentPage - 1].sort((a, b) => a.recipeId - b.recipeId);
   }
 
 
