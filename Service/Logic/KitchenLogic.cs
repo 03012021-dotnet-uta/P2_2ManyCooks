@@ -39,13 +39,7 @@ namespace Service.Logic
 
         public async Task<Recipe> addNewRecipe(Recipe recipe)
         {
-            foreach (var rec in await getAllRecipe())
-            {
-                if (recipe == rec)
-                {
-                    throw new Exception("recipe already exists ");
-                }
-            }
+            
             recipe.RecipeId = getAllRecipe().Result.Count() + 1;
             recipe.DateCreated = DateTime.Now;
             recipe.DateLastPrepared = DateTime.Now;

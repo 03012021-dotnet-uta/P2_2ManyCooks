@@ -79,18 +79,22 @@ namespace Tests
                 RecipeIngredients = new List<RecipeIngredient>(),
                 ThirdPartyApiId = "Google",
             };
-            var result1 = new Ingredient();
+            var result2 = new Ingredient();
             
-            await using (var context = new InTheKitchenDBContext(testOptions))
+             using (var context = new InTheKitchenDBContext(testOptions))
             {
                 await context.Database.EnsureDeletedAsync();
                 await context.Database.EnsureCreatedAsync();
-                var msr = new ReviewStepTagLogic(context);
-
-                result1 = await msr.getOneIngredientById(ingredient.IngredientId);
+                context.Add(ingredient);
+                context.SaveChangesAsync();
             }
-
-            Assert.NotNull(result1);
+            await using (var context = new InTheKitchenDBContext(testOptions))
+            {
+                context.Database.EnsureCreated();
+                var msr = new ReviewStepTagLogic(context);
+                result2 = await msr.getOneIngredientById(ingredient.IngredientId);
+            }
+            Assert.Equal(ingredient.IngredientDescription,result2.IngredientDescription);
 
         }
         [Fact]
@@ -152,31 +156,27 @@ namespace Tests
         public async Task TestListReview()
         {
             var reviews = new List<Review>();
-            reviews.Add(new Review(){  ReviewId = 12, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some description"});
-            reviews.Add(new Review(){  ReviewId = 120, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some other description"});
-            
-           
-            var result1 = new List<Review>();
-          
-            var result2 = new List<Review>();
+            var review1 = new Review(){  ReviewId = 12, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some description"};
+            var review2 =  new Review(){  ReviewId = 120, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some other description"};
 
             using(var context = new InTheKitchenDBContext(testOptions))
             {
-                await context.Database.EnsureDeletedAsync();
-                await context.Database.EnsureCreatedAsync();
-                var msr = new ReviewStepTagLogic(context);
-                result1 = await msr.getReviewsByRecipeName("Tacos");
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
 
-              
+                context.Add(review1);
+                context.Add(review2);
+                context.SaveChangesAsync();
             }
-
-            await using(var context2 = new InTheKitchenDBContext(testOptions))
+            List<Review> result1;
+            using(var context2 = new InTheKitchenDBContext(testOptions))
             {
-                await context2.Database.EnsureCreatedAsync();
-                result2 = await context2.Reviews.Include(r => r.Recipe).Where(r=> r.Recipe.RecipeName == "Tacos").ToListAsync();
-
-            }
-            Assert.Equal(result1,result2);
+                 context2.Database.EnsureCreated();
+                var msr = new ReviewStepTagLogic(context2);
+                result1 = await msr.getReviewsByRecipeName("Tacos");
+            } 
+           
+            Assert.Equal(2,result1.Count);
         }
         [Fact]
         public async Task TestListReviewByName()
