@@ -3,6 +3,13 @@
   <h1>Check out Our Recipe Collection</h1>
   <div>
     <form #searchForm="ngForm" action="">
+      <button
+        class="sort-button"
+        (click)="toggleSort()"
+        [class.selected]="sortBool"
+      >
+        Sort By Popularity</button
+      ><br />
       <input
         name="search"
         [(ngModel)]="searchString"
@@ -13,7 +20,7 @@
       />
     </form>
 
-    {{ searchString }}
+    <!-- {{ searchString }} -->
   </div>
   <!-- <div [ngClass]="{ search: searchValue.pristine, normal: searchValue.dirty }"> -->
   <div [class.search]="searchValue.value" [class.normal]="!searchValue.value">

@@ -7,6 +7,7 @@ import { RecipeSaver } from '../recipe/recipe-saver';
 import { RecipeViewType, RecipeEnum } from '../recipe/recipe-view-type';
 import { RecipeService } from '../recipe/recipe.service';
 import { NgForm } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -19,10 +20,20 @@ export class HomeComponent implements OnInit {
   girdStyle = RecipeEnum.search
   testOnly: Recipe[];
   searchString: string;
+  sortSubject: Subject<boolean> = new Subject();
+  sortBool: boolean = false;
 
   constructor(private service: RecipeService, private router: Router) { }
 
   ngOnInit(): void {
+    this.sortSubject.next(false);
+    this.sortSubject.subscribe(val => {
+      if (val)
+        this.sortByPopularity();
+      else
+        this.sortByDefault();
+      this.sortBool = val;
+    })
     this.getAllRecipes();
   }
 
@@ -36,6 +47,20 @@ export class HomeComponent implements OnInit {
       take(1);
     });
   }
+
+  toggleSort() {
+    let s = !this.sortBool;
+    this.sortSubject.next(s);
+  }
+
+  sortByPopularity() {
+    this.testOnly = this.testOnly.sort((b, a) => a.numTimesPrepared - b.numTimesPrepared);
+  }
+
+  sortByDefault() {
+    this.testOnly = this.testOnly.sort((a, b) => a.recipeId - b.recipeId);
+  }
+
 
   getRecipeImageStyle(recipe: Recipe): Object {
     return {

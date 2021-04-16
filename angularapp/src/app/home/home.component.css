@@ -10,6 +10,23 @@
   --cart-yellow: rgb(243, 199, 2);
 }
 
+.sort-button {
+  background-color: var(--blue);
+  color: white;
+  padding: 5pt;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 6pt;
+  margin-bottom: 5pt;
+  transition: 0.2s;
+}
+
+.sort-button.selected {
+  background-color: var(--text-light);
+  color: black;
+}
+
 .section div.normal {
   display: grid;
   /* grid: auto auto 1fr / 28vw 28vw 28vw; */
