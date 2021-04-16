@@ -166,14 +166,22 @@ namespace Tests
                 s1
             };
 
-            // User user = new User() { Auth0 = "authcode", Firstname = "fname", Lastname = "lname" };
+            User user = new User()
+            {
+                Auth0 = "authcode",
+                Firstname = "fname",
+                Lastname = "lname",
+                DateCreated = date,
+                Email = "email",
+                ImageUrl = "picture"
+            };
             AuthModel model = new AuthModel()
             {
                 Sub = "authcode",
                 FirstName = "fname",
                 LastName = "lname",
                 Email = "email",
-                ProfileImage = "",
+                ProfileImage = "picture",
                 Username = "username"
             };
 
@@ -191,6 +199,7 @@ namespace Tests
                 context.Database.EnsureCreatedAsync();
                 var repo = new KitchenRepository(context);
                 var msr = new KitchenLogic(context, repo);
+                var reviewlogic = new ReviewStepTagLogic(context, repo);
                 var userlogic = new UserLogic(context, repo);
                 userlogic.UpdateUser(model, userDictionary);
                 userlogic.UpdateUser(model, userDictionary);
@@ -201,6 +210,15 @@ namespace Tests
                 sentrecipe.Steps.Remove(s1);
                 sr = await msr.saveRecipe(sentrecipe, model.Sub);
                 recipe = repo.GetRecipeById(sr.RecipeId);
+                repo.UpdateUserAuth0Data(user);
+                var rev = new Review()
+                {
+                    Recipe = recipe,
+                    ReviewDate = date,
+                    ReviewDescription = "review description",
+                    RecipeId = recipe.RecipeId,
+                };
+                reviewlogic.addReview(userDictionary["sub"], rev);
                 HistoryModel hmodel = new HistoryModel()
                 {
                     recipeId = recipe.RecipeId,
@@ -209,6 +227,38 @@ namespace Tests
                 msr.SaveRecipePrepare(hmodel);
             }
             Assert.Equal(recipe.RecipeTags.ToArray()[0].Tag.TagName, "tag name");
+        }
+
+        [Fact]
+        public async Task TestUserLogic()
+        {
+            User user = new User() { Auth0 = "authcode", Firstname = "fname", Lastname = "lname" };
+            AuthModel model = new AuthModel()
+            {
+                Sub = "authcode",
+                FirstName = "fname",
+                LastName = "lname",
+                Email = "email",
+                ProfileImage = "",
+                Username = "username"
+            };
+            Dictionary<string, string> userDictionary = new Dictionary<string, string>();
+            userDictionary["email"] = "email";
+            userDictionary["picture"] = "picture";
+            userDictionary["sub"] = "authcode";
+            bool result;
+            bool isnew = false;
+            using (var context = new InTheKitchenDBContext(testOptions))
+            {
+                context.Database.EnsureDeletedAsync();
+                context.Database.EnsureCreatedAsync();
+                var repo = new KitchenRepository(context);
+                var userlogic = new UserLogic(context, repo);
+                AuthModel outModel = null;
+                isnew = userlogic.CheckIfNewUser(userDictionary, out outModel);
+                userlogic.GetAllUsers();
+            }
+            Assert.False(isnew);
         }
 
         [Fact]
