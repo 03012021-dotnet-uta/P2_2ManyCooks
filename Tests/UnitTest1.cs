@@ -21,9 +21,12 @@ namespace Tests
         public void TestListUser()
         {
             List<User> users = new List<User>();
-            users.Add(new User(){UserId=23,Firstname="Anis"});
-            users.Add(new User(){UserId=234,Firstname="Nour"});
-            users.Add(new User(){UserId=231,Firstname="Beau"});
+            var user1 = (new User(){UserId=23,Firstname="Anis"});
+             var user2 = (new User(){UserId=234,Firstname="Nour"});
+            var user3 = (new User(){UserId=231,Firstname="Beau"});
+            users.Add(user1);
+            users.Add(user2);
+            users.Add(user3);
            
             List<User> result1 = new List<User>();
             List<User> result2 = new List<User>();
@@ -32,23 +35,30 @@ namespace Tests
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-                var msr = new UserLogic(context);
-                result1 =  msr.getAllUsers();
+                context.Add(user1);
+                context.Add(user2);
+                context.Add(user3);
+                context.SaveChanges();
+
+                result2 =  context.Users.ToList();
             }
             using(var context = new InTheKitchenDBContext(testOptions))
             {
                 context.Database.EnsureCreated();
-                result2 =  context.Users.ToList();
+                var msr = new UserLogic(context);
+                result1 =  msr.getAllUsers();
             }
-            Assert.Equal(result1,result2);
+          
+            Assert.Equal(result1.Count,result2.Count);
         }
         [Fact]
         public async Task TestListTag()
         {
             var tags = new List<Tag>();
-            tags.Add(new Tag(){  TagId = 12, TagName = "Cheese",TagDescription = "Some description"});
-            tags.Add(new Tag(){  TagId = 120, TagName = "Beef",TagDescription = "Some other description"});
-            
+            var tag1 =(new Tag(){  TagId = 12, TagName = "Cheese",TagDescription = "Some description"});
+            var tag2 = (new Tag(){  TagId = 120, TagName = "Beef",TagDescription = "Some other description"});
+            tags.Add(tag1);
+            tags.Add(tag2);
            
             var result1 = new List<Tag>();
             var result2 = new List<Tag>();
@@ -57,15 +67,19 @@ namespace Tests
             {
                 await context.Database.EnsureDeletedAsync();
                 await context.Database.EnsureCreatedAsync();
-                var msr = new ReviewStepTagLogic(context);
-                result1 = await msr.geTags();
+                context.Add(tag1);
+                context.Add(tag2);
+                context.SaveChanges();
+                result2 =  await context.Tags.ToListAsync();
             }
             await using(var context = new InTheKitchenDBContext(testOptions))
             {
                 await context.Database.EnsureCreatedAsync();
-                result2 =  await context.Tags.ToListAsync();
+                var msr = new ReviewStepTagLogic(context);
+                result1 = await msr.geTags();
             }
-            Assert.Equal(result1,result2);
+            
+            Assert.Equal(result1.Count,result2.Count);
         }
         [Fact]
         public async Task TestSingleIngredient()
@@ -108,48 +122,56 @@ namespace Tests
             var result1 = new Ingredient();
             var result2 = new Ingredient();
 
-            await using(var context = new InTheKitchenDBContext(testOptions))
+             using(var context = new InTheKitchenDBContext(testOptions))
             {
-                await context.Database.EnsureDeletedAsync();
+                 context.Database.EnsureDeletedAsync();
+                 context.Database.EnsureCreatedAsync();
+                 context.Add(ingredient);
+                 context.SaveChanges();
+                result2 = await context.Ingredients.Where(i => i.IngredientName == ingredient.IngredientName).FirstOrDefaultAsync();
+            } 
+
+            using(var context = new InTheKitchenDBContext(testOptions))
+            {
                 await context.Database.EnsureCreatedAsync();
                 var msr = new ReviewStepTagLogic(context);
 
                 result1 = await msr.getOneIngredientByName(ingredient.IngredientName);
             }
 
-            await using(var context = new InTheKitchenDBContext(testOptions))
-            {
-                await context.Database.EnsureCreatedAsync();
-                result2 = await context.Ingredients.Where(i => i.IngredientName == ingredient.IngredientName).FirstOrDefaultAsync();
-            }
-            Assert.Equal(result1,result2);
+           
+            Assert.Equal(result1.IngredientName,result2.IngredientName);
 
         }
         [Fact]
         public async Task TestListIngredient()
         {
             var ingredients = new List<Ingredient>();
-            ingredients.Add(new Ingredient(){  IngredientId = 12, IngredientName = "Cheese",IngredientDescription = "Some description"});
-            ingredients.Add(new Ingredient(){  IngredientId = 120, IngredientName = "Beef",IngredientDescription = "Some other description"});
-            
+            var ing1 = new Ingredient(){  IngredientId = 12, IngredientName = "Cheese",IngredientDescription = "Some description"};
+            var ing2 = new Ingredient(){  IngredientId = 120, IngredientName = "Beef",IngredientDescription = "Some other description"};
+            ingredients.Add(ing2);
+            ingredients.Add(ing1);
            
             var result1 = new List<Ingredient>();
-            var result2 = new List<Ingredient>();
+           
 
-            await using(var context = new InTheKitchenDBContext(testOptions))
+             using(var context = new InTheKitchenDBContext(testOptions))
             {
-                await context.Database.EnsureDeletedAsync();
-                await context.Database.EnsureCreatedAsync();
+                 context.Database.EnsureDeletedAsync();
+                 context.Database.EnsureCreatedAsync();
+                 context.Add(ing1);
+                 context.Add(ing2);
+                 context.SaveChanges();
+            }
+            using(var context = new InTheKitchenDBContext(testOptions))
+            {
+                 context.Database.EnsureCreatedAsync();
                 var msr = new ReviewStepTagLogic(context);
                 result1 = await msr.getIngredients();
             }
 
-            await using(var context = new InTheKitchenDBContext(testOptions))
-            {
-                await context.Database.EnsureCreatedAsync();
-                result2 =  await context.Ingredients.ToListAsync();
-            }
-            Assert.Equal(result1,result2);
+           
+            Assert.Equal(result1.Count,ingredients.Count);
         }
 
         [Fact]
@@ -158,6 +180,8 @@ namespace Tests
             var reviews = new List<Review>();
             var review1 = new Review(){  ReviewId = 12, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some description"};
             var review2 =  new Review(){  ReviewId = 120, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some other description"};
+            reviews.Add(review1);
+            reviews.Add(review2);
 
             using(var context = new InTheKitchenDBContext(testOptions))
             {
@@ -166,7 +190,7 @@ namespace Tests
 
                 context.Add(review1);
                 context.Add(review2);
-                context.SaveChangesAsync();
+                context.SaveChanges();
             }
             List<Review> result1;
             using(var context2 = new InTheKitchenDBContext(testOptions))
@@ -176,18 +200,18 @@ namespace Tests
                 result1 = await msr.getReviewsByRecipeName("Tacos");
             } 
            
-            Assert.Equal(2,result1.Count);
+            Assert.Equal(reviews.Count,result1.Count);
         }
         [Fact]
         public async Task TestListReviewByName()
         {
             var reviews = new List<Review>();
-            reviews.Add(new Review(){  ReviewId = 12, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some description",User = new User(){Firstname = "Anis"}});
-            reviews.Add(new Review(){  ReviewId = 120, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some other description",User = new User(){Firstname = "Anis"}});
-            
+            var review1 =  new Review(){  ReviewId = 12, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some description",User = new User(){Firstname = "Anis"}};
+            var review2 =  new Review(){  ReviewId = 120, Recipe = new Recipe(){ RecipeName = "Tacos"},ReviewDescription = "Some other description",User = new User(){Firstname = "Anis"}};
+            reviews.Add(review1);
+            reviews.Add(review2);
            
             var result1 = new List<Review>();
-          
             var result2 = new List<Review>();
 
             using(var context = new InTheKitchenDBContext(testOptions))

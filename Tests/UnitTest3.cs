@@ -93,6 +93,39 @@ namespace Tests
 
             Assert.NotNull(answer);
         }
-        
+
+        //[Fact]
+        //public async Task GetALLUser()
+        //{
+        //    List<User> users = new List<User>();
+        //    var user1 = new User() {UserId = 1, Username = "Anis10", Firstname = "ANis"};
+        //    var user2 = new User() {UserId = 1, Username = "Beau1011", Firstname = "Beau"};
+        //    var user3 = new User() {UserId = 1, Username = "Nour1011", Firstname = "Nour"};
+        //    users.Add(user1);
+        //    users.Add(user2);
+        //    users.Add(user3);
+
+        //    using (var context = new InTheKitchenDBContext(testOptions))
+        //    {
+        //        context.Database.EnsureDeleted();
+        //        context.Database.EnsureCreated();
+
+        //        context.Add(user1);
+        //        context.Add(user2);
+        //        context.Add(user3);
+        //        context.SaveChanges();
+        //    }
+        //    List<AuthModel> result1;
+        //    using (var context2 = new InTheKitchenDBContext(testOptions))
+        //    {
+        //        context2.Database.EnsureCreated();
+        //        var msr = new UserLogic(context2);
+        //        result1 = await msr.GetAllUsers();
+
+
+        //    }
+        //    Assert.Null(result1);
+        //}
+       
     }
 }
