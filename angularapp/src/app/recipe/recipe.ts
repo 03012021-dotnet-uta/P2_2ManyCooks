@@ -15,4 +15,5 @@ export class Recipe {
     tags: any[];
     steps: any[];
     reviews: any[];
+    recipeCalories: number;
 }

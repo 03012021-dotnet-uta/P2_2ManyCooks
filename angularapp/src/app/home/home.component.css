@@ -45,6 +45,11 @@
   gap: 2vw;
 }
 
+.recipe-card-top {
+  display: flex;
+  justify-content: space-between;
+}
+
 .section div.search .recipe-card {
   grid-row: auto / span 1;
   grid-column: auto / span 3;

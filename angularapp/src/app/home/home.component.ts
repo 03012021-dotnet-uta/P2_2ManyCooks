@@ -47,6 +47,9 @@ export class HomeComponent implements OnInit {
       console.log(reply);
       this.recipeList = reply;
       this.testOnly = this.recipeList;
+      for (let i = 0; i < this.recipeList.length; i++) {
+        this.countCalories(this.recipeList[i]);
+      }
       this.preparePagination();
       // this.fillTest();
       take(1);
@@ -97,6 +100,31 @@ export class HomeComponent implements OnInit {
     this.testOnly = this.testOnly.sort((a, b) => a.recipeId - b.recipeId);
   }
 
+
+  countCalories(recipe: Recipe) {
+    let searchString: string = "";
+    recipe.recipeCalories = 0;
+    let thisRecipeIngredientCurrent: any;
+    for (let i = 0; i < recipe.ingredients.length; i++) {
+      searchString += " " + recipe.ingredients[i].ingredientName;
+    }
+    console.warn(searchString);
+    this.service.getCalInfo(searchString)
+      .then(reply => {
+        console.warn(reply);
+        // recipe.ingredients.recipeIngredients.quantity_grams
+        for (let i = 0; i < reply.items.length; i++) {
+          console.warn(recipe.ingredients[i].recipeIngredients);
+          for (let j = 0; j < recipe.ingredients[i].recipeIngredients.length; j++) {
+            if (recipe.ingredients[i].recipeIngredients[j].recipeId == recipe.recipeId) {
+              thisRecipeIngredientCurrent = recipe.ingredients[i].recipeIngredients[j]
+              break;
+            }
+          }
+          recipe.recipeCalories += reply.items[i].calories * (thisRecipeIngredientCurrent.quantity_grams / 100);
+        }
+      });
+  }
 
   getRecipeImageStyle(recipe: Recipe): Object {
     return {
