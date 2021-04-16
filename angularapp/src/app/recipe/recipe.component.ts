@@ -25,7 +25,7 @@ export class RecipeComponent implements OnInit, OnDestroy {
   addDescription: string;
   currentUser: AuthModel;
   fetchedReviews: boolean;
-  averageRating: string = "No rating yet";
+  averageRating: number;
   preparing: boolean = false;
   isAdmin: boolean = false;
   unsubSubject = new Subject();
@@ -160,7 +160,7 @@ export class RecipeComponent implements OnInit, OnDestroy {
     if (!ave) {
       return;
     }
-    this.averageRating = "" + ave;
+    this.averageRating = ave;
   }
 
   submitReview() {
