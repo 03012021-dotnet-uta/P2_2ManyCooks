@@ -249,6 +249,7 @@ namespace Service.Logic
             recipeIngredient.IngredientId = dbIngredient.IngredientId;
             recipeIngredient.Recipe = recipe;
             recipeIngredient.RecipeId = recipe.RecipeId;
+            recipeIngredient.quantity_grams = 10;
             recipe.RecipeIngredients.Add(recipeIngredient);
         }
 
