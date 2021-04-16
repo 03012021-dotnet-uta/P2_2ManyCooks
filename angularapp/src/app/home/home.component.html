@@ -1,4 +1,3 @@
-<!-- <app-persondetails [person2]='stringPerson' (person3)=ChangedPerson($event)></app-persondetails> -->
 <section class="section">
   <h1>Check out Our Recipe Collection</h1>
   <div>
@@ -19,36 +18,55 @@
         required
       />
     </form>
-
-    <!-- {{ searchString }} -->
   </div>
-  <!-- <div [ngClass]="{ search: searchValue.pristine, normal: searchValue.dirty }"> -->
-  <div [class.search]="searchValue.value" [class.normal]="!searchValue.value">
-    <!-- <div></div> -->
+  <div *ngIf="!searchValue.value">
+    <div class="normal">
+      <div *ngIf="!recipeList" class="page-loading">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+
+      <div
+        *ngFor="let recipe of getCurrentRecipes()"
+        [hidden]="!withinSearch(recipe)"
+        class="recipe-card"
+        (click)="goToDetail(recipe)"
+      >
+        <div class="recipe-img" [ngStyle]="getRecipeImageStyle(recipe)"></div>
+        <div class="recipe-info">
+          <h2 class="recipe-name">{{ recipe.recipeName }}</h2>
+          <div class="recipe-prepares">
+            Prepared: {{ recipe.numTimesPrepared }} times
+          </div>
+          <div class="recipe-tag" *ngFor="let tag of recipe.tags">
+            {{ tag.tagName }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination-holder">
+      <div
+        (click)="goToPage(pageLink)"
+        [class.selected]="isPage(pageLink)"
+        *ngFor="let pageLink of paginationList"
+        class="pagination-links"
+      >
+        {{ pageLink }}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="searchValue.value" class="search">
     <div *ngIf="!recipeList" class="page-loading">
       <div></div>
       <div></div>
       <div></div>
       <div></div>
     </div>
-    <!-- <div > -->
-
-    <!-- <div
-      *ngFor="let recipe of recipeList"
-      class="recipe-card"
-      (click)="goToDetail(recipe)"
-    >
-      <div class="recipe-img" [ngStyle]="getRecipeImageStyle(recipe)"></div>
-      <div class="recipe-info">
-        <h2 class="recipe-name">{{ recipe.recipeName }}</h2>
-        <div class="recipe-tag" *ngFor="let tag of recipe.tags">
-          {{ tag.tagName }}
-        </div>
-      </div>
-    </div> -->
 
     <div
-      *ngFor="let recipe of testOnly"
+      *ngFor="let recipe of recipeList"
       [hidden]="!withinSearch(recipe)"
       class="recipe-card"
       (click)="goToDetail(recipe)"
@@ -59,21 +77,10 @@
         <div class="recipe-prepares">
           Prepared: {{ recipe.numTimesPrepared }} times
         </div>
-        <!-- <div>Ingredients:</div>
-        <div
-          class="recipe-ingredient"
-          *ngFor="let ingredient of recipe.ingredients"
-        >
-          <span>{{ ingredient.ingredientName }}</span>
-        </div> -->
         <div class="recipe-tag" *ngFor="let tag of recipe.tags">
           {{ tag.tagName }}
         </div>
-        <!-- <div class="recipe-views">
-        </div> -->
       </div>
     </div>
-
-    <!-- </div> -->
   </div>
 </section>

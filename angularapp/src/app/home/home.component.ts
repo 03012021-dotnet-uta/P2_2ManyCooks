@@ -22,6 +22,10 @@ export class HomeComponent implements OnInit {
   searchString: string;
   sortSubject: Subject<boolean> = new Subject();
   sortBool: boolean = false;
+  maxPerPage: number = 5;
+  paginationList: any[] = [];
+  pagesRecipes: any[] = [];
+  currentPage: number = 1;
 
   constructor(private service: RecipeService, private router: Router) { }
 
@@ -43,9 +47,41 @@ export class HomeComponent implements OnInit {
       console.log(reply);
       this.recipeList = reply;
       this.testOnly = this.recipeList;
+      this.preparePagination();
       // this.fillTest();
       take(1);
     });
+  }
+
+  preparePagination() {
+    if (this.testOnly.length > this.maxPerPage) {
+      let pagnum = Math.ceil(this.testOnly.length / 5);
+      this.paginationList = Array(2).fill(0).map((_, i) => 1 + i);
+      for (let index = 0; index < this.paginationList.length; index++) {
+        const page = this.paginationList[index];
+        const start = index * this.maxPerPage;
+        if (index == this.paginationList.length - 1)
+          this.pagesRecipes.push(Array(this.testOnly.length % this.maxPerPage).fill(0).map((_, x) => this.testOnly[x + (index * this.maxPerPage)]));
+        else
+          this.pagesRecipes.push(Array(this.maxPerPage).fill(0).map((_, x) => this.testOnly[x + (index * this.maxPerPage)]));
+      }
+      console.log(this.paginationList);
+      console.log(this.pagesRecipes);
+    }
+  }
+
+  goToPage(i: number) {
+    this.currentPage = i;
+  }
+
+  getCurrentRecipes(): Recipe[] {
+    return this.pagesRecipes[this.currentPage - 1];
+  }
+
+  isPage(i: number): boolean {
+    console.log("i: " + i);
+    console.log("curr " + this.currentPage);
+    return i == this.currentPage;
   }
 
   toggleSort() {
@@ -117,12 +153,6 @@ export class HomeComponent implements OnInit {
   }
 
   goToDetail(recipe: Recipe) {
-    // let params: NavigationExtras = {
-    //   queryParams: {
-    //     "recipe": JSON.stringify(recipe)
-    //   }
-    // }
-    // this.recipeSaver.storage = recipe;
     this.router.navigate([`recipeDetail/${+recipe.recipeId}`]);
   }
 
@@ -134,10 +164,11 @@ export class HomeComponent implements OnInit {
       console.log(recipe.recipeName);
       return true;
     }
-    // if (recipe.recipeAuthor.toLowerCase().includes(this.searchString.toLowerCase())) {
-    //   console.log(recipe.recipeAuthor);
-    //   return true;
-    // }
+    if (recipe.recipeAuthor)
+      if (recipe.recipeAuthor.toLowerCase().includes(this.searchString.toLowerCase())) {
+        console.log(recipe.recipeAuthor);
+        return true;
+      }
     if (recipe.tags.some(tag => tag.tagName.toLowerCase().includes(this.searchString.toLowerCase()))) {
       console.log(recipe.tags);
       return true;

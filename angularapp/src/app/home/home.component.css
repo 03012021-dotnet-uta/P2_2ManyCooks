@@ -169,3 +169,31 @@ form {
 .recipe-info > * {
   margin-bottom: 5pt;
 }
+
+.pagination-holder {
+  margin: 5pt 0;
+  padding: 2pt;
+  /* border: 1px solid var(--blue); */
+  border-radius: 3pt;
+  text-align: center;
+}
+
+.pagination-holder * {
+  display: inline-block;
+  color: black;
+  background-color: var(--text-light);
+  border-radius: 3pt;
+  cursor: pointer;
+  padding: 2pt 4pt;
+  margin-right: 3pt;
+  transition: 0.2s;
+}
+.pagination-holder *.selected {
+  color: white;
+  background-color: var(--blue);
+}
+
+.pagination-holder *:hover {
+  color: white;
+  background-color: var(--blue);
+}
