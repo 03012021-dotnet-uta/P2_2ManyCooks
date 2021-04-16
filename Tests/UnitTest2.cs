@@ -139,14 +139,31 @@ namespace Tests
             var date = DateTime.Now;
             sentrecipe.DateCreated = date;
             sentrecipe.DateLastPrepared = date;
+            Tag t = new Tag()
+            {
+                TagName = "tag name 2"
+            };
+            Ingredient i = new Ingredient()
+            {
+                IngredientName = "ing name 2"
+            };
+            Step s = new Step()
+            {
+                StepDescription = "new description",
+                RecipeStepNo = 1
+            };
             sentrecipe.ingredients = new List<Ingredient>(){
                 new Ingredient() {IngredientName="ingredient name"}
             };
             sentrecipe.tags = new List<Tag>(){
                 new Tag() {TagName="tag name"}
             };
+            Step s1 = new Step()
+            {
+                StepDescription = "step description"
+            };
             sentrecipe.Steps = new List<Step>() {
-                new Step() {StepDescription="step description"}
+                s1
             };
 
             // User user = new User() { Auth0 = "authcode", Firstname = "fname", Lastname = "lname" };
@@ -176,8 +193,20 @@ namespace Tests
                 var msr = new KitchenLogic(context, repo);
                 var userlogic = new UserLogic(context, repo);
                 userlogic.UpdateUser(model, userDictionary);
+                userlogic.UpdateUser(model, userDictionary);
                 var sr = await msr.saveRecipe(sentrecipe, model.Sub);
+                sentrecipe.tags.Add(t);
+                sentrecipe.ingredients.Add(i);
+                sentrecipe.Steps.Add(s);
+                sentrecipe.Steps.Remove(s1);
+                sr = await msr.saveRecipe(sentrecipe, model.Sub);
                 recipe = repo.GetRecipeById(sr.RecipeId);
+                HistoryModel hmodel = new HistoryModel()
+                {
+                    recipeId = recipe.RecipeId,
+                    sub = model.Sub
+                };
+                msr.SaveRecipePrepare(hmodel);
             }
             Assert.Equal(recipe.RecipeTags.ToArray()[0].Tag.TagName, "tag name");
         }
