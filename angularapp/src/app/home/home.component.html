@@ -36,7 +36,9 @@
       >
         <div class="recipe-img" [ngStyle]="getRecipeImageStyle(recipe)"></div>
         <div class="recipe-info">
-          <h2 class="recipe-name">{{ recipe.recipeName }}</h2>
+          <div class=recipe-card-top>
+            <h2 class="recipe-name">{{ recipe.recipeName }}</h2><h2>Calories: {{ recipe.recipeCalories | number: "1.2-2" }}</h2>
+          </div>
           <div class="recipe-prepares">
             Prepared: {{ recipe.numTimesPrepared }} times
           </div>
