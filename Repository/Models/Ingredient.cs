@@ -21,9 +21,9 @@ namespace Repository.Models
 
         public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
 
-        public static implicit operator ValueTask<object>(Ingredient v)
-        {
-            throw new NotImplementedException();
-        }
+        //public static implicit operator ValueTask<object>(Ingredient v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
