@@ -29,8 +29,8 @@ namespace Service.Logic
         {
             if (!existRecipeName(recipeName))
             {
-                return new List<Recipe>() {};
-               
+                return new List<Recipe>() { };
+
             }
 
             return _context.Recipes
@@ -39,7 +39,7 @@ namespace Service.Logic
 
         public async Task<Recipe> addNewRecipe(Recipe recipe)
         {
-            
+
             recipe.RecipeId = getAllRecipe().Result.Count() + 1;
             recipe.DateCreated = DateTime.Now;
             recipe.DateLastPrepared = DateTime.Now;
@@ -63,7 +63,7 @@ namespace Service.Logic
                 .ToListAsync();
             //return await _context.Recipes.FromSqlRaw($"SELECT * FROM Recipes WHERE RecipeId IN (SELECT RecipeId FROM RecipeTags WHERE TagId = {tagId})").ToListAsync();
         }
-        
+
         public async Task<bool> existTag(string name)
         {
             List<Tag> tags = await _context.Tags.ToListAsync();
@@ -138,7 +138,7 @@ namespace Service.Logic
                 dbRecipe = await _repo.SaveNewRecipe(sub);
             }
             Recipe otherRecipe = await _mapSentIntoRecipe(dbRecipe, sentRecipe);
-            return null;
+            return SentRecipe.GetFromRecipe(otherRecipe);
         }
 
         private async Task<Recipe> _mapSentIntoRecipe(Recipe dbRecipe, SentRecipe sentRecipe)
