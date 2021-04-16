@@ -15,6 +15,7 @@ namespace Repository.Repositories
         {
             _context = context;
         }
+
         /// <summary>
         /// Checks if user exists in our DB
         /// </summary>

@@ -19,6 +19,8 @@ namespace Service.Authenticators
         private readonly KitchenRepository _repo;
         private readonly Auth0HttpRequestHandler _handler;
 
+        public Authenticator() {}
+
         public Authenticator(IConfiguration _configuration, KitchenRepository _repo, Auth0HttpRequestHandler _handler)
         {
             this._configuration = _configuration;

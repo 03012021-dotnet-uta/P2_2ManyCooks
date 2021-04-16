@@ -90,11 +90,18 @@ namespace Tests
             Assert.Equal(HttpStatusCode.OK,response.Result.StatusCode);
         }
 
+        [Fact]
+        public async Task TestDeleteReview()
+        {
+            var response = await testServer.CreateRequest("/review").SendAsync("DELETE");
+            Assert.Equal(HttpStatusCode.MethodNotAllowed,response.StatusCode);
+        }
+
         //[Fact]
-        //public void TestRecipeGoodById()
+        //public async Task TestRecipeGoodById()
         //{
-        //    var response = testServer.CreateRequest("/recipe/good/1").SendAsync("GET");
-        //    Assert.Equal(HttpStatusCode.OK, response.Result.StatusCode);
+        //    var response = await testServer.CreateRequest("/recipe/good/2").SendAsync("GET");
+        //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         //}
 
         [Fact]
@@ -103,12 +110,12 @@ namespace Tests
             var response = await testServer.CreateRequest("/Recipe/recipeById/3").SendAsync("GET");
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
-        //[Fact]
-        //public async Task TestReadRecipeByTag()
-        //{
-        //    var response = await testServer.CreateRequest("/tag/Spicy").SendAsync("GET");
-        //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        //}
+        [Fact]
+        public async Task TestReadRecipeByTag()
+        {
+            var response = await testServer.CreateRequest("/tag/Spicy").SendAsync("GET");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
         [Fact]
         public async Task TestReadRecipeApi()
         {
@@ -121,12 +128,12 @@ namespace Tests
             var response = await testServer.CreateRequest("/ingredient").SendAsync("GET");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        //[Fact]
-        //public async Task TestIngredientById()
-        //{
-        //    var response = await testServer.CreateRequest("byIngredientId/5").SendAsync("GET");
-        //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        //}
+        [Fact]
+        public async Task TestIngredientById()
+        {
+            var response = await testServer.CreateRequest("byIngredientId/2").SendAsync("GET");
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
         [Fact]
         public async Task TestReadRecipeByName()
         {

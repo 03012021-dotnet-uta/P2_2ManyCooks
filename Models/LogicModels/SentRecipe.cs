@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Repository.Models;
 
 namespace Models.LogicModels
@@ -47,12 +48,6 @@ namespace Models.LogicModels
                 ingredients = ingList,
                 Reviews = recipe.Reviews
             };
-        }
-
-        public Recipe GetRecipe()
-        {
-            Recipe recipe = new Recipe();
-            throw new NotImplementedException();
         }
 
         public static ICollection<SentRecipe> MapMany(ICollection<Recipe> recipes)
