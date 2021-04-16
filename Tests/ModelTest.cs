@@ -402,7 +402,6 @@ namespace Tests
         [Fact]
         public void TestGetFromRecipe()
         {
-            var tagList = new List<Tag>();
             var recipe = new Recipe()
             {
                 RecipeId = 3,
@@ -413,21 +412,74 @@ namespace Tests
                 RecipeName = "Cheese",
                 RecipeTags = new List<RecipeTag>(),
                 RecipeAuthors = new List<RecipeAuthor>(),
-                Reviews = new List<Review>() 
+                Reviews = new List<Review>()
             };
-
-            foreach (var RecipeTag in recipe.RecipeTags)
-            {
-                tagList.Add(RecipeTag.Tag);
-                tagList.Add(new Tag(){TagId = 4});
-            }
-            var tagIng = new List<Ingredient>();
-            foreach (var RecipeTag in recipe.RecipeIngredients)
-            {
-                tagIng.Add(RecipeTag.Ingredient);
-            }
-            Assert.Empty(tagList);
+            var sentRecipe = SentRecipe.GetFromRecipe(recipe);
+            Assert.Equal(recipe.RecipeAuthor,sentRecipe.RecipeAuthor);
+            
+            
 
         }
+
+        [Fact]
+        public void TestHistoryModel()
+        {
+            var history = new HistoryModel()
+            {
+                recipeId = 3,
+                sub = "Anis"
+            };
+
+            Assert.Equal("Anis",history.sub);
+        }
+
+        [Fact]
+        public void TestHasScoopRequirement()
+        {
+            string scope = "Valid";
+            string user = "Anis";
+            var hasScope = new HasScopeRequirement(scope, user);
+
+            Assert.Equal("Anis",hasScope.Issuer);
+            Assert.Equal("Valid",hasScope.Scope);
+
+        }
+
+        [Fact]
+        public void TestMapMany()
+        {
+            var recipes = new List<Recipe>();
+            recipes.Add(new Recipe(){RecipeId = 1,RecipeAuthor = "Anis"});
+            recipes.Add(new Recipe(){RecipeId = 2,RecipeAuthor = "Nour"});
+            recipes.Add(new Recipe(){RecipeId = 3,RecipeAuthor = "Beau"});
+
+            var sentRecipe =  SentRecipe.MapMany(recipes);
+            Assert.Equal(sentRecipe.Count,recipes.Count);
+        }
+
+        [Fact]
+        public void TestFromUser()
+        {
+            var user = new User()
+            {
+                UserId = 3,
+                Username = "Anis1011"
+            };
+            var auth = AuthModel.GetFromUser(user);
+            Assert.Equal(user.Username,auth.Username);
+        } 
+        [Fact]
+        public void TestGetMapperUser()
+        {
+            var auth = new AuthModel()
+            {
+                Username = "Anis1011",
+                FirstName = "Anis"
+            };
+            var authmodel = new AuthModel(){Username = "Anis",FirstName = "Anis"};
+            var user =  authmodel.GetMappedUser();
+
+            Assert.Equal(auth.FirstName,user.Firstname);
+        } 
     }
 }

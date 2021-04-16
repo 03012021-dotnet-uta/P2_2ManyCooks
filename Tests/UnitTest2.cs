@@ -17,7 +17,7 @@ namespace Tests
             .Options;
 
         [Fact]
-        public async Task TestListrecipe()
+        public async Task TestListRecipe()
         {
             var ingredients = new List<Recipe>();
             ingredients.Add(new Recipe(){RecipeId = 32,RecipeAuthor = "Anis",RecipeName = "Tacos"});
@@ -41,63 +41,63 @@ namespace Tests
             }
             Assert.Equal(result1,result2);
         }
-        //[Fact]
-        //public void Test2Async()
-        //{
-        //    var ingredients = new List<Recipe>();
-        //    ingredients.Add(new Recipe(){RecipeId = 32,RecipeAuthor = "Anis",RecipeName = "Tacos"});
-        //    ingredients.Add(new Recipe(){RecipeId = 329,RecipeAuthor = "Nour",RecipeName = "TacoBurrito"});
-        //    ingredients.Add(new Recipe(){RecipeId = 320,RecipeAuthor = "Beau",RecipeName = "Tacos"});
+        [Fact]
+        public void TestListOfRecipeByName()
+        {
+            var ingredients = new List<Recipe>();
+            ingredients.Add(new Recipe() { RecipeId = 32, RecipeAuthor = "Anis", RecipeName = "Tacos" });
+            ingredients.Add(new Recipe() { RecipeId = 329, RecipeAuthor = "Nour", RecipeName = "TacoBurrito" });
+            ingredients.Add(new Recipe() { RecipeId = 320, RecipeAuthor = "Beau", RecipeName = "Tacos" });
 
-        //    var result1 = new List<Recipe>();
-        //    var result2 = new List<Recipe>();
+            var result1 = new List<Recipe>();
+            var result2 = new List<Recipe>();
 
-        //     using(var context = new InTheKitchenDBContext(testOptions))
-        //    {
-        //         context.Database.EnsureDeletedAsync();
-        //         context.Database.EnsureCreatedAsync();
-        //        var msr = new KitchenLogic(context);
-        //        result1 =  msr.getAllRecipeByRecipeName("Tacos");
-        //    }
-        //    using(var context = new InTheKitchenDBContext(testOptions))
-        //    {
-        //         context.Database.EnsureCreatedAsync();
-        //        result2 =  context.Recipes.Where(r =>r.RecipeName == "Tacos").ToList();
-        //    }
-        //    Assert.Equal(result1,result2);
-        //}
+            using (var context = new InTheKitchenDBContext(testOptions))
+            {
+                context.Database.EnsureDeletedAsync();
+                context.Database.EnsureCreatedAsync();
+                var msr = new KitchenLogic(context);
+                result1 = msr.getAllRecipeByRecipeName("Tacos");
+            }
+            using (var context = new InTheKitchenDBContext(testOptions))
+            {
+                context.Database.EnsureCreatedAsync();
+                result2 = context.Recipes.Where(r => r.RecipeName == "Tacos").ToList();
+            }
+            Assert.Equal(result1, result2);
+        }
 
-        //[Fact]
-        //public async Task Test3Async()
-        //{
-        //    var tag = new Tag() { TagId = 3, TagName = "Healthy" };
-        //    var recipe = new Recipe() { RecipeId = 21, RecipeName = "Deli" };
-        //    ICollection<RecipeTag> tags = new List<RecipeTag>();
-        //    tags.Add(new RecipeTag() { Recipe = recipe, Tag = tag });
-        //    tags.Add(new RecipeTag() { Recipe = recipe, Tag = tag });
+        [Fact]
+        public async Task TestListRecipeByTag()
+        {
+            var tag = new Tag() { TagId = 3, TagName = "Healthy" };
+            var recipe = new Recipe() { RecipeId = 21, RecipeName = "Deli" };
+            ICollection<RecipeTag> tags = new List<RecipeTag>();
+            tags.Add(new RecipeTag() { Recipe = recipe, Tag = tag });
+            tags.Add(new RecipeTag() { Recipe = recipe, Tag = tag });
 
-        //    var ingredients = new List<Recipe>();
-        //    ingredients.Add(new Recipe() { RecipeId = 32, RecipeAuthor = "Anis", RecipeName = "Tacos", RecipeTags = tags });
-        //    ingredients.Add(new Recipe() { RecipeId = 329, RecipeAuthor = "Nour", RecipeName = "TacoBurrito", RecipeTags = tags });
-        //    ingredients.Add(new Recipe() { RecipeId = 320, RecipeAuthor = "Beau", RecipeName = "Tacos", RecipeTags = tags });
+            var ingredients = new List<Recipe>();
+            ingredients.Add(new Recipe() { RecipeId = 32, RecipeAuthor = "Anis", RecipeName = "Tacos", RecipeTags = tags });
+            ingredients.Add(new Recipe() { RecipeId = 329, RecipeAuthor = "Nour", RecipeName = "TacoBurrito", RecipeTags = tags });
+            ingredients.Add(new Recipe() { RecipeId = 320, RecipeAuthor = "Beau", RecipeName = "Tacos", RecipeTags = tags });
 
-        //    var result1 = new List<Recipe>();
-        //    var result2 = new List<Recipe>();
+            var result1 = new List<Recipe>();
+            var result2 = new List<Recipe>();
 
-        //     using (var context = new InTheKitchenDBContext(testOptions))
-        //    {
-        //         context.Database.EnsureDeletedAsync();
-        //         context.Database.EnsureCreatedAsync();
-        //        var msr = new KitchenLogic(context);
-        //        result1 = await msr.getAllRecipeByTags("Healthy");
-        //    }
-        //    using (var context = new InTheKitchenDBContext(testOptions))
-        //    {
-        //        await context.Database.EnsureCreatedAsync();
-        //        result2 = await context.Recipes.FromSqlRaw("$SELECT * FROM Recipes WHERE RecipeId IN (SELECT RecipeId FROM RecipeTags WHERE TagId = 3)").ToListAsync();
-        //    }
-        //    Assert.Equal(result1, result2);
-        //}
+            using (var context = new InTheKitchenDBContext(testOptions))
+            {
+                context.Database.EnsureDeletedAsync();
+                context.Database.EnsureCreatedAsync();
+                var msr = new KitchenLogic(context);
+                result1 = await msr.getAllRecipeByTags("Spicy");
+            }
+            using (var context = new InTheKitchenDBContext(testOptions))
+            {
+                await context.Database.EnsureCreatedAsync();
+                result2 = await context.Recipes.FromSqlRaw("$SELECT * FROM Recipes WHERE RecipeId IN (SELECT RecipeId FROM RecipeTags WHERE TagId = 3)").ToListAsync();
+            }
+            Assert.Equal(result1, result2);
+        }
         [Fact]
         public async Task TestRecipe()
         {
@@ -129,7 +129,7 @@ namespace Tests
         }
 
         [Fact]
-        public async Task TestListtagbytagName()
+        public async Task TestListTagByTagName()
         {
             var tag = new Tag() { TagId = 123, TagName = "Cheese" };
             bool result;

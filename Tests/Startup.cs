@@ -22,6 +22,8 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using KitchenWeb.Helpers;
+using Service.Helpers;
 
 namespace KitchenWeb
 {
@@ -46,8 +48,28 @@ namespace KitchenWeb
             services.AddScoped<ILogicKitchen, KitchenLogic>();
             services.AddScoped<IReviewStepTagLogic, ReviewStepTagLogic>();
             services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<Auth0HttpRequestHandler>();
             services.AddScoped<IAuthenticator, Authenticator>();
             services.AddScoped<KitchenRepository>();
+            string domain = $"https://{Configuration["Auth0:Domain"]}/";
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = domain;
+                options.Audience = Configuration["Auth0:Audience"];
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = ClaimTypes.NameIdentifier
+                };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("update:website", policy => policy.Requirements.Add(new HasScopeRequirement("update:website", domain)));
+            });
             
 
         }
@@ -56,6 +78,7 @@ namespace KitchenWeb
         public void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

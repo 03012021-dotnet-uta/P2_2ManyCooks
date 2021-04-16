@@ -11,8 +11,10 @@ namespace Service.Logic
 {
     public interface IUserLogic
     {
+        List<User> getAllUsers();
         Task<List<AuthModel>> GetAllUsers();
         // User GetUserData(string sub);
+
 
 
         /// <summary>
@@ -71,6 +73,7 @@ namespace Service.Logic
         /// </summary>
         /// <returns>a new list of users</returns>
         Task<List<AuthModel>> DeleteUser(string token, string sub);
+
     }
 }
 

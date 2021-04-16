@@ -8,9 +8,9 @@ namespace Repository.Models
 {
     public partial class InTheKitchenDBContext : DbContext
     {
-        public InTheKitchenDBContext()
-        {
-        }
+        //public InTheKitchenDBContext()
+        //{
+        //}
 
         public InTheKitchenDBContext(DbContextOptions<InTheKitchenDBContext> options)
             : base(options)
