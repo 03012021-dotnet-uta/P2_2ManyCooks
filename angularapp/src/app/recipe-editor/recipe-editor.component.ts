@@ -27,6 +27,7 @@ export class RecipeEditorComponent implements OnInit {
   ingChoice: Ingredient;
   tagControl: FormControl = new FormControl('', Validators.required);
   ingControl: FormControl = new FormControl('', Validators.required);
+  isLoading: boolean = false;
 
   constructor(private route: ActivatedRoute,
     private recipeService: RecipeService,
@@ -220,11 +221,13 @@ export class RecipeEditorComponent implements OnInit {
   }
 
   sendNewRecipe() {
+    this.isLoading = true;
     this.recipeService.saveRecipe(this.recipe).then(reply => {
       console.log("save recipe reply: ");
       console.log(reply);
+      window.location.href = "/";
+      this.isLoading = false;
     });
-    window.location.href = "/";
   }
 
 }

@@ -54,4 +54,17 @@ export class RecipeService {
   getRecipeId(id: number): Promise<Recipe> {
     return this.http.get<Recipe>(`${this.baseUrl}/good/${id}`, this.httpOptions).toPromise();
   }
+
+  getCalInfo(ingredientName: string): Promise<any> {
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        "X-Api-Key": "K16xlFLX/ItWCuyXa1GAcQ==Uac4RnAmqfnpx6aI",
+        /*"x-rapidapi-host": "calorieninjas.p.rapidapi.com"*/
+      })
+    };
+    // fetch(`https://api.calorieninjas.com/v1/nutrition?query=${ingredientName}`, { headers: {"X-Api-Key": "K16xlFLX/ItWCuyXa1GAcQ==Uac4RnAmqfnpx6aI"}})
+    //   .then(reply => console.warn(reply));
+    return this.http.get<any>(`${this.urlService.dotnetBaseUrl}api/${ingredientName}`, this.httpOptions).toPromise();
+  }
 }

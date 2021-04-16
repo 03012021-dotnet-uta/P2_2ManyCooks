@@ -16,11 +16,11 @@ namespace Service.Helpers
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            string[] str = search.Split(" ");
+            /*string[] str = search.Split(" ");
             foreach (var strr in str)
             {
                 search = string.Join("%20", strr);
-            }
+            }*/
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,

@@ -16,10 +16,13 @@ export class RecipeGuideComponent implements OnInit {
   ngOnInit(): void {
     if (this.recipe !== undefined) {
       this.recipe.steps = this.recipe.steps.sort((a, b) => a.recipeStepNo - b.recipeStepNo);
+      console.log(this.recipe);
       for (let index = 1; index < this.recipe.steps.length; index++) {
         this.recipe.steps[index - 1].nextStep = this.recipe.steps[index];
       }
+      console.log(this.recipe);
       this.currentStepId = this.recipe.steps[0].stepId;
+      console.log(this.recipe);
       setTimeout(() => {
         const top = document.querySelector(".selected");
         top.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });

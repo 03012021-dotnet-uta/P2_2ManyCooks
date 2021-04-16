@@ -13,3 +13,20 @@ input[type="number"] {
 input[type="text"]:disabled {
   color: grey;
 }
+
+.full-page-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  overflow: show;
+  margin: auto;
+  background-color: rgba(29, 43, 54, 0.356);
+}
+
+.page-loading {
+  margin: auto;
+  margin-top: 50vh;
+}
