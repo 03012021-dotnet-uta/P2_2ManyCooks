@@ -46,10 +46,10 @@ export class HomeComponent implements OnInit {
     this.service.getAllRecipes().subscribe((reply) => {
       console.log(reply);
       this.recipeList = reply;
-      this.testOnly = this.recipeList;
       for (let i = 0; i < this.recipeList.length; i++) {
         this.countCalories(this.recipeList[i]);
       }
+      this.testOnly = this.recipeList;
       this.preparePagination();
       // this.fillTest();
       take(1);
@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit {
   preparePagination() {
     if (this.testOnly.length > this.maxPerPage) {
       let pagnum = Math.ceil(this.testOnly.length / 5);
-      this.paginationList = Array(2).fill(0).map((_, i) => 1 + i);
+      this.paginationList = Array(pagnum).fill(0).map((_, i) => 1 + i);
       for (let index = 0; index < this.paginationList.length; index++) {
         const page = this.paginationList[index];
         const start = index * this.maxPerPage;
@@ -68,7 +68,9 @@ export class HomeComponent implements OnInit {
         else
           this.pagesRecipes.push(Array(this.maxPerPage).fill(0).map((_, x) => this.testOnly[x + (index * this.maxPerPage)]));
       }
+      console.log("this.paginationList");
       console.log(this.paginationList);
+      console.log("this.pagesRecipes");
       console.log(this.pagesRecipes);
     }
   }
@@ -82,8 +84,8 @@ export class HomeComponent implements OnInit {
   }
 
   isPage(i: number): boolean {
-    console.log("i: " + i);
-    console.log("curr " + this.currentPage);
+    // console.log("i: " + i);
+    // console.log("curr " + this.currentPage);
     return i == this.currentPage;
   }
 
