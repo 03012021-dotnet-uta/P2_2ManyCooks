@@ -1,0 +1,189 @@
+<section class="section">
+  <div class="edit-grid">
+    <form class="recipe-form" action="">
+      <label for="">Recipe ID</label>
+      <input
+        type="text"
+        name="id"
+        [value]="recipe.recipeId | number"
+        [disabled]="true"
+      />
+      <label for="">Recipe Name</label>
+      <input type="text" name="name" [(ngModel)]="recipe.recipeName" required />
+      <label for="">Recipe Description</label>
+      <input
+        type="text"
+        name="Description"
+        [(ngModel)]="recipe.recipeDescription"
+        required
+      />
+      <label for="">Recipe Image URL/Link</label>
+      <input
+        type="text"
+        name="Image"
+        [(ngModel)]="recipe.recipeImage"
+        required
+      />
+      <label *ngIf="recipe.recipeAuthor" for="">Recipe Author</label>
+      <input
+        *ngIf="recipe.recipeAuthor"
+        type="text"
+        name="Author"
+        [value]="recipe.recipeAuthor"
+        [disabled]="true"
+        required
+      />
+      <!-- steps -->
+      <label for="steps">Steps</label>
+      <div>
+        <div id="steps" *ngFor="let step of recipe.steps">
+          <span>Step no: </span>
+          <div>{{ step.recipeStepNo }}</div>
+          <span>Step description: </span>
+          <div>{{ step.stepDescription }}</div>
+          <span>Step image url: </span>
+          <div>{{ step.stepImage }}</div>
+          <div><button (click)="removeStep(step)">Remove</button></div>
+          <!-- done -->
+          <br />
+        </div>
+      </div>
+      <!-- recipe ingredients -->
+      <label for="ingredients">Ingredients</label>
+      <div>
+        <div *ngFor="let ingredient of recipe.ingredients">
+          <div>{{ ingredient.ingredientName }}</div>
+          <div>{{ ingredient.ingredientDescription }}</div>
+          <div>{{ ingredient.ingredientImage }}</div>
+          <div>
+            <button (click)="removeIngredient(ingredient)">Remove</button>
+          </div>
+          <!-- done -->
+        </div>
+      </div>
+      <!-- recipe tags -->
+      <label for="tags">tags</label>
+      <div>
+        <div *ngFor="let tag of recipe.tags">
+          <div>{{ tag.tagName }}</div>
+          <div>{{ tag.tagDescription }}</div>
+          <div><button (click)="removeTag(tag)">Remove</button></div>
+          <!-- done -->
+        </div>
+      </div>
+      <input type="submit" (click)="sendNewRecipe()" value="Confirm Changes" />
+    </form>
+    <br />
+    <br />
+    <br />
+
+    <!-- RecipeStepNo StepDescription StepImage -->
+    <h2>Create a new step</h2>
+    <form action="" class="add-list">
+      <div>Step No:</div>
+      <input
+        type="number"
+        name="recipeStepNo"
+        [(ngModel)]="newStep.recipeStepNo"
+        required
+      />
+      <div>Step Description:</div>
+      <input
+        type="text"
+        name="StepDescription"
+        [(ngModel)]="newStep.stepDescription"
+        required
+      />
+      <div>Step URL/Link</div>
+      <input
+        type="text"
+        name="stepimage"
+        [(ngModel)]="newStep.stepImage"
+        required
+      />
+      <input type="submit" value="Add Step to Recipe" (click)="addNewStep()" />
+      <!-- done -->
+    </form>
+    <br />
+    <br />
+    <br />
+
+    <!-- tags -->
+    <!-- TagName TagDescription -->
+    <form action="">
+      <h2>Add a tag from the list</h2>
+      <select [formControl]="tagControl" required>
+        <option *ngFor="let tag of tagChoices" [value]="tag.tagName">
+          {{ tag.tagName }}
+        </option>
+      </select>
+      <input
+        type="submit"
+        value="Add to Recipe"
+        (click)="addTagChoiceToRecipe()"
+      />
+      <!-- done -->
+    </form>
+    <br />
+    <h2>Create a new tag</h2>
+    <form action="" class="add-list">
+      <div>Tag Name</div>
+      <input type="text" name="TagName" [(ngModel)]="newTag.tagName" required />
+      <div>Tag Description</div>
+      <input
+        type="text"
+        name="StepDescription"
+        [(ngModel)]="newTag.tagDescription"
+        required
+      />
+      <input type="submit" value="Add to Recipe" (click)="addNewTag()" />
+      <!-- done -->
+    </form>
+    <br />
+    <br />
+    <br />
+
+    <!-- ingredients -->
+    <!-- IngredientName IngredientDescription IngredientImage -->
+    <h2>Add an Ingreient from the list</h2>
+    <form action="">
+      <select [formControl]="ingControl" required>
+        <option *ngFor="let ing of ingChoices" [value]="ing.ingredientName">
+          {{ ing.ingredientName }}
+        </option>
+      </select>
+      <input
+        type="submit"
+        value="Add to Recipe"
+        (click)="addIngChoiceToRecipe()"
+      />
+      <!-- done -->
+    </form>
+    <br />
+    <h2>Create a new Ingreient</h2>
+    <form action="" class="add-list">
+      <div>Ingredient Name</div>
+      <input
+        type="text"
+        name="ingName"
+        [(ngModel)]="newIngredient.ingredientName"
+        required
+      />
+      <div>Ingredient Description</div>
+      <input
+        type="text"
+        name="ingDescription"
+        [(ngModel)]="newIngredient.ingredientDescription"
+        required
+      />
+      <div>Ingredient Image Url</div>
+      <input
+        type="text"
+        name="ingDescription"
+        [(ngModel)]="newIngredient.ingredientImage"
+      />
+      <input type="submit" value="Add to Recipe" (click)="addNewIngredinet()" />
+      <!-- done -->
+    </form>
+  </div>
+</section>

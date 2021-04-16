@@ -14,6 +14,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { RecipeSaver } from './recipe/recipe-saver';
 import { RecipeGuideComponent } from './recipe/recipe-guide/recipe-guide.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { RecipeEditorComponent } from './recipe-editor/recipe-editor.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AdminHomeComponent } from './admin-home/admin-home.component';
     HomeComponent,
     RecipeComponent,
     RecipeGuideComponent,
-    AdminHomeComponent
+    AdminHomeComponent,
+    RecipeEditorComponent
   ],
   imports: [
     BrowserModule,

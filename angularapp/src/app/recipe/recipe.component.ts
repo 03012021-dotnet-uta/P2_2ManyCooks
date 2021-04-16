@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AuthModel } from '../auth-model';
@@ -27,9 +27,11 @@ export class RecipeComponent implements OnInit, OnDestroy {
   fetchedReviews: boolean;
   averageRating: string = "No rating yet";
   preparing: boolean = false;
+  isAdmin: boolean = false;
   unsubSubject = new Subject();
 
   constructor(private route: ActivatedRoute,
+    private router: Router,
     private recipeService: RecipeService,
     private reviewService: ReviewService,
     private authService: AuthService,
@@ -58,10 +60,20 @@ export class RecipeComponent implements OnInit, OnDestroy {
       this.currentUser = reply;
       take(1);
     });
+    this.authService.isAdmin$.subscribe(reply => {
+      this.isAdmin = reply;
+    });
     if (this.currentUser == null || this.currentUser == undefined) {
       this.currentUser = this.authService.authModel;
     }
+    if (!this.isAdmin) {
+      this.isAdmin = this.authService.isAdmin;
+    }
     this.getRecipeInfo(+this.route.snapshot.paramMap.get("id"));
+  }
+
+  goEdit() {
+    this.router.navigate(['recipeEdit/' + this.recipe.recipeId]);
   }
 
   // goToDetail() {

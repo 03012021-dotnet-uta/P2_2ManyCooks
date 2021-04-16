@@ -134,6 +134,38 @@ namespace Repository.Repositories
             return success;
         }
 
+        public async Task<Recipe> SaveNewRecipe(string sub)
+        {
+            var user = await _context.Users.Where(u => u.Auth0 == sub).FirstOrDefaultAsync();
+            Recipe r = new Recipe();
+            r.DateCreated = DateTime.Now;
+            r.DateLastPrepared = DateTime.Now;
+            r.NumTimesPrepared = 0;
+            r.RecipeDescription = "";
+            r.RecipeName = "";
+            r.RecipeAuthor = user.Firstname + " " + user.Lastname;
+            var author = new RecipeAuthor();
+            author.User = user;
+            r.RecipeAuthors.Add(author);
+            var x = await _context.Recipes.AddAsync(r);
+            await _context.SaveChangesAsync();
+            System.Console.WriteLine("is id here? " + r.RecipeId);
+            return r;
+        }
+
+        public Task<List<Tag>> GetAllTags()
+        {
+            return _context.Tags.Include(t => t.RecipeTags).ThenInclude(rt => rt.Recipe).ToListAsync();
+        }
+
+        public async Task<List<RecipeTag>> GetAllRecipeTags()
+        {
+            return await _context.RecipeTags
+            .Include(rt => rt.Recipe)
+            .Include(rt => rt.Tag)
+            .ToListAsync();
+        }
+
         public ICollection<Recipe> GetAllRecipes()
         {
             return _context.Recipes
@@ -146,6 +178,44 @@ namespace Repository.Repositories
             .ToList();
         }
 
+        public Tag saveNewTag(Tag tag)
+        {
+            _context.Tags.Add(tag);
+            _context.SaveChanges();
+            return _context.Tags.Where(t => tag.TagName == t.TagName).FirstOrDefault();
+        }
+
+        public async Task<List<RecipeIngredient>> GetAllRecipeIngredients()
+        {
+            return await _context.RecipeIngredients
+            .Include(ri => ri.Ingredient)
+            .Include(ri => ri.Recipe)
+            .ToListAsync();
+        }
+
+        public void RemoveRecipeTag(RecipeTag rt)
+        {
+            _context.RecipeTags.Remove(rt);
+            _context.SaveChanges();
+        }
+
+        public async Task<List<Ingredient>> GetAllIngredients()
+        {
+            return await _context.Ingredients.Include(i => i.RecipeIngredients).ToListAsync();
+        }
+
+        public Ingredient saveNewIngredient(Ingredient ingredient)
+        {
+            _context.Ingredients.Add(ingredient);
+            _context.SaveChanges();
+            return _context.Ingredients.Where(t => ingredient.IngredientName == t.IngredientName).FirstOrDefault();
+        }
+
+        public async Task<bool> SaveChanges()
+        {
+            return (await _context.SaveChangesAsync()) > 0;
+        }
+
         public Recipe GetRecipeById(int id)
         {
             return _context.Recipes.Where(r => r.RecipeId == id)
@@ -156,6 +226,11 @@ namespace Repository.Repositories
             .Include(r => r.Steps)
             .Include(r => r.Reviews)
             .FirstOrDefault();
+        }
+
+        public async Task<List<Step>> GetAllSteps()
+        {
+            return await _context.Steps.ToListAsync();
         }
 
         public async Task<Recipe> AddNewPrepare(int recipeId, string sub)
@@ -195,6 +270,27 @@ namespace Repository.Repositories
             return dbrecipe;
         }
 
+        public void RemoveRecipeIngredient(RecipeIngredient rt)
+        {
+            _context.RecipeIngredients.Remove(rt);
+            _context.SaveChanges();
+        }
+
+        public void DeleteStep(Step step)
+        {
+            step.RecipeId = null;
+            step.Recipe = null;
+            _context.SaveChanges();
+            _context.Steps.Remove(step);
+            _context.SaveChanges();
+        }
+
+        public Step SaveNewStep(Step step)
+        {
+            _context.Steps.Add(step);
+            _context.SaveChanges();
+            return _context.Steps.Where(t => t.RecipeStepNo == step.RecipeStepNo && t.RecipeId == step.RecipeId).FirstOrDefault();
+        }
 
         public async Task<bool> DeleteUser(string sub)
         {

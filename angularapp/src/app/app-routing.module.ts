@@ -6,11 +6,13 @@ import { HomeComponent } from './home/home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { RecipeComponent } from './recipe/recipe.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { RecipeEditorComponent } from './recipe-editor/recipe-editor.component';
 
 
 const routes: Routes = [
   { path: 'register', component: RegistrationComponent },
   { path: 'recipeDetail/:id', component: RecipeComponent },
+  { path: 'recipeEdit/:id', component: RecipeEditorComponent },
   { path: 'admin', component: AdminHomeComponent },
   { path: '**', component: HomeComponent },
 

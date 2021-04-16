@@ -31,6 +31,7 @@
       <br /><br />
 
       <input type="button" (click)="startPrepare()" value="Start Preparing" />
+      <button *ngIf="isAdmin" (click)="goEdit()">Edit</button>
 
       <div class="add-rev-card">
         <input

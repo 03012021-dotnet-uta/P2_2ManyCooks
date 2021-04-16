@@ -16,6 +16,7 @@ export class AuthService {
   public authModel$ = new Subject<AuthModel>();
   public authModel = new AuthModel();
   public isAdmin$ = new Subject<boolean>();
+  public isAdmin = false;
   public loading$ = new BehaviorSubject<boolean>(true);
   // getAuthModel() {
   //   this.userService.checkIfNewUser().subscribe((reply) => {
@@ -216,10 +217,12 @@ export class AuthService {
       console.log("admin reply");
       console.log(reply);
       this.isAdmin$.next(true);
+      this.isAdmin = reply;
     }).catch(err => {
       console.log("error accessing admin");
       console.error(err);
       this.isAdmin$.next(false);
+      this.isAdmin = false;
     });
   }
 

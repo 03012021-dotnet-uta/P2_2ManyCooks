@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   testOnly: Recipe[];
   searchString: string;
 
-  constructor(private service: RecipeService, private router: Router, private recipeSaver: RecipeSaver) { }
+  constructor(private service: RecipeService, private router: Router) { }
 
   ngOnInit(): void {
     this.getAllRecipes();

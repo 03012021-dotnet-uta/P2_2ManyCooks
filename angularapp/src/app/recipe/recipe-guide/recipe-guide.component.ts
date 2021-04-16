@@ -15,6 +15,7 @@ export class RecipeGuideComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.recipe !== undefined) {
+      this.recipe.steps = this.recipe.steps.sort((a, b) => a.recipeStepNo - b.recipeStepNo);
       for (let index = 1; index < this.recipe.steps.length; index++) {
         this.recipe.steps[index - 1].nextStep = this.recipe.steps[index];
       }
