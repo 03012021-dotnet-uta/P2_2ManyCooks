@@ -23,11 +23,11 @@ namespace Service.Logic
         private InTheKitchenDBContext _context;
         private readonly KitchenRepository _repo;
         private readonly Auth0HttpRequestHandler _handler;
-        public UserLogic(InTheKitchenDBContext _context, KitchenRepository _repo, Auth0HttpRequestHandler _handler)
+        public UserLogic(InTheKitchenDBContext _context, KitchenRepository _repo)
         {
             this._context = _context;
             this._repo = _repo;
-            this._handler = _handler;
+            // this._handler = _handler;
         }
 
         // for test purpose
@@ -290,21 +290,8 @@ namespace Service.Logic
 
         public async Task<List<AuthModel>> DeleteUser(string token, string sub)
         {
-            // sub = sub.Replace("|", "%");
-            // sub = sub.Split("|")[1];
-            // IRestResponse response = await _handler.Sendrequest($"/api/v2/users/{sub}", Method.DELETE, token);
-            // var client = new RestClient("https://dev-yktazjo3.us.auth0.com/oauth/token");
-            // var request = new RestRequest(Method.POST);
-            // request.AddHeader("content-type", "application/x-www-form-urlencoded");
-            // request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&client_id=%24%7Baccount.clientId%7D&client_secret=DEJH5xmVrKbgDEwq5XmgjZqyftJLGrs5&audience=https%3A%2F%2F%24%7Baccount.namespace%7D%2Fapi%2Fv2%2F", ParameterType.RequestBody);
-            // IRestResponse response1 = client.Execute(request);
-            // System.Console.WriteLine(response1.Content);
-            // System.Console.WriteLine(response1.IsSuccessful);
 
-            IRestResponse response = await _handler.Sendrequest($"/api/v2/users", Method.GET, token);
-            Console.WriteLine(response.IsSuccessful);
-            // if (response.IsSuccessful)
-            // {
+            // IRestResponse response = await _handler.Sendrequest($"/api/v2/users", Method.GET, token);
             if (await _repo.DeleteUser(sub))
             {
                 return await GetAllUsers();
